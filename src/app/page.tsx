@@ -1,101 +1,64 @@
-import Image from "next/image";
+import React from 'react';
+import Header from './../components/header';
 
-export default function Home() {
+const LandingPage = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="flex min-h-screen flex-col font-sans">
+      <Header />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <section className="flex flex-1 items-center justify-around bg-[url(./../../public/stacked-waves-haikei.svg)] bg-cover bg-center bg-no-repeat p-12">
+        <div className="relative w-64 rounded-lg bg-yellow-100 p-6 text-gray-600 hidden md:block">
+          <p>
+            Take notes to keep track of crucial details, and accomplish more
+            tasks with ease.
+          </p>
+          <div className="absolute right-2 bottom-2 text-2xl text-blue-500">
+            ✓
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-20 w-20 rounded-lg bg-[url(./../../public/ep-icon.png)] bg-cover bg-center bg-no-repeat"></div>{' '}
+          <h1 className="mb-4 text-4xl font-bold">
+            Think, plan, and track <br /> all in one place
+          </h1>
+          <p className="mb-8">
+            Efficiently manage your tasks and boost productivity.
+          </p>
+          <button className="rounded bg-white px-8 py-4 text-lg text-black hover:bg-gray-200">
+            Click Here!
+          </button>
+        </div>
+        <div className="w-64 rounded-lg text-gray-700 bg-gray-100 p-6 hidden md:block">
+          <p>Reminders</p>
+          <div className="mt-4 rounded-md text-gray-700 bg-white p-4">
+            <p>Today's Meeting</p>
+            <p className="text-sm text-gray-500">Call with marketing</p>
+            <p className="text-sm text-gray-500">13:00 - 13:45</p>
+            <div className="mt-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
+              31
+            </div>
+          </div>
+        </div>
+        <div className='absolute flex bottom-10 text-gray-700 gap-20 w-full justify-center'>
+        <div className="w-1/3 rounded-lg bg-white p-6 hidden md:block">
+          <h2 className="mb-4 text-xl font-semibold">Today's tasks</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <p>New ideas for campaign</p>
+            <div className="h-2 w-24 rounded-full bg-gray-200"></div>
+          </div>
+          <div className="flex items-center justify-between">
+            <p>Design PPT #4</p>
+            <div className="h-2 w-24 rounded-full bg-gray-200"></div>
+          </div>
+        </div>
+        <div className="w-1/3 rounded-lg text-gray-700 bg-white p-6 hidden md:block">
+          <h2 className="mb-4 text-xl font-semibold">100+ Integrations</h2>
+          <div className="flex justify-center">{/* Integration Icons */}</div>
+        </div>
+        </div>
+      </section>
     </div>
   );
-}
+};
+
+export default LandingPage;
