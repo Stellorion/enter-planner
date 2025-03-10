@@ -35,7 +35,7 @@ const page = () => {
         </div>
         <div className="flex w-full flex-col items-center justify-center md:w-1/2 lg:ml-8">
           <h2 className="mb-4 w-full text-center font-semibold max-lg:text-3xl lg:text-5xl">
-            Create an account
+            Sign Up
           </h2>
           <p className="mb-4 text-gray-400">
             Already have an account?{' '}
@@ -65,12 +65,6 @@ const page = () => {
               type="email"
               placeholder="Email"
               {...register('email', { required: true })}
-              className="mb-4 w-full rounded-md border border-gray-600 bg-gray-700 p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-            <input
-              type="email"
-              placeholder="Confirm Email"
-              {...register('Confirm', { required: true })}
               className="mb-4 w-full rounded-md border border-gray-600 bg-gray-700 p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
             <input
