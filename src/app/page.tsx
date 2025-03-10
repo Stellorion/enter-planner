@@ -24,9 +24,6 @@ const LandingPage = () => {
           <p className="mb-8">
             Efficiently manage your tasks and boost productivity.
           </p>
-          <button className="rounded bg-white px-8 py-4 text-lg text-black hover:bg-gray-200">
-            Click Here!
-          </button>
         </div>
         <div className="w-64 rounded-lg text-gray-700 bg-gray-100 p-6 hidden md:block">
           <p>Reminders</p>
