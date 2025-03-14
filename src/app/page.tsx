@@ -1,11 +1,13 @@
+"use client"
+
 import React from 'react';
-import Header from './../components/header';
+import Header from '../components/Header';
 
 const LandingPage = () => {
+
   return (
     <div className="flex min-h-screen flex-col font-sans">
       <Header />
-
       <section className="flex flex-1 items-center justify-around bg-[url(./../../public/stacked-waves-haikei.svg)] bg-cover bg-center bg-no-repeat p-12">
         <div className="relative w-64 rounded-lg bg-yellow-100 p-6 text-gray-600 hidden md:block">
           <p>
@@ -25,9 +27,9 @@ const LandingPage = () => {
             Efficiently manage your tasks and boost productivity.
           </p>
         </div>
-        <div className="w-64 rounded-lg text-gray-700 bg-gray-100 p-6 hidden md:block">
+        <div className="w-64 rounded-lg text-gray-700 bg-gray-100 p-5 hidden md:block">
           <p>Reminders</p>
-          <div className="mt-4 rounded-md text-gray-700 bg-white p-4">
+          <div className="mt-2 rounded-md text-gray-700 bg-white p-2">
             <p>Today's Meeting</p>
             <p className="text-sm text-gray-500">Call with marketing</p>
             <p className="text-sm text-gray-500">13:00 - 13:45</p>
@@ -37,7 +39,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div className='absolute flex bottom-10 text-gray-700 gap-20 w-full justify-center'>
-        <div className="w-1/3 rounded-lg bg-white p-6 hidden md:block">
+        <div className="w-1/3 rounded-lg bg-white p-5 hidden md:block">
           <h2 className="mb-4 text-xl font-semibold">Today's tasks</h2>
           <div className="mb-4 flex items-center justify-between">
             <p>New ideas for campaign</p>

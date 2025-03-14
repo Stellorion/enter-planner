@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import ToastNotification from '../../components/ToastNotification';
+import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { FcGoogle } from 'react-icons/fc';
-import { FaApple, FaGithub } from 'react-icons/fa';
-import Header from '../../components/header';
+import SocialLoginButtons from 'components/SocialLoginButtons';
+import { jwtDecode } from 'jwt-decode';
+import FormInput from 'components/FormInput';
 
 type Inputs = {
   email: string;
@@ -15,13 +17,73 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const [user, setUser] = useState<{ email: string } | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log("Retrieved Token:", token); // Debugging log
+    
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        console.log("Decoded Token:", decoded); // Debugging log
+        setUser(decoded);
+      } catch (error) {
+        console.error("JWT Decode Error:", error);
+      }
+    }
+  }, []);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log("Retrieved Token:", token); // Debugging log
+    
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        console.log("Decoded Token:", decoded); // Debugging log
+        setUser(decoded);
+      } catch (error) {
+        console.error("JWT Decode Error:", error);
+      }
+    }
+  }, []);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        setError('email', { type: 'manual', message: result.error || 'Login failed' });
+        toast.error(result.error || 'Login failed'); // Show error toast
+        return;
+      }
+  
+      toast.success('Login successful');
+      localStorage.setItem('token', result.token); // Store token in localStorage
+      setUser(jwtDecode(result.token)); // Decode and store user info
+      // TODO: Redirect user to dashboard
+  
+    } catch (error: any) {
+      setError('email', { type: 'manual', message: error.message });
+      toast.error(error.message || 'An error occurred');
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-900">
+      <ToastNotification />
       <div className="bg-opacity-20 flex w-[90vw] flex-col rounded-2xl bg-gray-800 p-8 text-white shadow-lg md:w-[70vw] md:flex-row lg:h-[70vh] lg:w-[60vw]">
         <div className="hidden w-1/2 items-center justify-center sm:hidden md:flex">
           <img
@@ -40,29 +102,25 @@ const LoginPage = () => {
               Sign up
             </a>
           </p>
-          <form
-            className="flex w-full flex-col justify-center space-y-4"
-            onSubmit={handleSubmit(onSubmit)}
+          
+        <form className="w-full flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <FormInput
+            type="email"
+            placeholder="Email"
+            register={register('email', { required: 'Email is required' })}
+          />
+          <FormInput
+            type="password"
+            placeholder="Password"
+            register={register('password', { required: 'Password is required' })}
+          />
+          <button
+            type="submit"
+            className="w-full rounded-md bg-blue-500 py-2 text-white transition hover:bg-blue-600"
           >
-            <input
-              type="email"
-              placeholder="Email"
-              {...register('email', { required: true })}
-              className="mb-4 w-full rounded-md border border-gray-600 bg-gray-700 p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              {...register('password', { required: true })}
-              className="mb-4 w-full rounded-md border border-gray-600 bg-gray-700 p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-md bg-blue-500 py-2.5 text-white transition hover:bg-blue-600"
-            >
-              Log in
-            </button>
-          </form>
+            Log in
+          </button>
+        </form>
 
           <div className="mt-6 flex w-full items-center">
             <div className="flex-grow border-t border-gray-600"></div>
@@ -73,15 +131,7 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-4 flex w-full flex-wrap justify-center gap-2 sm:flex-nowrap">
-            <button className="flex flex-1 items-center justify-center rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm transition hover:bg-gray-600">
-              <FcGoogle className="mr-2" size={20} /> Google
-            </button>
-            <button className="flex flex-1 items-center justify-center rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm transition hover:bg-gray-600">
-              <FaApple className="mr-2" size={20} /> Apple
-            </button>
-            <button className="flex flex-1 items-center justify-center rounded-lg border border-gray-600 bg-gray-700 px-3 py-2 text-sm transition hover:bg-gray-600">
-              <FaGithub className="mr-2" size={20} /> GitHub
-            </button>
+          <SocialLoginButtons />
           </div>
         </div>
       </div>
