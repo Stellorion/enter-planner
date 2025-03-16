@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from "next/link";
 import ToastNotification from '../../components/ToastNotification';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import SocialLoginButtons from 'components/SocialLoginButtons';
-import FormInput from 'components/FormInput';
+import SocialLoginButtons from '@/src/components/SocialLoginButtons';
+import FormInput from '@/src/components/FormInput';
 
 type Inputs = {
   firstName: string;
@@ -81,9 +82,9 @@ const SignupPage = () => {
           </h2>
           <p className="mb-4 text-gray-400">
             Already have an account?{' '}
-            <a href="./../Login" className="text-blue-400 hover:underline">
+            <Link href="./../login" className="text-blue-400 hover:underline">
               Log in
-            </a>
+            </Link>
           </p>
           <form
             className="flex w-full flex-col justify-center space-y-4"

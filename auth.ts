@@ -11,7 +11,7 @@ interface Credentials {
   password: string;
 }
 
-export default NextAuth({
+export const {signIn,signOut} = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -21,7 +21,7 @@ export default NextAuth({
       },
       async authorize(credentials) {
         const { email, password } = credentials as Credentials;
-
+     
         if (!email || !password) {
           throw new Error("Missing credentials");
         }

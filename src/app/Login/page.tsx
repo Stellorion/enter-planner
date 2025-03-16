@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from "next/link";
 import ToastNotification from '../../components/ToastNotification';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import SocialLoginButtons from 'components/SocialLoginButtons';
+import SocialLoginButtons from '@/src/components/SocialLoginButtons';
 import { jwtDecode } from 'jwt-decode';
-import FormInput from 'components/FormInput';
+import FormInput from '@/src/components/FormInput';
+import { signIn } from "next-auth/react";
 
 type Inputs = {
   email: string;
@@ -54,31 +56,39 @@ const LoginPage = () => {
     }
   }, []);
 
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+    await signIn("credentials", { 
+      username: "user", 
+      password: "password", 
+      callbackUrl: '/' });
+
+    // try {
+    //   const response = await fetch('/api/login', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(data),
+    //   });
   
-      const result = await response.json();
+    //   const result = await response.json();
   
-      if (!response.ok) {
-        setError('email', { type: 'manual', message: result.error || 'Login failed' });
-        toast.error(result.error || 'Login failed'); // Show error toast
-        return;
-      }
+    //   if (!response.ok) {
+    //     setError('email', { type: 'manual', message: result.error || 'Login failed' });
+    //     toast.error(result.error || 'Login failed'); // Show error toast
+    //     return;
+    //   }
+    //   console.log(result);
+    //   toast.success('Login successful');
+    //   localStorage.setItem('token', result.user); // Store token in localStorage
+      
+      
+    //   setUser(jwtDecode(result.token)); // Decode and store user info
+    //   // TODO: Redirect user to dashboard
   
-      toast.success('Login successful');
-      localStorage.setItem('token', result.token); // Store token in localStorage
-      setUser(jwtDecode(result.token)); // Decode and store user info
-      // TODO: Redirect user to dashboard
-  
-    } catch (error: any) {
-      setError('email', { type: 'manual', message: error.message });
-      toast.error(error.message || 'An error occurred');
-    }
+    // } catch (error: any) {
+    //   setError('email', { type: 'manual', message: error.message });
+    //   toast.error(error.message || 'An error occurred');
+    // }
   };
 
   return (
@@ -98,9 +108,9 @@ const LoginPage = () => {
           </h2>
           <p className="mb-4 text-gray-400">
             Don't have an account?{' '}
-            <a href="./../Signup" className="text-blue-400 hover:underline">
+            <Link href="./../signup" className="text-blue-400 hover:underline">
               Sign up
-            </a>
+            </Link>
           </p>
           
         <form className="w-full flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit)}>

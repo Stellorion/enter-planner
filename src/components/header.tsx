@@ -32,13 +32,13 @@ const Header = () => {
       </nav>
       <div className="hidden md:flex space-x-4">
         <Link
-          href="./../Login"
+          href="./../login"
           className="rounded-lg border px-4 py-2 text-black shadow-lg transition hover:bg-gray-200"
         >
           Log in
         </Link>
         <Link
-          href="./../Signup"
+          href="./../signup"
           className="rounded-lg border px-4 py-2 text-black shadow-lg transition hover:bg-gray-200"
         >
           Sign up
