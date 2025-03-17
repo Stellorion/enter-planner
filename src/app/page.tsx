@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import Header from '@/src/components/header';
+import Header from '@/src/components/Header';
 
 const LandingPage = () => {
 

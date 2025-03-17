@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import {signIn} from "@/auth" 
+import { signIn } from "next-auth/react";
 
 export async function POST(request: Request){
     const body = await request.json();
