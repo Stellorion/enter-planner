@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from "next/link";
-import ToastNotification from '../../components/ToastNotification';
+import ToastNotification from '@/src/components/ToastNotification';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import SocialLoginButtons from '@/src/components/SocialLoginButtons';
@@ -23,72 +23,20 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const [user, setUser] = useState<{ email: string } | null>(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log("Retrieved Token:", token); // Debugging log
-    
-    if (token) {
-      try {
-        const decoded: any = jwtDecode(token);
-        console.log("Decoded Token:", decoded); // Debugging log
-        setUser(decoded);
-      } catch (error) {
-        console.error("JWT Decode Error:", error);
-      }
-    }
-  }, []);
-
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log("Retrieved Token:", token); // Debugging log
-    
-    if (token) {
-      try {
-        const decoded: any = jwtDecode(token);
-        console.log("Decoded Token:", decoded); // Debugging log
-        setUser(decoded);
-      } catch (error) {
-        console.error("JWT Decode Error:", error);
-      }
-    }
-  }, []);
-
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await signIn("credentials", { 
-      username: "user", 
-      password: "password", 
-      callbackUrl: '/' });
-
-    // try {
-    //   const response = await fetch('/api/login', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(data),
-    //   });
-  
-    //   const result = await response.json();
-  
-    //   if (!response.ok) {
-    //     setError('email', { type: 'manual', message: result.error || 'Login failed' });
-    //     toast.error(result.error || 'Login failed'); // Show error toast
-    //     return;
-    //   }
-    //   console.log(result);
-    //   toast.success('Login successful');
-    //   localStorage.setItem('token', result.user); // Store token in localStorage
-      
-      
-    //   setUser(jwtDecode(result.token)); // Decode and store user info
-    //   // TODO: Redirect user to dashboard
-  
-    // } catch (error: any) {
-    //   setError('email', { type: 'manual', message: error.message });
-    //   toast.error(error.message || 'An error occurred');
-    // }
+    const login = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+    console.log(login);
+    
+    
+  if (login?.error) {
+    toast.error("Invalid email or password");
+  } else {
+    toast.success("Logged in successfully!");
+  }
   };
 
   return (

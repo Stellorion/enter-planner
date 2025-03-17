@@ -7,7 +7,7 @@ interface FormInputProps {
   className?: string;
 }
 
-const FormInput: React.FC<FormInputProps> = ({ type, placeholder, register, error }) => {
+const FormInput: React.FC<FormInputProps> = ({ type, placeholder, register }) => {
   return (
     <div className="w-full">
       <input

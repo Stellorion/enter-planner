@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from "next/link";
-import ToastNotification from '../../components/ToastNotification';
+import ToastNotification from '@/src/components/ToastNotification';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import SocialLoginButtons from '@/src/components/SocialLoginButtons';
