@@ -1,0 +1,31 @@
+import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
+import { FaBars, FaTimes } from 'react-icons/fa';
+import NavLinks from './NavLinks';
+import AuthButtons from './AuthButtons';
+import MobileMenu from './MobileMenu';
+
+const Header = async () => {
+  const session = await getServerSession(authOptions);
+
+  return (
+    <header className="flex w-full items-center fixed  justify-between bg-white shadow-md p-4">
+      <Link href="./" className="text-xl font-bold text-black">
+        Enter Planner
+      </Link>
+      
+      <nav className="hidden md:flex space-x-4">
+        <NavLinks />
+      </nav>
+
+      <div className="hidden md:flex space-x-4">
+        <AuthButtons session={session} />
+      </div>
+      
+      <MobileMenu session={session} />
+    </header>
+  );
+};
+
+export default Header;

@@ -48,11 +48,37 @@
         
           return { 
             id: `${existingUserByEmail.id}`, 
-            email: existingUserByEmail.email 
+            email: existingUserByEmail.email,
+            firstName: existingUserByEmail.firstName,
+            lastName: existingUserByEmail.lastName,
           };
         },
       }),
     ],
+    callbacks: {
+      async jwt({token, user}) {
+        console.log(token, user);
+        
+        if (user) {
+          return {
+            ...token,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          }
+        }
+        return token;
+      },
+      async session({session, token}) {
+        return {
+          ...session,
+          user: { 
+            ...session.user,
+            firstName: token.firstName,
+            lastName: token.lastName,
+          },
+        }
+      },
+    },
   };
 
   export default NextAuth(authOptions);

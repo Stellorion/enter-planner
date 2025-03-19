@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 import ToastNotification from '@/src/components/ToastNotification';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import SocialLoginButtons from '@/src/components/SocialLoginButtons';
-import { jwtDecode } from 'jwt-decode';
 import FormInput from '@/src/components/FormInput';
-import { signIn } from "next-auth/react";
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type Inputs = {
   email: string;
@@ -16,10 +16,10 @@ type Inputs = {
 };
 
 const LoginPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -30,13 +30,13 @@ const LoginPage = () => {
       redirect: false,
     });
     console.log(login);
-    
-    
-  if (login?.error) {
-    toast.error("Invalid email or password");
-  } else {
-    toast.success("Logged in successfully!");
-  }
+
+    if (login?.error) {
+      toast.error('Invalid email or password');
+    } else {
+      toast.success('Logged in successfully!');
+      router.push('/admin');
+    }
   };
 
   return (
@@ -60,25 +60,30 @@ const LoginPage = () => {
               Sign up
             </Link>
           </p>
-          
-        <form className="w-full flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <FormInput
-            type="email"
-            placeholder="Email"
-            register={register('email', { required: 'Email is required' })}
-          />
-          <FormInput
-            type="password"
-            placeholder="Password"
-            register={register('password', { required: 'Password is required' })}
-          />
-          <button
-            type="submit"
-            className="w-full rounded-md bg-blue-500 py-2 text-white transition hover:bg-blue-600"
+
+          <form
+            className="flex w-full flex-col space-y-4"
+            onSubmit={handleSubmit(onSubmit)}
           >
-            Log in
-          </button>
-        </form>
+            <FormInput
+              type="email"
+              placeholder="Email"
+              register={register('email', { required: 'Email is required' })}
+            />
+            <FormInput
+              type="password"
+              placeholder="Password"
+              register={register('password', {
+                required: 'Password is required',
+              })}
+            />
+            <button
+              type="submit"
+              className="w-full rounded-md bg-blue-500 py-2 text-white transition hover:bg-blue-600"
+            >
+              Log in
+            </button>
+          </form>
 
           <div className="mt-6 flex w-full items-center">
             <div className="flex-grow border-t border-gray-600"></div>
@@ -89,7 +94,7 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-4 flex w-full flex-wrap justify-center gap-2 sm:flex-nowrap">
-          <SocialLoginButtons />
+            <SocialLoginButtons />
           </div>
         </div>
       </div>
