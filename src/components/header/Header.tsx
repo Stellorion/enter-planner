@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
-import { FaBars, FaTimes } from 'react-icons/fa';
 import NavLinks from './NavLinks';
 import AuthButtons from './AuthButtons';
 import MobileMenu from './MobileMenu';
