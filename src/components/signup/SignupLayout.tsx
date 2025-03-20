@@ -6,31 +6,15 @@ import Header from '../header/Header';
 
 const SignupLayout = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-900">
-        <Header />
-      <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen flex-col">
+      <Header />
+
+      <div className="flex flex-grow items-center justify-center">
         <ToastNotification />
-        <div className="flex w-[90vw] flex-col rounded-2xl bg-gray-800 p-8 text-white shadow-lg md:w-[70vw] md:flex-row lg:h-[70vh] lg:w-[60vw]">
-          <div className="hidden w-1/2 items-center justify-center sm:hidden md:flex">
-            <img
-              src="/blob-scene-haikei.svg"
-              alt="Signup Illustration"
-              className="h-[100%] w-[100%] rounded-2xl object-cover"
-            />
-          </div>
-
-          <div className="flex w-full flex-col items-center justify-center md:w-1/2 lg:ml-8">
+        <div className="flex w-[90vw] flex-col rounded-sm bg-gray-100 p-8 text-white shadow-lg md:w-[70vw] lg:h-[70vh] lg:w-[30vw]">
+          <div className="flex w-full flex-col items-center justify-center">
             <SignupHeader />
-            <SignupForm />
-
-            <div className="mt-4 flex w-full items-center">
-              <div className="flex-grow border-t border-gray-600"></div>
-              <span className="px-3 whitespace-nowrap text-gray-500">
-                Or register with
-              </span>
-              <div className="flex-grow border-t border-gray-600"></div>
-            </div>
-                
+            <SignupForm />     
             <SocialAuthSection />
           </div>
         </div>

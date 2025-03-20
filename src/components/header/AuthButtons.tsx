@@ -8,13 +8,13 @@ const AuthButtons = ({ session }: { session: any }) => {
     <>
       <Link
         href="./../login"
-        className="rounded-lg border px-4 py-2 text-black shadow-lg transition hover:bg-gray-200"
+        className="rounded-sm px-4 py-2 text-black shadow-sm transition hover:text-gray-500"
       >
         Log in
       </Link>
       <Link
         href="./../signup"
-        className="rounded-lg border px-4 py-2 text-black shadow-lg transition hover:bg-gray-200"
+        className="rounded-sm px-4 py-2 text-white bg-black shadow-sm transition hover:bg-gray-700"
       >
         Sign up
       </Link>
