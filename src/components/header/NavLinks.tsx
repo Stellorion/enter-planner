@@ -6,8 +6,8 @@ const NavLinks = () => {
       <Link href="/admin" className="text-black hover:underline">
         Admin
       </Link>
-      <Link href="#" className="text-black hover:underline">
-        Place 2
+      <Link href="/calendar" className="text-black hover:underline">
+        Calendar
       </Link>
       <Link href="#" className="text-black hover:underline">
         Place 3

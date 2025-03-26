@@ -9,7 +9,7 @@ const Header = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <header className="flex w-full items-center fixed font-sans justify-between bg-gray-100 shadow-md p-4">
+    <header className="flex w-full items-center fixed font-sans justify-between bg-gray-100 shadow-md p-4 z-10">
       <Link href="./" className="text-xl font-bold text-black">
         Enter Planner
       </Link>
