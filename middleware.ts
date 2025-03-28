@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken } from "./utils/jwt"; // Adjust the path if needed
+import { verifyToken } from "./utils/jwt";
 
 export function middleware(req: NextRequest) {
   const token = req.headers.get("authorization")?.split(" ")[1];
@@ -12,6 +12,6 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/:path*"], // Apply only to API routes
+  matcher: ["/api/:path*"],
 };
     

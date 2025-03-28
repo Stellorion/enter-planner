@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import Link from 'next/link';
 import NavLinks from './NavLinks';
 import AuthButtons from './AuthButtons';
 

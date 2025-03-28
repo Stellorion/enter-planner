@@ -1,4 +1,3 @@
-import React from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { Fragment } from 'react';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';

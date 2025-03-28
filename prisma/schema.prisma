@@ -20,4 +20,15 @@ model User {
   password String
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+  calendar Calendar[]
+}
+
+model Calendar {
+  id       Int    @id @default(autoincrement())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  title    String
+  date     DateTime
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }

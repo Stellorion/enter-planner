@@ -23,14 +23,13 @@ const DraggableEvents = ({ events }: DraggableEventsProps) => {
   }, []);
 
   return (
-    <div
-      id="draggable-el"
-      className="mt-16 ml-8 w-full rounded-md border-2 p-2 lg:h-1/2"
-    >
-      <h1 className="text-center text-lg font-bold">Drag Event</h1>
+    <div id="draggable-el">
+      <h1 className="mb-6 border-b border-gray-200 pb-3 text-xl text-center font-semibold text-gray-800">
+        Drag Event
+      </h1>
       {events.map((event) => (
         <div
-          className="fc-event m-2 ml-auto w-full rounded-md border-2 p-1 text-center"
+          className="fc-event mb-2 cursor-move rounded-sm bg-blue-500 p-2 text-white hover:-translate-y-0.5 hover:shadow-md"
           title={event.title}
           key={event.id}
         >
