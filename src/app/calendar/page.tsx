@@ -3,12 +3,19 @@ import Calendar from "@/src/views/CalendarViews/Calendar"
 import { getServerSession } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 
-const session = await getServerSession(authOptions)
+export default async function CalendarPage() {
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <h1 className="text-2xl">Please sign in to view the calendar</h1>
+      </div>
+    )
+  }
 
-const page = () => {
   return (
-    <Calendar />
+    <div className="min-h-screen">
+      <Calendar />
+    </div>
   )
 }
-
-export default page
