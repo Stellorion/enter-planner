@@ -23,7 +23,7 @@ const userSchema = z.object({
 export async function POST(req: Request){
   try {
     const body = await req.json();
-    const {email, firstName, lastName, password} = body;
+    const {email, firstName, lastName, password} = userSchema.parse(body);
 
     if (!firstName || !lastName || !email || !password) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });

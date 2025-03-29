@@ -1,7 +1,6 @@
 import { Event, NewEvent } from './event';
 
 export type CalendarState = {
-  events: { title: string; id: string }[];
   allEvents: Event[];
   showModal: boolean;
   showDeleteModal: boolean;

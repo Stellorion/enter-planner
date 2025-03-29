@@ -1,65 +1,28 @@
 'use client';
 
-import { useEffect, useReducer } from 'react';
-import { Draggable, DropArg } from '@fullcalendar/interaction';
+import { useReducer } from 'react';
 import { EventChangeInfo } from '@/src/types/event';
 import { calendarReducer, initialState } from '@/src/reducers/calendarReducer';
-import { createEvent, isDuplicateEvent } from '@/utils/eventUtils';
 import CalendarComponent from '@/src/components/calendar/CalendarComponent';
 import DeleteModal from '@/src/components/calendar/DeleteModal';
-import DraggableEvents from '@/src/components/calendar/DraggableEvents';
 import AddEventModal from '@/src/components/calendar/AddEventModal';
 
 export default function Calendar() {
   const [state, dispatch] = useReducer(calendarReducer, initialState);
-
-  useEffect(() => {
-    const draggableEl = document.getElementById('draggable-el');
-    if (!draggableEl) return;
-
-    const draggable = new Draggable(draggableEl, {
-      itemSelector: '.fc-event',
-      eventData: (eventEl) => ({
-        title: eventEl.getAttribute('title') || '',
-        id: eventEl.getAttribute('data') || '',
-        start: eventEl.getAttribute('start') || '',
-      }),
-    });
-
-    return () => {
-      draggable.destroy();
-    };
-  }, []);
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
     dispatch({
       type: 'SET_NEW_EVENT',
       payload: {
         ...state.newEvent,
-        start: arg.date,
+        start: arg.allDay 
+          ? arg.date.toISOString().split('T')[0] 
+          : arg.date.toISOString().slice(0, 16),
         allDay: arg.allDay,
         id: new Date().getTime().toString(),
       },
     });
     dispatch({ type: 'SET_SHOW_MODAL', payload: true });
-  }
-
-  function addEvent(data: DropArg) {
-    if (
-      !isDuplicateEvent(state.allEvents, {
-        title: data.draggedEl.innerText,
-        start: data.date.toISOString(),
-      })
-    ) {
-      const event = createEvent(
-        data.draggedEl.innerText,
-        data.date,
-        data.allDay,
-        '',
-        'none'
-      );
-      dispatch({ type: 'ADD_EVENT', payload: event });
-    }
   }
 
   function handleDeleteModal(data: { event: { id: string } }) {
@@ -83,18 +46,17 @@ export default function Calendar() {
   }
 
   function handleEventChange(changeInfo: EventChangeInfo) {
-    const updatedEvent = createEvent(
-      changeInfo.event.title,
-      changeInfo.event.start || new Date(),
-      changeInfo.event.allDay,
-      changeInfo.event.notes,
-      changeInfo.event.recurrence
-    );
-
-    if (changeInfo.event.end) {
-      updatedEvent.end = changeInfo.event.end.toISOString();
-    }
-
+    const updatedEvent = {
+      id: changeInfo.event.id,
+      title: changeInfo.event.title,
+      start: typeof changeInfo.event.start === 'string' 
+        ? changeInfo.event.start 
+        : new Date(changeInfo.event.start).toISOString(),
+      end: changeInfo.event.end,
+      allDay: changeInfo.event.allDay,
+      notes: changeInfo.event.extendedProps?.notes || ''
+    };
+  
     dispatch({
       type: 'SET_ALL_EVENTS',
       payload: state.allEvents.map((event) =>
@@ -104,15 +66,37 @@ export default function Calendar() {
   }
 
   function handleChange(
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ): void {
-    const { name, value } = e.target;
-    dispatch({
-      type: 'SET_NEW_EVENT',
-      payload: { ...state.newEvent, [name]: value },
-    });
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) {
+    const { name, value, type } = event.target;
+    const isCheckbox = type === 'checkbox';
+    const newValue = isCheckbox ? (event.target as HTMLInputElement).checked : value;
+  
+    if (name === 'allDay') {
+      const newStart = state.newEvent.start;
+      const newEnd = state.newEvent.end;
+  
+      dispatch({
+        type: 'SET_NEW_EVENT',
+        payload: {
+          ...state.newEvent,
+          allDay: newValue as boolean,
+          start: newValue 
+            ? newStart.split('T')[0] 
+            : `${newStart.split('T')[0]}T${new Date().getHours().toString().padStart(2, '0')}:00`,
+          end: newEnd 
+            ? newValue
+              ? newEnd.split('T')[0]
+              : `${newEnd.split('T')[0]}T${(new Date().getHours() + 1).toString().padStart(2, '0')}:00`
+            : undefined
+        }
+      });
+    } else {
+      dispatch({
+        type: 'SET_NEW_EVENT',
+        payload: { ...state.newEvent, [name]: newValue }
+      });
+    }
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -125,20 +109,13 @@ export default function Calendar() {
   return (
     <div>
       <main className="container mx-auto px-4 py-25">
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-9 rounded-sm bg-white p-6 text-gray-800 shadow-lg">
-            <CalendarComponent
-              allEvents={state.allEvents}
-              handleDateClick={handleDateClick}
-              addEvent={addEvent}
-              handleDeleteModal={handleDeleteModal}
-              handleEventChange={handleEventChange}
-            />
-          </div>
-
-          <div className="col-span-3 rounded-sm bg-white p-6 shadow-lg">
-            <DraggableEvents events={state.events} />
-          </div>
+        <div className="rounded-sm bg-white p-6 text-gray-800 shadow-lg">
+          <CalendarComponent
+            allEvents={state.allEvents}
+            handleDateClick={handleDateClick}
+            handleDeleteModal={handleDeleteModal}
+            handleEventChange={handleEventChange}
+          />
         </div>
 
         <DeleteModal

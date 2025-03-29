@@ -8,7 +8,7 @@ export default async function CalendarPage() {
   if (!session) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <h1 className="text-2xl">Please sign in to view the calendar</h1>
+        <h1 className="text-2xl">Please login to view this page</h1>
       </div>
     )
   }

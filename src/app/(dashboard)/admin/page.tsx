@@ -1,22 +1,24 @@
-import { authOptions } from '@/auth'
-import { getServerSession } from 'next-auth'
+import { authOptions } from '@/auth';
+import { getServerSession } from 'next-auth';
 
-const page = async () => {
-    const session = await getServerSession(authOptions)
+const AdminPage = async () => {
+  const session = await getServerSession(authOptions);
 
-    if (session?.user) {
-        return (
-            <div className="min-h-screen flex justify-center items-center">
-                <h2>Welcome to Admin {session?.user.firstName} {session?.user.lastName}</h2>
-            </div>
-        )
-    }
-    
+  if (session?.user.userRole === 'ADMIN') {
     return (
-        <div className="min-h-screen flex justify-center items-center">
-            <h2>Please login to see this page</h2>
-        </div>
-    )
-}
+      <div className="flex min-h-screen items-center justify-center">
+        <h1 className="text-xl">
+          Welcome to Admin {session?.user.firstName} {session?.user.lastName}
+        </h1>
+      </div>
+    );
+  }
 
-export default page
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <h1 className="text-2xl">You do not have premission to view this page {session?.user.userRole}</h1>
+    </div>
+  );
+};
+
+export default AdminPage;
