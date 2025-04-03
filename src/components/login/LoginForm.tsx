@@ -29,8 +29,8 @@ const LoginForm = () => {
     if (login?.error) {
       toast.error('Invalid email or password');
     } else {
-      toast.success('Logged in successfully!');
-      router.push('/admin');
+      router.push('/');
+      router.refresh();
     }
   };
 

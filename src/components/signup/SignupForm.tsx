@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
 import FormInput from '@/src/components/FormInput';
 
 type Inputs = {
@@ -40,10 +41,19 @@ const SignupForm = () => {
         throw new Error(errorData.error || 'Signup failed');
       }
 
-      toast.success('User registered successfully');
-      setTimeout(() => {
-        router.push('/login');
-      }, 1500);
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error('Auto login failed');
+      }
+
+      toast.success('Registration successful!');
+      router.push('/');
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

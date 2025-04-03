@@ -7,9 +7,7 @@ export default async function CalendarPage() {
   const session = await getServerSession(authOptions)
   if (!session) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <h1 className="text-2xl">Please login to view this page</h1>
-      </div>
+      <Calendar />
     )
   }
 

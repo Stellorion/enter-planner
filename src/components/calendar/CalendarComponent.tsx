@@ -6,21 +6,15 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
 import allLocales from '@fullcalendar/core/locales/en-gb';
-import { Event } from '@/src/types/event'
-
-interface CalendarProps {
-  allEvents: Event[];
-  handleDateClick: (arg: { date: Date; allDay: boolean }) => void;
-  handleDeleteModal: (data: { event: { id: string } }) => void;
-  handleEventChange: (changeInfo: any) => void;
-}
+import { CalendarComponentProps } from '@/src/types/event';
+import EventTooltip from './EventTooltip';
 
 const CalendarComponent = ({
   allEvents,
   handleDateClick,
-  handleDeleteModal,
+  handleUpdateModal,
   handleEventChange,
-}: CalendarProps) => {
+}: CalendarComponentProps) => {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
@@ -53,13 +47,20 @@ const CalendarComponent = ({
       selectMirror={true}
       dayMaxEventRows={5}
       dateClick={handleDateClick}
-      eventClick={(data) => handleDeleteModal(data)}
-      eventChange={(changeInfo) => handleEventChange(changeInfo)}
-      eventDidMount={(info) => {
-        const title = info.event.title;
-        const notes = info.event.extendedProps.notes;
-        const tooltip = notes ? `${title}\n${notes}` : title;
-        info.el.setAttribute('title', tooltip);
+      eventClick={handleUpdateModal}
+      eventChange={handleEventChange}
+      eventContent={(info) => {
+        return (
+          <EventTooltip
+            title={info.event.title}
+            notes={info.event.extendedProps?.notes}
+            start={info.event.startStr}
+            end={info.event.endStr}
+            allDay={info.event.allDay}
+          >
+            <div className="w-full">{info.event.title}</div>
+          </EventTooltip>
+        );
       }}
     />
   );

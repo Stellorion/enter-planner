@@ -1,109 +1,136 @@
 'use client';
 
-import { useReducer } from 'react';
-import { EventChangeInfo } from '@/src/types/event';
-import { calendarReducer, initialState } from '@/src/reducers/calendarReducer';
+import { EventClickArg, EventChangeArg } from '@fullcalendar/core';
+import { Event } from '@/src/types/event';
+import { useCalendarStore } from '@/src/store/useCalendarStore';
 import CalendarComponent from '@/src/components/calendar/CalendarComponent';
-import DeleteModal from '@/src/components/calendar/DeleteModal';
 import AddEventModal from '@/src/components/calendar/AddEventModal';
+import UpdateModal from '@/src/components/calendar/UpdateModal';
 
 export default function Calendar() {
-  const [state, dispatch] = useReducer(calendarReducer, initialState);
+  const {
+    allEvents,
+    showModal,
+    showUpdateModal,
+    selectedEvent,
+    newEvent,
+    setNewEvent,
+    addEvent,
+    deleteEvent,
+    setShowModal,
+    setShowUpdateModal,
+    setSelectedEvent,
+    resetNewEvent,
+    updateEvent,
+  } = useCalendarStore();
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
-    dispatch({
-      type: 'SET_NEW_EVENT',
-      payload: {
-        ...state.newEvent,
-        start: arg.allDay 
-          ? arg.date.toISOString().split('T')[0] 
-          : arg.date.toISOString().slice(0, 16),
-        allDay: arg.allDay,
-        id: new Date().getTime().toString(),
-      },
+    setNewEvent({
+      ...newEvent,
+      start: arg.allDay
+        ? arg.date.toISOString().split('T')[0]
+        : arg.date.toISOString().slice(0, 16),
+      allDay: arg.allDay,
+      id: new Date().getTime().toString(),
     });
-    dispatch({ type: 'SET_SHOW_MODAL', payload: true });
+    setShowModal(true);
   }
 
-  function handleDeleteModal(data: { event: { id: string } }) {
-    dispatch({ type: 'SET_SHOW_DELETE_MODAL', payload: true });
-    dispatch({ type: 'SET_ID_TO_DELETE', payload: data.event.id });
+  function handleUpdateModal(clickInfo: EventClickArg) {
+    const event: Event = {
+      id: clickInfo.event.id,
+      title: clickInfo.event.title,
+      start: clickInfo.event.startStr,
+      end: clickInfo.event.endStr || undefined,
+      allDay: clickInfo.event.allDay,
+      notes: clickInfo.event.extendedProps?.notes || ''
+    };
+    setSelectedEvent(event);
+    setShowUpdateModal(true);
+  }
+
+  function handleUpdate(updatedEvent: Event) {
+    updateEvent(updatedEvent);
+    setShowUpdateModal(false);
+    setSelectedEvent(null);
+  }
+
+  function handleUpdateChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    if (!selectedEvent) return;
+    const { name, value, type } = event.target;
+    const isCheckbox = type === 'checkbox';
+    const newValue = isCheckbox
+      ? (event.target as HTMLInputElement).checked
+      : value;
+    setSelectedEvent({ ...selectedEvent, [name]: newValue });
   }
 
   function handleDelete() {
-    if (state.idToDelete) {
-      dispatch({ type: 'DELETE_EVENT', payload: state.idToDelete });
+    if (selectedEvent) {
+      deleteEvent(selectedEvent.id);
+      setShowUpdateModal(false);
+      setSelectedEvent(null);
     }
-    dispatch({ type: 'SET_SHOW_DELETE_MODAL', payload: false });
-    dispatch({ type: 'SET_ID_TO_DELETE', payload: null });
   }
 
   function handleCloseModal() {
-    dispatch({ type: 'SET_SHOW_MODAL', payload: false });
-    dispatch({ type: 'RESET_NEW_EVENT' });
-    dispatch({ type: 'SET_SHOW_DELETE_MODAL', payload: false });
-    dispatch({ type: 'SET_ID_TO_DELETE', payload: null });
+    setShowModal(false);
+    setShowUpdateModal(false);
+    setSelectedEvent(null);
+    resetNewEvent();
   }
 
-  function handleEventChange(changeInfo: EventChangeInfo) {
-    const updatedEvent = {
+  function handleEventChange(changeInfo: EventChangeArg) {
+    const updatedEvent: Event = {
       id: changeInfo.event.id,
       title: changeInfo.event.title,
-      start: typeof changeInfo.event.start === 'string' 
-        ? changeInfo.event.start 
-        : new Date(changeInfo.event.start).toISOString(),
-      end: changeInfo.event.end,
+      start: changeInfo.event.startStr,
+      end: changeInfo.event.endStr || undefined,
       allDay: changeInfo.event.allDay,
       notes: changeInfo.event.extendedProps?.notes || ''
     };
-  
-    dispatch({
-      type: 'SET_ALL_EVENTS',
-      payload: state.allEvents.map((event) =>
-        event.id === changeInfo.event.id ? updatedEvent : event
-      ),
-    });
+    updateEvent(updatedEvent);
   }
 
   function handleChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) {
     const { name, value, type } = event.target;
     const isCheckbox = type === 'checkbox';
-    const newValue = isCheckbox ? (event.target as HTMLInputElement).checked : value;
-  
+    const newValue = isCheckbox
+      ? (event.target as HTMLInputElement).checked
+      : value;
+
     if (name === 'allDay') {
-      const newStart = state.newEvent.start;
-      const newEnd = state.newEvent.end;
-  
-      dispatch({
-        type: 'SET_NEW_EVENT',
-        payload: {
-          ...state.newEvent,
-          allDay: newValue as boolean,
-          start: newValue 
-            ? newStart.split('T')[0] 
-            : `${newStart.split('T')[0]}T${new Date().getHours().toString().padStart(2, '0')}:00`,
-          end: newEnd 
-            ? newValue
-              ? newEnd.split('T')[0]
-              : `${newEnd.split('T')[0]}T${(new Date().getHours() + 1).toString().padStart(2, '0')}:00`
-            : undefined
-        }
+      const newStart = newEvent.start;
+      const newEnd = newEvent.end;
+
+      setNewEvent({
+        ...newEvent,
+        allDay: newValue as boolean,
+        start: newValue
+          ? newStart.split('T')[0]
+          : `${newStart.split('T')[0]}T${new Date().getHours().toString().padStart(2, '0')}:00`,
+        end: newEnd
+          ? newValue
+            ? newEnd.split('T')[0]
+            : `${newEnd.split('T')[0]}T${(new Date().getHours() + 1).toString().padStart(2, '0')}:00`
+          : undefined,
       });
     } else {
-      dispatch({
-        type: 'SET_NEW_EVENT',
-        payload: { ...state.newEvent, [name]: newValue }
-      });
+      setNewEvent({ ...newEvent, [name]: newValue });
     }
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    dispatch({ type: 'ADD_EVENT', payload: state.newEvent });
-    dispatch({ type: 'SET_SHOW_MODAL', payload: false });
-    dispatch({ type: 'RESET_NEW_EVENT' });
+    addEvent(newEvent);
+    setShowModal(false);
+    resetNewEvent();
   }
 
   return (
@@ -111,29 +138,28 @@ export default function Calendar() {
       <main className="container mx-auto px-4 py-25">
         <div className="rounded-sm bg-white p-6 text-gray-800 shadow-lg">
           <CalendarComponent
-            allEvents={state.allEvents}
+            allEvents={allEvents}
             handleDateClick={handleDateClick}
-            handleDeleteModal={handleDeleteModal}
+            handleUpdateModal={handleUpdateModal}
             handleEventChange={handleEventChange}
           />
         </div>
 
-        <DeleteModal
-          showDeleteModal={state.showDeleteModal}
-          setShowDeleteModal={(value) =>
-            dispatch({ type: 'SET_SHOW_DELETE_MODAL', payload: value })
-          }
+        <UpdateModal
+          showUpdateModal={showUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
+          handleUpdate={handleUpdate}
           handleDelete={handleDelete}
           handleCloseModal={handleCloseModal}
+          event={selectedEvent}
+          handleChange={handleUpdateChange}
         />
         <AddEventModal
-          showModal={state.showModal}
-          setShowModal={(value) =>
-            dispatch({ type: 'SET_SHOW_MODAL', payload: value })
-          }
+          showModal={showModal}
+          setShowModal={setShowModal}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
-          newEvent={state.newEvent}
+          newEvent={newEvent}
           handleCloseModal={handleCloseModal}
         />
       </main>

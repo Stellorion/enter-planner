@@ -16,7 +16,7 @@ const AdminPage = async () => {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <h1 className="text-2xl">You do not have premission to view this page {session?.user.userRole}</h1>
+      <h1 className="text-2xl">You do not have premission to view this page</h1>
     </div>
   );
 };

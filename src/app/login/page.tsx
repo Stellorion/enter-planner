@@ -1,10 +1,18 @@
 import React from 'react';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 import ToastNotification from '@/src/components/ToastNotification';
 import LoginHeader from '@/src/components/login/LoginHeader';
 import LoginForm from '@/src/components/login/LoginForm';
 import SocialLoginSection from '@/src/components/SocialLoginButtons';
 
-const LoginPage = () => {
+const LoginPage = async () => {
+  const session = await getServerSession(authOptions);
+  if (session) {
+    redirect('/');
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-grow items-center justify-center">
