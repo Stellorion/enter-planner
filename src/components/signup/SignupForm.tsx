@@ -5,14 +5,7 @@ import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import FormInput from '@/src/components/FormInput';
-
-type Inputs = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { SignupInputs } from '@/src/types/authInputs';
 
 const SignupForm = () => {
   const router = useRouter();
@@ -21,9 +14,9 @@ const SignupForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<SignupInputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
     if (data.password !== data.confirmPassword) {
       toast.error('Passwords do not match');
       return;

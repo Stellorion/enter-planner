@@ -15,16 +15,14 @@ export interface EventTooltipProps extends Pick<BaseEvent, 'title' | 'start' | '
   children: ReactElement;
 }
 
-export interface AddEventModalProps {
-  showModal: boolean;
-  setShowModal: (show: boolean) => void;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+interface EventFormProps {
+  event: Event;
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  newEvent: Event;
-  handleCloseModal: () => void;
 }
+
+
 
 export interface CalendarComponentProps {
   allEvents: Event[];
@@ -32,3 +30,4 @@ export interface CalendarComponentProps {
   handleUpdateModal: (clickInfo: EventClickArg) => void;
   handleEventChange: (changeInfo: EventChangeArg) => void;
 }
+

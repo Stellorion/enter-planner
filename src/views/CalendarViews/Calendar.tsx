@@ -1,11 +1,13 @@
 'use client';
 
+import { useEffect } from 'react';
 import { EventClickArg, EventChangeArg } from '@fullcalendar/core';
 import { Event } from '@/src/types/event';
 import { useCalendarStore } from '@/src/store/useCalendarStore';
 import CalendarComponent from '@/src/components/calendar/CalendarComponent';
 import AddEventModal from '@/src/components/calendar/AddEventModal';
 import UpdateModal from '@/src/components/calendar/UpdateModal';
+import { db } from '@/db/connect';
 
 export default function Calendar() {
   const {

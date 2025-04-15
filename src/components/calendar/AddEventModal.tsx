@@ -2,7 +2,7 @@
 
 import { Dialog } from '@headlessui/react';
 import { FaRegCalendarPlus } from 'react-icons/fa';
-import { AddEventModalProps } from '@/src/types/event';
+import { AddEventModalProps } from '@/src/types/modelCalendar';
 import ModalContainer from './modal/ModalContainer';
 import ModalHeader from './modal/ModalHeader';
 import EventForm from './modal/EventForm';

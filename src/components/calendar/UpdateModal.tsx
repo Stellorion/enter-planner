@@ -1,22 +1,10 @@
 import { Dialog } from '@headlessui/react';
 import { FaRegEdit } from 'react-icons/fa';
-import { Event } from '@/src/types/event';
 import ModalContainer from './modal/ModalContainer';
 import ModalHeader from './modal/ModalHeader';
 import EventForm from './modal/EventForm';
 import ModalFooter from './modal/ModalFooter';
-
-interface UpdateModalProps {
-  showUpdateModal: boolean;
-  setShowUpdateModal: (show: boolean) => void;
-  handleUpdate: (event: Event) => void;
-  handleDelete: () => void;
-  handleCloseModal: () => void;
-  event: Event | null;
-  handleChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-}
+import { UpdateModalProps } from '@/src/types/modelCalendar';
 
 const UpdateModal: React.FC<UpdateModalProps> = ({
   showUpdateModal,

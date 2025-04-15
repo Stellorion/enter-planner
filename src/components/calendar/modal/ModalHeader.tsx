@@ -1,9 +1,4 @@
-import { IconType } from 'react-icons';
-
-interface ModalHeaderProps {
-  icon: IconType;
-  title: string;
-}
+import { ModalHeaderProps } from '@/src/types/modelCalendar';
 
 const ModalHeader = ({ icon: Icon, title }: ModalHeaderProps) => (
   <div>

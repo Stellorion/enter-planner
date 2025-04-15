@@ -1,7 +1,4 @@
-interface NotesTextareaProps {
-  value?: string;
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-}
+import { NotesTextareaProps } from "@/src/types/formInputs";
 
 const NotesTextarea = ({ value = '', onChange }: NotesTextareaProps) => (
   <div>

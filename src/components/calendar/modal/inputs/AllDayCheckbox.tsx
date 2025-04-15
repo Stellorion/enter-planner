@@ -1,7 +1,4 @@
-interface AllDayCheckboxProps {
-  checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { AllDayCheckboxProps } from "@/src/types/formInputs";
 
 const AllDayCheckbox = ({ checked, onChange }: AllDayCheckboxProps) => (
   <label className="inline-flex items-center">

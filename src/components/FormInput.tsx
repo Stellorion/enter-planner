@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface FormInputProps {
-  type: string;
-  placeholder: string;
-  register: any;
-  className?: string;
-}
+import { FormInputProps } from '@/src/types/input';
 
 const FormInput: React.FC<FormInputProps> = ({ type, placeholder, register }) => {
   return (

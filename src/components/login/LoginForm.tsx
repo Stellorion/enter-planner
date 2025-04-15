@@ -5,11 +5,7 @@ import { toast } from 'react-toastify';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import FormInput from '@/src/components/FormInput';
-
-type Inputs = {
-  email: string;
-  password: string;
-};
+import { LoginInputs } from '@/src/types/authInputs';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -17,9 +13,9 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<LoginInputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     const login = await signIn('credentials', {
       email: data.email,
       password: data.password,

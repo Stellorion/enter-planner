@@ -1,12 +1,4 @@
-interface DateTimeInputProps {
-  label: string;
-  name: string;
-  value?: string;
-  isAllDay: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-  min?: string;
-}
+import { DateTimeInputProps } from "@/src/types/formInputs";
 
 const DateTimeInput = ({
   label,

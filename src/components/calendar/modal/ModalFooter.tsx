@@ -1,14 +1,4 @@
-import { Event } from '@/src/types/event';
-
-interface ModalFooterProps {
-  handleUpdate?: (event: Event) => void;
-  handleDelete?: () => void;
-  handleCloseModal: () => void;
-  event?: Event;
-  primaryButtonText: string;
-  primaryButtonDisabled?: boolean;
-  isSubmitButton?: boolean;
-}
+import { ModalFooterProps } from '@/src/types/modelCalendar';
 
 const ModalFooter = ({
   handleUpdate,

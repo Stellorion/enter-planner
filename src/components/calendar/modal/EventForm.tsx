@@ -1,15 +1,8 @@
-import { Event } from '@/src/types/event';
 import DateTimeInput from './inputs/DateTimeInput';
 import AllDayCheckbox from './inputs/AllDayCheckbox';
 import NotesTextarea from './inputs/NotesTextarea';
 import TitleInput from './inputs/TitleInput';
-
-interface EventFormProps {
-  event: Event;
-  handleChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-}
+import { EventFormProps } from '@/src/types/event';
 
 const EventForm = ({ event, handleChange }: EventFormProps) => (
   <div className="space-y-4">

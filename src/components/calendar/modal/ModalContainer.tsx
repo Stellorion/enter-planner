@@ -1,11 +1,6 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-
-interface ModalContainerProps {
-  show: boolean;
-  onClose: (show: boolean) => void;
-  children: React.ReactNode;
-}
+import { ModalContainerProps } from '@/src/types/modelCalendar';
 
 const ModalContainer = ({ show, onClose, children }: ModalContainerProps) => {
   return (

@@ -1,7 +1,4 @@
-interface TitleInputProps {
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { TitleInputProps } from "@/src/types/formInputs";
 
 const TitleInput = ({ value, onChange }: TitleInputProps) => (
   <div>
