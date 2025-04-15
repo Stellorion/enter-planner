@@ -22,8 +22,6 @@ interface EventFormProps {
   ) => void;
 }
 
-
-
 export interface CalendarComponentProps {
   allEvents: Event[];
   handleDateClick: (arg: { date: Date; allDay: boolean }) => void;

@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
 import { EventClickArg, EventChangeArg } from '@fullcalendar/core';
 import { Event } from '@/src/types/event';
 import { useCalendarStore } from '@/src/store/useCalendarStore';
 import CalendarComponent from '@/src/components/calendar/CalendarComponent';
 import AddEventModal from '@/src/components/calendar/AddEventModal';
 import UpdateModal from '@/src/components/calendar/UpdateModal';
-import { db } from '@/db/connect';
 
 export default function Calendar() {
   const {
@@ -136,15 +134,17 @@ export default function Calendar() {
   }
 
   return (
-    <div>
-      <main className="container mx-auto px-4 py-25">
-        <div className="rounded-sm bg-white p-6 text-gray-800 shadow-lg">
-          <CalendarComponent
-            allEvents={allEvents}
-            handleDateClick={handleDateClick}
-            handleUpdateModal={handleUpdateModal}
-            handleEventChange={handleEventChange}
-          />
+    <div className="flex h-screen flex-col pt-16">
+      <main className="flex-1 overflow-hidden p-4">
+        <div className="flex h-full flex-col rounded-sm bg-white p-6 text-gray-800 shadow-lg">
+          <div className="flex-1 overflow-auto">
+            <CalendarComponent
+              allEvents={allEvents}
+              handleDateClick={handleDateClick}
+              handleUpdateModal={handleUpdateModal}
+              handleEventChange={handleEventChange}
+            />
+          </div>
         </div>
 
         <UpdateModal

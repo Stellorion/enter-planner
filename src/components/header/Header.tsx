@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 import NavLinks from './NavLinks';
+import UserMenu from './UserMenu';
 import AuthButtons from './AuthButtons';
 import MobileMenu from './MobileMenu';
 
@@ -19,7 +20,11 @@ const Header = async () => {
       </nav>
 
       <div className="hidden md:flex space-x-4">
-        <AuthButtons session={session} />
+        {session ? (
+          <UserMenu session={session} />
+        ) : (
+          <AuthButtons session={session} />
+        )}
       </div>
       
       <MobileMenu session={session} />

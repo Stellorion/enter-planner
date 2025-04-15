@@ -37,6 +37,8 @@ const CalendarComponent = ({
       buttonText={{
         today: 'Today'
       }}
+      height={'100%'}
+      stickyFooterScrollbar={true}
       locale={allLocales}
       timeZone="Asia/Jerusalem"
       firstDay={0}

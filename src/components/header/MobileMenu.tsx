@@ -16,11 +16,13 @@ const MobileMenu = ({ session }: { session: any }) => {
 
       {isOpen && (
         <div className="absolute top-16 left-0 w-full bg-white shadow-lg md:hidden">
-          <nav className="flex flex-col items-center space-y-4 p-4">
-            <NavLinks />
+        <nav className="flex flex-col items-center space-y-4 p-4">
+          <NavLinks />
+          <div className="flex flex-row space-x-4">
             <AuthButtons session={session} />
-          </nav>
-        </div>
+          </div>
+        </nav>
+      </div>
       )}
     </div>
   );
