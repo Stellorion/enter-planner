@@ -20,31 +20,69 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
 
   setNewEvent: (event) => set({ newEvent: event }),
   
-  addEvent: (event) => 
-    set((state) => {
-      const exists = state.allEvents.some(
-        (e) => 
-          e.title === event.title && 
-          e.start === event.start && 
-          e.allDay === event.allDay
-      );
-      if (exists) return state;
-      return { allEvents: [...state.allEvents, event] };
-    }),
+  fetchEvents: async () => {
+    try {
+      const response = await fetch('/api/calendar');
+      if (!response.ok) throw new Error('Failed to fetch events');
+      const data = await response.json();
+      set({ allEvents: data.events });
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  },
 
-  deleteEvent: (id) =>
-    set((state) => ({
-      allEvents: state.allEvents.filter((event) => event.id !== id),
-      showUpdateModal: false,
-      selectedEvent: null
-    })),
+  addEvent: async (event) => {
+    try {
+      const response = await fetch('/api/calendar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event),
+      });
+      if (!response.ok) throw new Error('Failed to add event');
+      const data = await response.json();
+      set((state) => ({
+        allEvents: [...state.allEvents, data],
+      }));
+    } catch (error) {
+      console.error('Error adding event:', error);
+    }
+  },
 
-  updateEvent: (updatedEvent) =>
-    set((state) => ({
-      allEvents: state.allEvents.map((event) =>
-        event.id === updatedEvent.id ? updatedEvent : event
-      )
-    })),
+  deleteEvent: async (id) => {
+    try {
+      const response = await fetch(`/api/calendar/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        set((state) => ({
+          allEvents: state.allEvents.filter((event) => event.id !== id),
+          showUpdateModal: false,
+          selectedEvent: null,
+        }));
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
+  },
+
+  updateEvent: async (updatedEvent) => {
+    try {
+      const response = await fetch(`/api/calendar/${updatedEvent.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedEvent),
+      });
+      if (response.ok) {
+        set((state) => ({
+          allEvents: state.allEvents.map((event) =>
+            event.id === updatedEvent.id ? updatedEvent : event
+          ),
+        }));
+      }
+    } catch (error) {
+      console.error('Error updating event:', error);
+    }
+  },
 
   setShowModal: (show) => set({ showModal: show }),
   

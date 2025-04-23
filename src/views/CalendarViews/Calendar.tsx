@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { EventClickArg, EventChangeArg } from '@fullcalendar/core';
 import { Event } from '@/src/types/event';
 import { useCalendarStore } from '@/src/store/useCalendarStore';
@@ -22,7 +23,12 @@ export default function Calendar() {
     setSelectedEvent,
     resetNewEvent,
     updateEvent,
+    fetchEvents,
   } = useCalendarStore();
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
     setNewEvent({
