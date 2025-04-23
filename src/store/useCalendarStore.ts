@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { toast } from 'react-toastify';
 import { Event, NewEvent } from '@/src/types/event';
 import { CalendarStore } from '@/src/types/store';
 
@@ -11,7 +12,7 @@ const initialNewEvent: NewEvent = {
   notes: '',
 };
 
-export const useCalendarStore = create<CalendarStore>((set) => ({
+export const useCalendarStore = create<CalendarStore>((set, get) => ({
   allEvents: [],
   showModal: false,
   showUpdateModal: false,
@@ -28,6 +29,7 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
       set({ allEvents: data.events });
     } catch (error) {
       console.error('Error fetching events:', error);
+      toast.error('Failed to fetch events');
     }
   },
 
@@ -43,8 +45,10 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
       set((state) => ({
         allEvents: [...state.allEvents, data],
       }));
+      toast.success('Event added successfully');
     } catch (error) {
       console.error('Error adding event:', error);
+      toast.error('Failed to add event');
     }
   },
 
@@ -53,15 +57,22 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
       const response = await fetch(`/api/calendar/${id}`, {
         method: 'DELETE',
       });
-      if (response.ok) {
-        set((state) => ({
-          allEvents: state.allEvents.filter((event) => event.id !== id),
-          showUpdateModal: false,
-          selectedEvent: null,
-        }));
-      }
+
+      if (!response.ok) throw new Error('Failed to delete event');
+
+      // Immediately update the local state
+      set((state) => ({
+        allEvents: state.allEvents.filter((event) => event.id !== id),
+        showUpdateModal: false,
+        selectedEvent: null,
+      }));
+
+      // Fetch fresh data to ensure sync
+      await get().fetchEvents();
+      toast.success('Event deleted successfully');
     } catch (error) {
       console.error('Error deleting event:', error);
+      toast.error('Failed to delete event');
     }
   },
 
@@ -72,23 +83,30 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedEvent),
       });
-      if (response.ok) {
-        set((state) => ({
-          allEvents: state.allEvents.map((event) =>
-            event.id === updatedEvent.id ? updatedEvent : event
-          ),
-        }));
-      }
+
+      if (!response.ok) throw new Error('Failed to update event');
+      const data = await response.json();
+
+      // Immediately update the local state
+      set((state) => ({
+        allEvents: state.allEvents.map((event) =>
+          event.id === updatedEvent.id ? data : event
+        ),
+        showUpdateModal: false,
+        selectedEvent: null,
+      }));
+
+      // Fetch fresh data to ensure sync
+      await get().fetchEvents();
+      toast.success('Event updated successfully');
     } catch (error) {
       console.error('Error updating event:', error);
+      toast.error('Failed to update event');
     }
   },
 
   setShowModal: (show) => set({ showModal: show }),
-  
   setShowUpdateModal: (show) => set({ showUpdateModal: show }),
-  
   setSelectedEvent: (event) => set({ selectedEvent: event }),
-  
   resetNewEvent: () => set({ newEvent: initialNewEvent }),
 }));

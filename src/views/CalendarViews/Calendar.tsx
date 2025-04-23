@@ -28,7 +28,7 @@ export default function Calendar() {
 
   useEffect(() => {
     fetchEvents();
-  }, [fetchEvents]);
+  }, []); // Run once on mount
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
     setNewEvent({
