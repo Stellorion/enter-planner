@@ -60,7 +60,15 @@ const CalendarComponent = ({
             end={info.event.endStr}
             allDay={info.event.allDay}
           >
-            <div className="w-full">{info.event.title}</div>
+            <div 
+              className="w-full" 
+              style={{ 
+                backgroundColor: info.event.backgroundColor || info.event.extendedProps?.color,
+                color: '#ffffff'
+              }}
+            >
+              {info.event.title}
+            </div>
           </EventTooltip>
         );
       }}

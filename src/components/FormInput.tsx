@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormInputProps } from '@/src/types/input';
+import { FormInputProps } from '@/src/types/authInputs';
 
 const FormInput: React.FC<FormInputProps> = ({ type, placeholder, register }) => {
   return (

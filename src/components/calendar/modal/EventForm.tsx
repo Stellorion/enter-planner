@@ -2,6 +2,8 @@ import DateTimeInput from './inputs/DateTimeInput';
 import AllDayCheckbox from './inputs/AllDayCheckbox';
 import NotesTextarea from './inputs/NotesTextarea';
 import TitleInput from './inputs/TitleInput';
+import ColorInput from './inputs/ColorInput';
+
 import { EventFormProps } from '@/src/types/event';
 
 const EventForm = ({ event, handleChange }: EventFormProps) => (
@@ -25,7 +27,10 @@ const EventForm = ({ event, handleChange }: EventFormProps) => (
         min={event.start}
       />
     </div>
-    <AllDayCheckbox checked={event.allDay} onChange={handleChange} />
+    <div className="flex justify-evenly items-center">
+      <AllDayCheckbox checked={event.allDay} onChange={handleChange} />
+      <ColorInput value={event.color} onChange={handleChange} />
+    </div>
     <NotesTextarea value={event.notes} onChange={handleChange} />
   </div>
 );

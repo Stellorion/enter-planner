@@ -16,7 +16,6 @@ export async function GET() {
     });
 
     if (!calendar) {
-      // Create a new calendar for the user if it doesn't exist
       const newCalendar = await db.calendar.create({
         data: {
           userId: parseInt(session.user.id),
@@ -44,7 +43,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { title, start, end, allDay, notes } = body;
+    const { title, start, end, allDay, notes, color } = body;
 
     const calendar = await db.calendar.findUnique({
       where: { userId: parseInt(session.user.id) },
@@ -65,6 +64,7 @@ export async function POST(req: Request) {
         allDay,
         notes,
         calendarId: calendar.id,
+        color: color || '#3788d8',
       },
     });
 

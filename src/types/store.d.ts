@@ -6,6 +6,7 @@ export interface CalendarStore {
   showUpdateModal: boolean;
   selectedEvent: Event | null;
   newEvent: NewEvent;
+  fetchEvents: () => Promise<void>;
   setNewEvent: (event: NewEvent) => void;
   addEvent: (event: NewEvent) => void;
   deleteEvent: (id: string) => void;

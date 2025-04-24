@@ -1,3 +1,10 @@
+interface FormInputProps {
+  type: string;
+  placeholder: string;
+  register: any;
+  className?: string;
+}
+
 type BaseInputs = {
   email: string;
   password: string;

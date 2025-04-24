@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { toast } from 'react-toastify';
-import { Event, NewEvent } from '@/src/types/event';
+import { NewEvent } from '@/src/types/event';
 import { CalendarStore } from '@/src/types/store';
 
 const initialNewEvent: NewEvent = {
@@ -10,6 +10,7 @@ const initialNewEvent: NewEvent = {
   end: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString().slice(0, 16),
   allDay: false,
   notes: '',
+  color: '#3788d8',
 };
 
 export const useCalendarStore = create<CalendarStore>((set, get) => ({
@@ -60,14 +61,12 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
 
       if (!response.ok) throw new Error('Failed to delete event');
 
-      // Immediately update the local state
       set((state) => ({
         allEvents: state.allEvents.filter((event) => event.id !== id),
         showUpdateModal: false,
         selectedEvent: null,
       }));
 
-      // Fetch fresh data to ensure sync
       await get().fetchEvents();
       toast.success('Event deleted successfully');
     } catch (error) {
@@ -87,7 +86,6 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
       if (!response.ok) throw new Error('Failed to update event');
       const data = await response.json();
 
-      // Immediately update the local state
       set((state) => ({
         allEvents: state.allEvents.map((event) =>
           event.id === updatedEvent.id ? data : event
@@ -96,7 +94,6 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
         selectedEvent: null,
       }));
 
-      // Fetch fresh data to ensure sync
       await get().fetchEvents();
       toast.success('Event updated successfully');
     } catch (error) {

@@ -5,6 +5,7 @@ export interface BaseEvent {
   end?: string;
   allDay: boolean;
   notes?: string;
+  color?: string;
 }
 
 export interface Event extends BaseEvent {}

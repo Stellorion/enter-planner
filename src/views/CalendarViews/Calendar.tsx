@@ -28,7 +28,7 @@ export default function Calendar() {
 
   useEffect(() => {
     fetchEvents();
-  }, []); // Run once on mount
+  }, []);
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
     setNewEvent({
@@ -49,7 +49,8 @@ export default function Calendar() {
       start: clickInfo.event.startStr,
       end: clickInfo.event.endStr || undefined,
       allDay: clickInfo.event.allDay,
-      notes: clickInfo.event.extendedProps?.notes || ''
+      notes: clickInfo.event.extendedProps?.notes || '',
+      color: clickInfo.event.backgroundColor || clickInfo.event.extendedProps?.color || '#3788d8'
     };
     setSelectedEvent(event);
     setShowUpdateModal(true);
