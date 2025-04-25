@@ -28,10 +28,10 @@ model Event {
   end        DateTime?
   allDay     Boolean   @default(false)
   notes      String?
-  color      String?   @default("#3788d8")
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   calendarId Int
+  color      String?   @default("#3788d8")
   calendar   Calendar  @relation(fields: [calendarId], references: [id])
 }
 

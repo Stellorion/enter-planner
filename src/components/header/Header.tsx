@@ -11,6 +11,8 @@ const Header = async () => {
 
   return (
     <header className="flex w-full items-center fixed font-sans justify-between bg-gray-100 shadow-md p-4 z-10">
+      <MobileMenu />
+
       <Link href="./" className="text-xl font-bold text-black">
         Enter Planner
       </Link>
@@ -19,15 +21,13 @@ const Header = async () => {
         <NavLinks />
       </nav>
 
-      <div className="hidden md:flex space-x-4">
+      <div className="md:flex space-x-4">
         {session ? (
           <UserMenu session={session} />
         ) : (
-          <AuthButtons session={session} />
+          <AuthButtons />
         )}
       </div>
-      
-      <MobileMenu session={session} />
     </header>
   );
 };

@@ -32,7 +32,7 @@ const ColorInput = ({
         onClick={() => setShowPicker(!showPicker)}
       />
       {showPicker && (
-        <div className="absolute top-full left-0 z-50 mt-2">
+        <div className="absolute top-full -right-full z-50 mt-2">
           <div 
             className="fixed inset-0" 
             onClick={() => setShowPicker(false)} 

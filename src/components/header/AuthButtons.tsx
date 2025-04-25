@@ -1,10 +1,7 @@
 import Link from 'next/link';
-import UserAccount from './UserAccount';
 
-const AuthButtons = ({ session }: { session: any }) => {
-  return session?.user ? (
-    <UserAccount />
-  ) : (
+const AuthButtons = () => {
+  return (
     <>
       <Link
         href="/login"

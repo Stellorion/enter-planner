@@ -18,8 +18,8 @@ const AddEventModal = ({
 }: AddEventModalProps) => {
   return (
     <ModalContainer show={showModal} onClose={setShowModal}>
-      <Dialog.Panel className="relative transform rounded-sm bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-        <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
+      <Dialog.Panel className="relative self-center transform bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div className="bg-white rounded-lg px-4 pt-5 pb-4 sm:p-6">
           <ModalHeader 
             icon={FaRegCalendarPlus}
             title="Add Event"
