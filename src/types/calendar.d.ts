@@ -26,3 +26,8 @@ export interface CalendarStore {
   setSelectedEvent: (event: Event | null) => void;
   resetNewEvent: () => void;
 }
+
+export interface CalendarUiState {
+  title: string;
+  setTitle: (title: string) => void;
+}

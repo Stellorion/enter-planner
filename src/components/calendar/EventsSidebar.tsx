@@ -41,7 +41,7 @@ export default function EventsSidebar({
             : `${format(visibleRange.start, 'MMM dd, yyyy')} - ${format(visibleRange.end, 'MMM dd, yyyy')} Events`}
         </h2>
       </div>
-      <div className="flex-1 divide-y overflow-y-auto p-2">
+      <div className="max-h-[50vh] flex-1 divide-y overflow-y-auto p-2 sm:max-h-none">
         {sortedEvents.map((event) => (
           <div
             key={event.id}
@@ -68,11 +68,17 @@ export default function EventsSidebar({
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <FaRegClock className="h-4 w-4" />
-                {format(new Date(event.start), 'HH:mm')}
-                {event.end && (
+                {event.allDay ? (
+                  <span>All day</span>
+                ) : (
                   <>
-                    <span>-</span>
-                    {format(new Date(event.end), 'HH:mm')}
+                    {format(new Date(event.start), 'HH:mm')}
+                    {event.end && (
+                      <>
+                        <span>-</span>
+                        {format(new Date(event.end), 'HH:mm')}
+                      </>
+                    )}
                   </>
                 )}
               </div>

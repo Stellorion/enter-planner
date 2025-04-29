@@ -7,7 +7,7 @@ const AllDayCheckbox = ({ checked, onChange }: AllDayCheckboxProps) => (
       name="allDay"
       checked={checked}
       onChange={onChange}
-      className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+      className="h-5 w-5 border-gray-300 text-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
     />
     <span className="ml-2 text-sm text-gray-600">All day event</span>
   </label>

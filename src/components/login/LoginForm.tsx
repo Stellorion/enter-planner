@@ -54,7 +54,7 @@ const LoginForm = () => {
       <div className="mb-4 flex w-full items-center">
         <div className="flex-grow border-t border-gray-700"></div>
         <span className="px-3 whitespace-nowrap text-gray-700">
-          Or login with
+          Or log in with
         </span>
         <div className="flex-grow border-t border-gray-700"></div>
       </div>

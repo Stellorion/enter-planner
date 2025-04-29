@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { toast } from 'react-toastify';
 import { NewEvent } from '@/src/types/event';
-import { CalendarStore } from '@/src/types/store';
+import { CalendarStore, CalendarUiState } from '@/src/types/calendar';
 
 const initialNewEvent: NewEvent = {
   id: '',
@@ -116,4 +116,9 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   setShowUpdateModal: (show) => set({ showUpdateModal: show }),
   setSelectedEvent: (event) => set({ selectedEvent: event }),
   resetNewEvent: () => set({ newEvent: initialNewEvent }),
+}));
+
+export const useCalendarUiStore = create<CalendarUiState>((set) => ({
+  title: '',
+  setTitle: (title) => set({ title }),
 }));

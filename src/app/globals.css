@@ -12,10 +12,25 @@
   --font-mono: var(--font-geist-mono);
 }
 
+.fc-event.fc-event-selected,
+.fc-event.fc-event-selected * {
+  pointer-events: auto !important;
+  z-index: 10 !important;
+}
+
+.fc-event .fc-event-main {
+  position: relative;
+  z-index: 20;
+}
+
+.fc-day-today, .fc .fc-daygrid-day.fc-day-today {
+  background-color: #c5c5c5 !important;
+}
+
 /* Body Styles (Light Mode) */
 body {
-  background: var(--background) url('/stacked-waves-haikei-light.svg') no-repeat
-    center center fixed;
+  background: var(--background) url('/stacked-waves-haikei-light.svg') 
+  no-repeat center center fixed;
   background-size: cover;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;

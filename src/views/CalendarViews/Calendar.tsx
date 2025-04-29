@@ -67,6 +67,12 @@ export default function Calendar() {
   }
 
   function handleUpdate(updatedEvent: Event) {
+    let eventToUpdate = { ...updatedEvent };
+
+    if (eventToUpdate.allDay) {
+      eventToUpdate.start = toDateString(eventToUpdate.start);
+      if (eventToUpdate.end) eventToUpdate.end = toDateString(eventToUpdate.end);
+    }
     updateEvent(updatedEvent);
     setShowUpdateModal(false);
     setSelectedEvent(null);
@@ -99,6 +105,12 @@ export default function Calendar() {
     resetNewEvent();
   }
 
+  function toDateString(date: string | Date) {
+    return (date instanceof Date ? date : new Date(date))
+      .toISOString()
+      .split('T')[0];
+  }
+
   function handleEventChange(changeInfo: EventChangeArg) {
     const updatedEvent: Event = {
       id: changeInfo.event.id,
@@ -108,6 +120,10 @@ export default function Calendar() {
       allDay: changeInfo.event.allDay,
       notes: changeInfo.event.extendedProps?.notes || '',
     };
+    if (updatedEvent.allDay) {
+      updatedEvent.start = toDateString(updatedEvent.start);
+      if (updatedEvent.end) updatedEvent.end = toDateString(updatedEvent.end);
+    }  
     updateEvent(updatedEvent);
   }
 
@@ -145,6 +161,13 @@ export default function Calendar() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    let eventToAdd = { ...newEvent };
+
+    if (eventToAdd.allDay) {
+      eventToAdd.start = toDateString(eventToAdd.start);
+      if (eventToAdd.end) eventToAdd.end = toDateString(eventToAdd.end);
+    }
     addEvent(newEvent);
     setShowModal(false);
     resetNewEvent();
@@ -162,8 +185,8 @@ export default function Calendar() {
   }
 
   return (
-    <div className="flex h-screen flex-col pt-16">
-      <main className="flex-1 overflow-hidden p-4">
+    <div className="flex h-screen min-h-0 flex-col pt-16">
+      <main className="flex-1 p-4 md:overflow-hidden">
         <div className="flex h-full flex-col gap-0 lg:flex-row">
           <div className="flex-1 rounded-l-sm bg-white p-6 text-gray-800 shadow-lg">
             <div className="h-full overflow-auto">

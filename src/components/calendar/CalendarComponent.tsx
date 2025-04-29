@@ -1,83 +1,16 @@
 'use client';
 
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import { EventSourceInput } from '@fullcalendar/core/index.js';
-import allLocales from '@fullcalendar/core/locales/en-gb';
+import { useMediaQuery } from 'react-responsive';
+import MobileCalendarComponent from './MobileCalendarComponent';
+import DesktopCalendarComponent from './DesktopCalendarComponent';
 import { CalendarComponentProps } from '@/src/types/event';
-import EventTooltip from './EventTooltip';
-import { useState } from 'react';
 
-const CalendarComponent = ({
-  allEvents,
-  handleDateClick,
-  handleUpdateModal,
-  handleEventChange,
-  handleDatesSet,
-}: CalendarComponentProps) => {
-  return (
-    <FullCalendar
-      plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-      headerToolbar={{
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay addEventButton',
-      }}
-      customButtons={{
-        addEventButton: {
-          text: 'Add Event',
-          click: () => {
-            handleDateClick({
-              date: new Date(),
-              allDay: false,
-            });
-          },
-        },
-      }}
-      buttonText={{
-        today: 'Today',
-      }}
-      height={'100%'}
-      stickyFooterScrollbar={true}
-      locale={allLocales}
-      timeZone="Asia/Jerusalem"
-      firstDay={0}
-      datesSet={handleDatesSet} // Use the prop directly
-      events={allEvents as EventSourceInput}
-      nowIndicator={true}
-      editable={true}
-      selectable={true}
-      selectMirror={true}
-      dayMaxEventRows={5}
-      dateClick={handleDateClick}
-      eventClick={handleUpdateModal}
-      eventChange={handleEventChange}
-      eventContent={(info) => {
-        return (
-          <EventTooltip
-            title={info.event.title}
-            notes={info.event.extendedProps?.notes}
-            start={info.event.startStr}
-            end={info.event.endStr}
-            allDay={info.event.allDay}
-          >
-            <div
-              className="w-full"
-              style={{
-                backgroundColor:
-                  info.event.backgroundColor || info.event.extendedProps?.color,
-                color: '#ffffff',
-              }}
-            >
-              {info.event.title}
-            </div>
-          </EventTooltip>
-        );
-      }}
-    />
-  );
+const CalendarComponent = (props: CalendarComponentProps) => {
+  const isMobile = useMediaQuery({ maxWidth: 1024 });
+
+  return isMobile
+    ? <MobileCalendarComponent {...props} />
+    : <DesktopCalendarComponent {...props} />;
 };
 
 export default CalendarComponent;
