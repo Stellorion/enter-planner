@@ -1,4 +1,4 @@
-import { AllDayCheckboxProps } from "@/src/types/formInputs";
+import { AllDayCheckboxProps } from '@/src/types/formInputs';
 
 const AllDayCheckbox = ({ checked, onChange }: AllDayCheckboxProps) => (
   <label className="inline-flex items-center">

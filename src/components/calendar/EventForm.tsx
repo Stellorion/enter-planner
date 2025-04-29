@@ -14,7 +14,10 @@ const EventForm: React.FC<EventFormProps> = ({ event, handleChange }) => {
   return (
     <div className="space-y-4">
       <div className="form-group">
-        <label htmlFor="color" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="color"
+          className="block text-sm font-medium text-gray-700"
+        >
           Event Color
         </label>
         <input

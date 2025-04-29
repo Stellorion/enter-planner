@@ -15,10 +15,10 @@ const MobileMenu = () => {
 
       {isOpen && (
         <div className="absolute top-16 left-0 w-full bg-white shadow-lg md:hidden">
-        <nav className="flex flex-col items-left font-medium text-lg space-y-4 p-4 pt-0">
-          <NavLinks />
-        </nav>
-      </div>
+          <nav className="items-left flex flex-col space-y-4 p-4 pt-0 text-lg font-medium">
+            <NavLinks />
+          </nav>
+        </div>
       )}
     </div>
   );

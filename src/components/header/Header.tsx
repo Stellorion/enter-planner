@@ -10,23 +10,19 @@ const Header = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <header className="flex w-full items-center fixed font-sans justify-between bg-gray-100 shadow-md p-4 z-10">
+    <header className="fixed z-10 flex w-full items-center justify-between bg-gray-100 p-4 font-sans shadow-md">
       <MobileMenu />
 
       <Link href="./" className="text-xl font-bold text-black">
         Enter Planner
       </Link>
-      
-      <nav className="hidden md:flex space-x-4">
+
+      <nav className="hidden space-x-4 md:flex">
         <NavLinks />
       </nav>
 
-      <div className="md:flex space-x-4">
-        {session ? (
-          <UserMenu session={session} />
-        ) : (
-          <AuthButtons />
-        )}
+      <div className="space-x-4 md:flex">
+        {session ? <UserMenu session={session} /> : <AuthButtons />}
       </div>
     </header>
   );

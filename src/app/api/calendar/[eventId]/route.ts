@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { db } from "@/db/connect";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
+import { NextResponse } from 'next/server';
+import { db } from '@/db/connect';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 
 export async function PUT(
   req: Request,
@@ -11,17 +11,17 @@ export async function PUT(
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json(
-        { error: "You must be signed in to update events" }, 
+        { error: 'You must be signed in to update events' },
         { status: 401 }
       );
     }
 
     const { eventId: eventIdString } = await context.params;
     const eventId = Number(eventIdString);
-    
+
     if (isNaN(eventId)) {
       return NextResponse.json(
-        { error: "Invalid event ID format" }, 
+        { error: 'Invalid event ID format' },
         { status: 400 }
       );
     }
@@ -31,10 +31,12 @@ export async function PUT(
       include: { events: true },
     });
 
-    const eventExists = userCalendar?.events.some(event => event.id === eventId);
+    const eventExists = userCalendar?.events.some(
+      (event) => event.id === eventId
+    );
     if (!eventExists) {
       return NextResponse.json(
-        { error: "You don't have permission to update this event" }, 
+        { error: "You don't have permission to update this event" },
         { status: 404 }
       );
     }
@@ -56,9 +58,9 @@ export async function PUT(
 
     return NextResponse.json(event);
   } catch (error) {
-    console.error("Error updating event:", error);
+    console.error('Error updating event:', error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: 'Internal Server Error' },
       { status: 500 }
     );
   }
@@ -72,17 +74,17 @@ export async function DELETE(
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json(
-        { error: "You must be signed in to delete events" }, 
+        { error: 'You must be signed in to delete events' },
         { status: 401 }
       );
     }
 
     const { eventId: eventIdString } = await context.params;
     const eventId = Number(eventIdString);
-    
+
     if (isNaN(eventId)) {
       return NextResponse.json(
-        { error: "Invalid event ID format" }, 
+        { error: 'Invalid event ID format' },
         { status: 400 }
       );
     }
@@ -92,10 +94,12 @@ export async function DELETE(
       include: { events: true },
     });
 
-    const eventExists = userCalendar?.events.some(event => event.id === eventId);
+    const eventExists = userCalendar?.events.some(
+      (event) => event.id === eventId
+    );
     if (!eventExists) {
       return NextResponse.json(
-        { error: "You don't have permission to delete this event" }, 
+        { error: "You don't have permission to delete this event" },
         { status: 404 }
       );
     }
@@ -104,11 +108,11 @@ export async function DELETE(
       where: { id: eventId },
     });
 
-    return NextResponse.json({ message: "Event deleted successfully" });
+    return NextResponse.json({ message: 'Event deleted successfully' });
   } catch (error) {
-    console.error("Error deleting event:", error);
+    console.error('Error deleting event:', error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: 'Internal Server Error' },
       { status: 500 }
     );
   }

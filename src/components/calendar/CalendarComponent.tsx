@@ -8,12 +8,14 @@ import { EventSourceInput } from '@fullcalendar/core/index.js';
 import allLocales from '@fullcalendar/core/locales/en-gb';
 import { CalendarComponentProps } from '@/src/types/event';
 import EventTooltip from './EventTooltip';
+import { useState } from 'react';
 
 const CalendarComponent = ({
   allEvents,
   handleDateClick,
   handleUpdateModal,
   handleEventChange,
+  handleDatesSet,
 }: CalendarComponentProps) => {
   return (
     <FullCalendar
@@ -21,27 +23,28 @@ const CalendarComponent = ({
       headerToolbar={{
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay addEventButton'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay addEventButton',
       }}
       customButtons={{
         addEventButton: {
           text: 'Add Event',
           click: () => {
-            handleDateClick({ 
-              date: new Date(), 
-              allDay: false 
+            handleDateClick({
+              date: new Date(),
+              allDay: false,
             });
-          }
-        }
+          },
+        },
       }}
       buttonText={{
-        today: 'Today'
+        today: 'Today',
       }}
       height={'100%'}
       stickyFooterScrollbar={true}
       locale={allLocales}
       timeZone="Asia/Jerusalem"
       firstDay={0}
+      datesSet={handleDatesSet} // Use the prop directly
       events={allEvents as EventSourceInput}
       nowIndicator={true}
       editable={true}
@@ -60,11 +63,12 @@ const CalendarComponent = ({
             end={info.event.endStr}
             allDay={info.event.allDay}
           >
-            <div 
-              className="w-full" 
-              style={{ 
-                backgroundColor: info.event.backgroundColor || info.event.extendedProps?.color,
-                color: '#ffffff'
+            <div
+              className="w-full"
+              style={{
+                backgroundColor:
+                  info.event.backgroundColor || info.event.extendedProps?.color,
+                color: '#ffffff',
               }}
             >
               {info.event.title}

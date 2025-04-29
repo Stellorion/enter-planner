@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 const SignupHeader = () => {
   return (
@@ -7,7 +7,7 @@ const SignupHeader = () => {
         Sign Up
       </h2>
       <p className="mb-4 text-gray-700">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <Link href="/login" className="text-blue-400 hover:underline">
           Log in
         </Link>

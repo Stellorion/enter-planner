@@ -6,11 +6,21 @@ export interface CalendarStore {
   showUpdateModal: boolean;
   selectedEvent: Event | null;
   newEvent: NewEvent;
-  fetchEvents: () => Promise<void>;
+
+  currentDate: Date;
+  setCurrentDate: (date: Date) => void;
+
+  viewType: string;
+  setViewType: (type: string) => void;
+
+  visibleRange: { start: Date; end: Date };
+  setVisibleRange: (range: { start: Date; end: Date }) => void;
+
   setNewEvent: (event: NewEvent) => void;
-  addEvent: (event: NewEvent) => void;
-  deleteEvent: (id: string) => void;
-  updateEvent: (event: Event) => void;
+  fetchEvents: () => Promise<void>;
+  addEvent: (event: Event) => Promise<void>;
+  deleteEvent: (id: string) => Promise<void>;
+  updateEvent: (event: Event) => Promise<void>;
   setShowModal: (show: boolean) => void;
   setShowUpdateModal: (show: boolean) => void;
   setSelectedEvent: (event: Event | null) => void;

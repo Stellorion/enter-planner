@@ -12,7 +12,8 @@ export interface Event extends BaseEvent {}
 
 export interface NewEvent extends BaseEvent {}
 
-export interface EventTooltipProps extends Pick<BaseEvent, 'title' | 'start' | 'end' | 'allDay' | 'notes'> {
+export interface EventTooltipProps
+  extends Pick<BaseEvent, 'title' | 'start' | 'end' | 'allDay' | 'notes'> {
   children: ReactElement;
 }
 
@@ -28,5 +29,13 @@ export interface CalendarComponentProps {
   handleDateClick: (arg: { date: Date; allDay: boolean }) => void;
   handleUpdateModal: (clickInfo: EventClickArg) => void;
   handleEventChange: (changeInfo: EventChangeArg) => void;
+  handleDatesSet: (arg: { start: Date; end: Date; view: any }) => void;
 }
 
+export interface EventsSidebarProps {
+  events: Event[];
+  currentDate: Date;
+  viewType: string;
+  visibleRange: { start: Date; end: Date };
+  onEventClick: (event: Event) => void;
+}

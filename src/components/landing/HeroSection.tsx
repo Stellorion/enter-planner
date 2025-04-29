@@ -10,7 +10,9 @@ const HeroSection = () => {
       <h1 className="mb-4 text-4xl font-bold">
         Think, plan, and track <br /> all in one place
       </h1>
-      <p className="mb-8">Efficiently manage your tasks and boost productivity.</p>
+      <p className="mb-8">
+        Efficiently manage your tasks and boost productivity.
+      </p>
     </div>
   );
 };

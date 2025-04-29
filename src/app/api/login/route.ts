@@ -1,25 +1,27 @@
-import { NextResponse } from "next/server";
-import { signIn } from "next-auth/react";
+import { NextResponse } from 'next/server';
+import { signIn } from 'next-auth/react';
 
-export async function POST(request: Request){
-    const body = await request.json();
-    const { email, password } = body;
- 
+export async function POST(request: Request) {
+  const body = await request.json();
+  const { email, password } = body;
+
   try {
-    await signIn("credentials", {
+    await signIn('credentials', {
       email,
       password,
-      redirectTo: "/",
+      redirectTo: '/',
     });
-  return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   } catch (error) {
-  
     if (error) {
       switch (error) {
-        case "CredentialsSignin":
-          return { error: "Invalid credentials!" };
+        case 'CredentialsSignin':
+          return { error: 'Invalid credentials!' };
         default:
-          return { error: "Something went wrong!" };
+          return { error: 'Something went wrong!' };
       }
     }
 

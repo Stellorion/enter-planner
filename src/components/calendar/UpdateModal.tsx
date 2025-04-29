@@ -19,10 +19,10 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
 
   return (
     <ModalContainer show={showUpdateModal} onClose={setShowUpdateModal}>
-      <Dialog.Panel className="relative self-center transform rounded-sm bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+      <Dialog.Panel className="relative transform self-center rounded-sm bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
         <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
           <ModalHeader icon={FaRegEdit} title="Update Event" />
-          
+
           <EventForm event={event} handleChange={handleChange} />
 
           <ModalFooter

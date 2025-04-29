@@ -1,4 +1,4 @@
-import { DateTimeInputProps } from "@/src/types/formInputs";
+import { DateTimeInputProps } from '@/src/types/formInputs';
 
 const DateTimeInput = ({
   label,
@@ -7,10 +7,13 @@ const DateTimeInput = ({
   isAllDay,
   onChange,
   required,
-  min
+  min,
 }: DateTimeInputProps) => (
   <div>
-    <label htmlFor={name} className="block text-left text-sm font-medium text-gray-800">
+    <label
+      htmlFor={name}
+      className="block text-left text-sm font-medium text-gray-800"
+    >
       {label} {isAllDay ? 'Date' : 'Date/Time'}
     </label>
     <input

@@ -4,7 +4,7 @@ export const createEvent = (
   title: string,
   start: Date | string,
   allDay: boolean,
-  notes?: string,
+  notes?: string
 ): Event => ({
   id: new Date().getTime().toString(),
   title,

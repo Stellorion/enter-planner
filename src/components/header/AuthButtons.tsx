@@ -11,7 +11,7 @@ const AuthButtons = () => {
       </Link>
       <Link
         href="/signup"
-        className="rounded-sm px-4 py-2 text-white bg-black shadow-sm transition hover:bg-gray-700"
+        className="rounded-sm bg-black px-4 py-2 text-white shadow-sm transition hover:bg-gray-700"
       >
         Sign up
       </Link>

@@ -7,6 +7,7 @@ import { useCalendarStore } from '@/src/store/useCalendarStore';
 import CalendarComponent from '@/src/components/calendar/CalendarComponent';
 import AddEventModal from '@/src/components/calendar/AddEventModal';
 import UpdateModal from '@/src/components/calendar/UpdateModal';
+import EventsSidebar from '@/src/components/calendar/EventsSidebar';
 
 export default function Calendar() {
   const {
@@ -24,6 +25,12 @@ export default function Calendar() {
     resetNewEvent,
     updateEvent,
     fetchEvents,
+    currentDate,
+    setCurrentDate,
+    viewType,
+    setViewType,
+    visibleRange,
+    setVisibleRange,
   } = useCalendarStore();
 
   useEffect(() => {
@@ -50,7 +57,10 @@ export default function Calendar() {
       end: clickInfo.event.endStr || undefined,
       allDay: clickInfo.event.allDay,
       notes: clickInfo.event.extendedProps?.notes || '',
-      color: clickInfo.event.backgroundColor || clickInfo.event.extendedProps?.color || '#3788d8'
+      color:
+        clickInfo.event.backgroundColor ||
+        clickInfo.event.extendedProps?.color ||
+        '#3788d8',
     };
     setSelectedEvent(event);
     setShowUpdateModal(true);
@@ -96,7 +106,7 @@ export default function Calendar() {
       start: changeInfo.event.startStr,
       end: changeInfo.event.endStr || undefined,
       allDay: changeInfo.event.allDay,
-      notes: changeInfo.event.extendedProps?.notes || ''
+      notes: changeInfo.event.extendedProps?.notes || '',
     };
     updateEvent(updatedEvent);
   }
@@ -140,20 +150,40 @@ export default function Calendar() {
     resetNewEvent();
   }
 
+  function handleDatesSet(arg: { start: Date; end: Date; view: any }) {
+    setCurrentDate(new Date(arg.view.currentStart));
+    setViewType(arg.view.type);
+    setVisibleRange({ start: arg.start, end: arg.end });
+  }
+
+  function handleEventClick(event: Event) {
+    setSelectedEvent(event);
+    setShowUpdateModal(true);
+  }
+
   return (
     <div className="flex h-screen flex-col pt-16">
       <main className="flex-1 overflow-hidden p-4">
-        <div className="flex h-full flex-col rounded-sm bg-white p-6 text-gray-800 shadow-lg">
-          <div className="flex-1 overflow-auto">
-            <CalendarComponent
-              allEvents={allEvents}
-              handleDateClick={handleDateClick}
-              handleUpdateModal={handleUpdateModal}
-              handleEventChange={handleEventChange}
-            />
+        <div className="flex h-full flex-col gap-0 lg:flex-row">
+          <div className="flex-1 rounded-l-sm bg-white p-6 text-gray-800 shadow-lg">
+            <div className="h-full overflow-auto">
+              <CalendarComponent
+                allEvents={allEvents}
+                handleDateClick={handleDateClick}
+                handleUpdateModal={handleUpdateModal}
+                handleEventChange={handleEventChange}
+                handleDatesSet={handleDatesSet}
+              />
+            </div>
           </div>
+          <EventsSidebar
+            events={allEvents}
+            currentDate={currentDate}
+            viewType={viewType}
+            visibleRange={visibleRange}
+            onEventClick={handleEventClick}
+          />
         </div>
-
         <UpdateModal
           showUpdateModal={showUpdateModal}
           setShowUpdateModal={setShowUpdateModal}

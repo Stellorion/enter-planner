@@ -1,8 +1,11 @@
-import { NotesTextareaProps } from "@/src/types/formInputs";
+import { NotesTextareaProps } from '@/src/types/formInputs';
 
 const NotesTextarea = ({ value = '', onChange }: NotesTextareaProps) => (
   <div>
-    <label htmlFor="notes" className="block text-left text-sm font-medium text-gray-800">
+    <label
+      htmlFor="notes"
+      className="block text-left text-sm font-medium text-gray-800"
+    >
       Notes
     </label>
     <textarea

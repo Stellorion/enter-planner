@@ -1,8 +1,11 @@
-import { TitleInputProps } from "@/src/types/formInputs";
+import { TitleInputProps } from '@/src/types/formInputs';
 
 const TitleInput = ({ value, onChange }: TitleInputProps) => (
   <div>
-    <label htmlFor="title" className="block text-left text-sm font-medium text-gray-800">
+    <label
+      htmlFor="title"
+      className="block text-left text-sm font-medium text-gray-800"
+    >
       Title
     </label>
     <input

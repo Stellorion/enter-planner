@@ -68,7 +68,7 @@ const EventTooltip = ({
               )}
             </div>
             {notes && (
-              <div className="mt-2 border-t break-words border-gray-700 pt-2 text-gray-200">
+              <div className="mt-2 border-t border-gray-700 pt-2 break-words text-gray-200">
                 {notes}
               </div>
             )}

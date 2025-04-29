@@ -1,0 +1,95 @@
+import { EventsSidebarProps } from '@/src/types/event';
+import { format, startOfMonth, endOfMonth, isBefore, isAfter } from 'date-fns';
+import { FaRegCalendar, FaRegClock } from 'react-icons/fa';
+
+export default function EventsSidebar({
+  events,
+  visibleRange,
+  viewType,
+  onEventClick,
+  currentDate,
+}: EventsSidebarProps) {
+  let filteredEvents: typeof events = [];
+
+  if (viewType === 'dayGridMonth') {
+    const monthStart = startOfMonth(currentDate);
+    const monthEnd = endOfMonth(currentDate);
+    filteredEvents = events.filter((event) => {
+      const eventStart = new Date(event.start);
+      const eventEnd = event.end ? new Date(event.end) : eventStart;
+      return !isAfter(eventStart, monthEnd) && !isBefore(eventEnd, monthStart);
+    });
+  } else {
+    const { start, end } = visibleRange;
+    filteredEvents = events.filter((event) => {
+      const eventStart = new Date(event.start);
+      const eventEnd = event.end ? new Date(event.end) : eventStart;
+      return !isAfter(eventStart, end) && !isBefore(eventEnd, start);
+    });
+  }
+
+  const sortedEvents = filteredEvents.sort(
+    (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
+  );
+
+  return (
+    <div className="flex h-full w-full flex-col rounded-r-sm border-l border-gray-300 bg-white shadow-lg lg:w-80">
+      <div className="shrink-0 border-b border-gray-300 p-4">
+        <h2 className="text-2xl text-gray-800">
+          {viewType === 'dayGridMonth'
+            ? format(currentDate, 'MMMM yyyy') + ' Events'
+            : `${format(visibleRange.start, 'MMM dd, yyyy')} - ${format(visibleRange.end, 'MMM dd, yyyy')} Events`}
+        </h2>
+      </div>
+      <div className="flex-1 divide-y overflow-y-auto p-2">
+        {sortedEvents.map((event) => (
+          <div
+            key={event.id}
+            className="relative cursor-pointer rounded-sm border-b border-gray-300 p-4 transition-colors hover:bg-gray-300"
+            onClick={() => onEventClick(event)}
+          >
+            <div
+              className="absolute top-0 bottom-0 left-0 w-1 rounded-l-md"
+              style={{ backgroundColor: event.color || '#3788d8' }}
+            />
+            <div className="flex flex-col pl-3">
+              <h3 className="mb-1 text-base font-semibold text-gray-700">
+                {event.title}
+              </h3>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <FaRegCalendar className="h-4 w-4" />
+                {format(new Date(event.start), 'MMM dd, yyyy')}
+                {event.end && (
+                  <>
+                    <span>-</span>
+                    {format(new Date(event.end), 'MMM dd, yyyy')}
+                  </>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <FaRegClock className="h-4 w-4" />
+                {format(new Date(event.start), 'HH:mm')}
+                {event.end && (
+                  <>
+                    <span>-</span>
+                    {format(new Date(event.end), 'HH:mm')}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+        {sortedEvents.length === 0 && (
+          <div className="p-4 text-center text-gray-500">
+            No events for this{' '}
+            {viewType === 'dayGridMonth'
+              ? 'month'
+              : viewType === 'timeGridWeek'
+                ? 'week'
+                : 'day'}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

@@ -3,7 +3,7 @@ import Link from 'next/link';
 const LoginHeader = () => {
   return (
     <>
-      <h2 className="mb-4 font-semibold max-lg:text-3xl lg:text-5xl text-gray-800">
+      <h2 className="mb-4 font-semibold text-gray-800 max-lg:text-3xl lg:text-5xl">
         Log in
       </h2>
       <p className="mb-4 text-gray-700">

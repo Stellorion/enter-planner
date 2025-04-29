@@ -7,7 +7,9 @@ const initialNewEvent: NewEvent = {
   id: '',
   title: '',
   start: new Date().toISOString().slice(0, 16),
-  end: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString().slice(0, 16),
+  end: new Date(new Date().getTime() + 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 16),
   allDay: false,
   notes: '',
   color: '#3788d8',
@@ -20,8 +22,16 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   selectedEvent: null,
   newEvent: initialNewEvent,
 
+  currentDate: new Date(),
+  setCurrentDate: (date) => set({ currentDate: date }),
+  viewType: 'month',
+  setViewType: (type: string) => set({ viewType: type }),
+  visibleRange: { start: new Date(), end: new Date() },
+  setVisibleRange: (range: { start: Date; end: Date }) =>
+    set({ visibleRange: range }),
+
   setNewEvent: (event) => set({ newEvent: event }),
-  
+
   fetchEvents: async () => {
     try {
       const response = await fetch('/api/calendar');

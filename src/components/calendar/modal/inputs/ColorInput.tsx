@@ -17,31 +17,28 @@ const ColorInput = ({
         value: color,
       },
     } as React.ChangeEvent<HTMLInputElement>;
-    
+
     onChange(syntheticEvent);
   };
 
   return (
     <div className="relative flex items-center space-x-2">
-      <label htmlFor="color" className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor="color"
+        className="block text-sm font-medium text-gray-700"
+      >
         Color
       </label>
-      <div 
+      <div
         className="h-5 w-5 cursor-pointer rounded-sm"
         style={{ backgroundColor: value }}
         onClick={() => setShowPicker(!showPicker)}
       />
       {showPicker && (
         <div className="absolute top-full -right-full z-50 mt-2">
-          <div 
-            className="fixed inset-0" 
-            onClick={() => setShowPicker(false)} 
-          />
+          <div className="fixed inset-0" onClick={() => setShowPicker(false)} />
           <div className="relative">
-            <HexColorPicker 
-              color={value} 
-              onChange={handleColorChange}
-            />
+            <HexColorPicker color={value} onChange={handleColorChange} />
           </div>
         </div>
       )}

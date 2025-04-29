@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
-import { db } from "@/db/connect";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
+import { NextResponse } from 'next/server';
+import { db } from '@/db/connect';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const calendar = await db.calendar.findUnique({
@@ -19,7 +19,7 @@ export async function GET() {
       const newCalendar = await db.calendar.create({
         data: {
           userId: parseInt(session.user.id),
-          title: "My Calendar",
+          title: 'My Calendar',
         },
       });
       return NextResponse.json({ events: [] });
@@ -27,9 +27,9 @@ export async function GET() {
 
     return NextResponse.json({ events: calendar.events });
   } catch (error) {
-    console.error("Error fetching events:", error);
+    console.error('Error fetching events:', error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: 'Internal Server Error' },
       { status: 500 }
     );
   }
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
     if (!calendar) {
       return NextResponse.json(
-        { error: "Calendar not found" },
+        { error: 'Calendar not found' },
         { status: 404 }
       );
     }
@@ -70,9 +70,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json(event);
   } catch (error) {
-    console.error("Error creating event:", error);
+    console.error('Error creating event:', error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: 'Internal Server Error' },
       { status: 500 }
     );
   }

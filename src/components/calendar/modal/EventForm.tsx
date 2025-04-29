@@ -27,7 +27,7 @@ const EventForm = ({ event, handleChange }: EventFormProps) => (
         min={event.start}
       />
     </div>
-    <div className="flex justify-evenly items-center">
+    <div className="flex items-center justify-evenly">
       <AllDayCheckbox checked={event.allDay} onChange={handleChange} />
       <ColorInput value={event.color} onChange={handleChange} />
     </div>
