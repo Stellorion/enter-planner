@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaApple, FaGithub, FaGoogle } from 'react-icons/fa';
 
 const SocialLoginButtons = () => {

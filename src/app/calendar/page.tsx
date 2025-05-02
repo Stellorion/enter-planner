@@ -1,7 +1,7 @@
 import { authOptions } from '@/auth';
 import Calendar from '@/src/views/CalendarViews/Calendar';
 import { getServerSession } from 'next-auth';
-import ToastNotification from '@/src/components/ToastNotification';
+import ToastNotification from '@/src/components/ui/ToastNotification';
 
 export default async function CalendarPage() {
   const session = await getServerSession(authOptions);

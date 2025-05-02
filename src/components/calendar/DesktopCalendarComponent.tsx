@@ -35,45 +35,47 @@ const CalendarComponent = ({
           }
         }
       }}
-      buttonText={{
-        today: 'Today'
-      }}
-      height={'100%'}
-      stickyFooterScrollbar={true}
-      locale={allLocales}
-      timeZone="Asia/Jerusalem"
-      firstDay={0}
-      events={allEvents as EventSourceInput}
-      nowIndicator={true}
+      initialView="dayGridMonth"
+      height="100%"
       editable={true}
       selectable={true}
       selectMirror={true}
-      dayMaxEventRows={5}
+      dayMaxEvents={true}
+      weekends={true}
+      events={allEvents as EventSourceInput}
+      eventDurationEditable={true}
+      eventResizableFromStart={true}
       datesSet={handleDatesSet}
       dateClick={handleDateClick}
       eventClick={handleUpdateModal}
       eventChange={handleEventChange}
-      eventContent={(info) => {
-        return (
-          <EventTooltip
-            title={info.event.title}
-            notes={info.event.extendedProps?.notes}
-            start={info.event.startStr}
-            end={info.event.endStr}
-            allDay={info.event.allDay}
+      eventContent={(eventInfo) => (
+        <EventTooltip
+          title={eventInfo.event.title}
+          notes={eventInfo.event.extendedProps?.notes}
+          start={eventInfo.event.startStr}
+          end={eventInfo.event.endStr}
+          allDay={eventInfo.event.allDay}
+        >
+          <div 
+            className="w-full h-full cursor-pointer" 
+            style={{ 
+              backgroundColor: eventInfo.event.backgroundColor || eventInfo.event.extendedProps?.color,
+              color: '#ffffff',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}
           >
-            <div 
-              className="w-full cursor-pointer pointer-events-auto" 
-              style={{ 
-                backgroundColor: info.event.backgroundColor || info.event.extendedProps?.color,
-                color: '#ffffff'
-              }}
-            >
-              {info.event.title}
-            </div>
-          </EventTooltip>
-        );
-      }}
+            {eventInfo.event.title}
+          </div>
+        </EventTooltip>
+      )}
+      slotEventOverlap={false}
+      stickyHeaderDates={true}
+      locale={allLocales}
+      timeZone="Asia/Jerusalem"
+      firstDay={0}
+      nowIndicator={true}
     />
   );
 };

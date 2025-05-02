@@ -45,7 +45,7 @@ export default function EventsSidebar({
         {sortedEvents.map((event) => (
           <div
             key={event.id}
-            className="relative cursor-pointer rounded-sm border-b border-gray-300 p-4 transition-colors hover:bg-gray-300"
+            className="relative cursor-pointer rounded-r-md border-b border-gray-300 p-4 transition-colors hover:bg-gray-300"
             onClick={() => onEventClick(event)}
           >
             <div

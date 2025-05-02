@@ -5,8 +5,8 @@ import { EventClickArg, EventChangeArg } from '@fullcalendar/core';
 import { Event } from '@/src/types/event';
 import { useCalendarStore } from '@/src/store/useCalendarStore';
 import CalendarComponent from '@/src/components/calendar/CalendarComponent';
-import AddEventModal from '@/src/components/calendar/AddEventModal';
-import UpdateModal from '@/src/components/calendar/UpdateModal';
+import AddEventModal from '@/src/components/calendar/modal/AddEventModal';
+import UpdateModal from '@/src/components/calendar/modal/UpdateModal';
 import EventsSidebar from '@/src/components/calendar/EventsSidebar';
 
 export default function Calendar() {
@@ -67,19 +67,20 @@ export default function Calendar() {
   }
 
   function handleUpdate(updatedEvent: Event) {
-    let eventToUpdate = { ...updatedEvent };
+    const eventToUpdate = { ...updatedEvent };
 
     if (eventToUpdate.allDay) {
       eventToUpdate.start = toDateString(eventToUpdate.start);
       if (eventToUpdate.end) eventToUpdate.end = toDateString(eventToUpdate.end);
     }
-    updateEvent(updatedEvent);
+    
+    updateEvent(eventToUpdate);
     setShowUpdateModal(false);
     setSelectedEvent(null);
   }
 
   function handleUpdateChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) {
     if (!selectedEvent) return;
     const { name, value, type } = event.target;
@@ -112,18 +113,16 @@ export default function Calendar() {
   }
 
   function handleEventChange(changeInfo: EventChangeArg) {
-    const updatedEvent: Event = {
+    const updatedEvent = {
       id: changeInfo.event.id,
       title: changeInfo.event.title,
       start: changeInfo.event.startStr,
-      end: changeInfo.event.endStr || undefined,
+      end: changeInfo.event.endStr || null,
       allDay: changeInfo.event.allDay,
       notes: changeInfo.event.extendedProps?.notes || '',
+      color: changeInfo.event.backgroundColor || changeInfo.event.extendedProps?.color
     };
-    if (updatedEvent.allDay) {
-      updatedEvent.start = toDateString(updatedEvent.start);
-      if (updatedEvent.end) updatedEvent.end = toDateString(updatedEvent.end);
-    }  
+
     updateEvent(updatedEvent);
   }
 
@@ -213,7 +212,7 @@ export default function Calendar() {
           handleUpdate={handleUpdate}
           handleDelete={handleDelete}
           handleCloseModal={handleCloseModal}
-          event={selectedEvent}
+          data={selectedEvent}
           handleChange={handleUpdateChange}
         />
         <AddEventModal
@@ -221,7 +220,7 @@ export default function Calendar() {
           setShowModal={setShowModal}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
-          newEvent={newEvent}
+          data={newEvent}
           handleCloseModal={handleCloseModal}
         />
       </main>

@@ -5,13 +5,13 @@ const AuthButtons = () => {
     <>
       <Link
         href="/login"
-        className="rounded-sm px-4 py-2 text-black shadow-sm transition hover:text-gray-500"
+        className="rounded-md px-4 py-2 text-black shadow-sm transition hover:text-gray-500"
       >
         Log in
       </Link>
       <Link
         href="/signup"
-        className="rounded-sm bg-black px-4 py-2 text-white shadow-sm transition hover:bg-gray-700"
+        className="rounded-md bg-black px-4 py-2 text-white shadow-sm transition hover:bg-gray-700"
       >
         Sign up
       </Link>

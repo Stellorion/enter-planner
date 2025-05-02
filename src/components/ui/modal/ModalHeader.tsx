@@ -1,4 +1,4 @@
-import { ModalHeaderProps } from '@/src/types/modelCalendar';
+import { ModalHeaderProps } from '@/src/types/modal';
 
 const ModalHeader = ({ icon: Icon, title }: ModalHeaderProps) => (
   <div>

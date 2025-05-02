@@ -2,7 +2,7 @@ import React from 'react';
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
-import ToastNotification from '@/src/components/ToastNotification';
+import ToastNotification from '@/src/components/ui/ToastNotification';
 import LoginHeader from '@/src/components/login/LoginHeader';
 import LoginForm from '@/src/components/login/LoginForm';
 import SocialLoginSection from '@/src/components/SocialLoginButtons';

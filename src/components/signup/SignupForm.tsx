@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
-import FormInput from '@/src/components/FormInput';
+import FormInput from '@/src/components/AuthInput';
 import { SignupInputs } from '@/src/types/authInputs';
 
 const SignupForm = () => {

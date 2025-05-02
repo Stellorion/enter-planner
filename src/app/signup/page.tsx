@@ -4,7 +4,7 @@ import { authOptions } from '@/auth';
 import SignupHeader from '@/src/components/signup/SignupHeader';
 import SignupForm from '@/src/components/signup/SignupForm';
 import SocialAuthSection from '@/src/components/SocialLoginButtons';
-import ToastNotification from '@/src/components/ToastNotification';
+import ToastNotification from '@/src/components/ui/ToastNotification';
 
 const SignupLayout = async () => {
   const session = await getServerSession(authOptions);

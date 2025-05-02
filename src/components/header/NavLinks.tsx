@@ -9,11 +9,8 @@ const NavLinks = () => {
       <Link href="/calendar" className="text-black hover:underline">
         Calendar
       </Link>
-      <Link href="#" className="text-black hover:underline">
-        Place 3
-      </Link>
-      <Link href="#" className="text-black hover:underline">
-        Place 4
+      <Link href="/tasks" className="text-black hover:underline">
+        Tasks
       </Link>
     </>
   );

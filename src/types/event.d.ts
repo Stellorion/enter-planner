@@ -2,8 +2,8 @@ export interface BaseEvent {
   id: string;
   title: string;
   start: string;
-  end?: string;
-  allDay: boolean;
+  end?: string | null;
+  allDay?: boolean;
   notes?: string;
   color?: string;
 }
