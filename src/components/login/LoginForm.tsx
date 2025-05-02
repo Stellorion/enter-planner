@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import FormInput from '@/src/components/AuthInput';
+import FormInput from '@/src/components/ui/inputs/AuthInput';
 import { LoginInputs } from '@/src/types/authInputs';
 
 const LoginForm = () => {
