@@ -33,7 +33,7 @@ const TaskForm = ({ task, handleChange }: TaskFormProps) => (
         ]}
       />
       <NumberInput 
-        value={task.progress || "" } 
+        value={task.progress || 0 } 
         onChange={handleChange}
         name="progress"
         min={0}

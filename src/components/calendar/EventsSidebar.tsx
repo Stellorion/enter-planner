@@ -33,9 +33,9 @@ export default function EventsSidebar({
   );
 
   return (
-    <div className="flex h-full w-full flex-col rounded-r-sm border-l border-gray-300 bg-white shadow-lg lg:w-80">
-      <div className="shrink-0 border-b border-gray-300 p-4">
-        <h2 className="text-2xl text-gray-800">
+    <div className="flex h-full w-full flex-col lg:rounded-r-sm border-l border-gray-200 bg-white shadow-lg lg:w-80 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
+      <div className="hidden shrink-0 border-b border-gray-200 p-4 lg:block dark:border-gray-800">
+        <h2 className="text-2xl text-gray-900 dark:text-gray-100">
           {viewType === 'dayGridMonth'
             ? format(currentDate, 'MMMM yyyy') + ' Events'
             : `${format(visibleRange.start, 'MMM dd, yyyy')} - ${format(visibleRange.end, 'MMM dd, yyyy')} Events`}
@@ -45,7 +45,7 @@ export default function EventsSidebar({
         {sortedEvents.map((event) => (
           <div
             key={event.id}
-            className="relative cursor-pointer rounded-r-md border-b border-gray-300 p-4 transition-colors hover:bg-gray-300"
+            className="relative cursor-pointer rounded-r-md border-b border-gray-200 p-4 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800 dark:border-gray-800"
             onClick={() => onEventClick(event)}
           >
             <div
@@ -53,10 +53,10 @@ export default function EventsSidebar({
               style={{ backgroundColor: event.color || '#3788d8' }}
             />
             <div className="flex flex-col pl-3">
-              <h3 className="mb-1 text-base font-semibold text-gray-700">
+              <h3 className="mb-1 text-base font-semibold text-gray-700 dark:text-gray-300">
                 {event.title}
               </h3>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <FaRegCalendar className="h-4 w-4" />
                 {format(new Date(event.start), 'MMM dd, yyyy')}
                 {event.end && (
@@ -66,7 +66,7 @@ export default function EventsSidebar({
                   </>
                 )}
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <FaRegClock className="h-4 w-4" />
                 {event.allDay ? (
                   <span>All day</span>

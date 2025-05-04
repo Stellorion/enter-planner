@@ -185,9 +185,9 @@ export default function Calendar() {
 
   return (
     <div className="flex h-screen min-h-0 flex-col pt-16">
-      <main className="flex-1 p-4 md:overflow-hidden">
+      <main className="flex-1 md:overflow-hidden">
         <div className="flex h-full flex-col gap-0 lg:flex-row">
-          <div className="flex-1 rounded-l-sm bg-white p-6 text-gray-800 shadow-lg">
+          <div className="flex-1 lg:rounded-l-sm bg-white lg:p-6 text-gray-800 shadow-lg dark:bg-gray-900 dark:text-gray-100">
             <div className="h-full overflow-auto">
               <CalendarComponent
                 allEvents={allEvents}

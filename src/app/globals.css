@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import '../styles/fullcalendar.css';
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
   --background: #ffffff;
@@ -10,21 +12,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-.fc-event.fc-event-selected,
-.fc-event.fc-event-selected * {
-  pointer-events: auto !important;
-  z-index: 10 !important;
-}
-
-.fc-event .fc-event-main {
-  position: relative;
-  z-index: 20;
-}
-
-.fc-day-today, .fc .fc-daygrid-day.fc-day-today {
-  background-color: #c5c5c5 !important;
 }
 
 /* Body Styles (Light Mode) */
@@ -49,3 +36,53 @@ body {
     background-size: cover;
   }
 }
+
+
+/* ### Light Mode Colors
+
+- **Background**: Pure white (`--background: 0 0% 100%`)
+- **Foreground** (text): Very dark blue-gray (`--foreground: 222.2 84% 4.9%`)
+- **Primary**: Blue (`--primary: 221.2 83.2% 53.3%`)
+- **Muted**: Light blue-gray (`--muted: 210 40% 96.1%`)
+- **Border**: Light gray with blue tint (`--border: 214.3 31.8% 91.4%`)
+- **Event Colors**:
+
+- Blue events: `bg-blue-500/90` (semi-transparent blue)
+- Rose events: `bg-rose-500/90` (semi-transparent rose/pink)
+
+| Element    | HSL                 | Tailwind Equivalent                            |
+| ---------- | ------------------- | ---------------------------------------------- |
+| Background | `0 0% 100%`         | `bg-white`                                     |
+| Foreground | `222.2 84% 4.9%`    | `text-gray-900` or `text-gray-950`             |
+| Primary    | `221.2 83.2% 53.3%` | `text-blue-600` or `bg-blue-600`               |
+| Muted      | `210 40% 96.1%`     | `bg-gray-100` or `bg-slate-100`                |
+| Border     | `214.3 31.8% 91.4%` | `border-gray-200`                              |
+| Blue Event | `bg-blue-500/90`    | `bg-blue-500/90` *(Tailwind supports opacity)* |
+| Rose Event | `bg-rose-500/90`    | `bg-rose-500/90`                               |
+
+===========================================================================================
+
+### Dark Mode Colors
+
+- **Background**: Very dark blue-gray (`--background: 222.2 84% 4.9%`)
+- **Foreground** (text): Very light blue-gray (`--foreground: 210 40% 98%`)
+- **Primary**: Brighter blue (`--primary: 217.2 91.2% 59.8%`)
+- **Muted**: Dark blue-gray (`--muted: 217.2 32.6% 17.5%`)
+- **Border**: Dark blue-gray (`--border: 217.2 32.6% 17.5%`)
+- **Event Colors**:
+
+- Blue events: `dark:bg-blue-600` (slightly darker blue)
+- Rose events: `dark:bg-rose-600` (slightly darker rose/pink) 
+
+| Element    | HSL                 | Tailwind Equivalent                 |
+| ---------- | ------------------- | ----------------------------------- |
+| Background | `222.2 84% 4.9%`    | `bg-gray-900` or `bg-slate-900`     |
+| Foreground | `210 40% 98%`       | `text-gray-100` or `text-slate-100` |
+| Primary    | `217.2 91.2% 59.8%` | `text-blue-500` or `bg-blue-500`    |
+| Muted      | `217.2 32.6% 17.5%` | `bg-gray-800` or `bg-slate-800`     |
+| Border     | `217.2 32.6% 17.5%` | `border-gray-800`                   |
+| Blue Event | `dark:bg-blue-600`  | `dark:bg-blue-600`                  |
+| Rose Event | `dark:bg-rose-600`  | `dark:bg-rose-600`                  |
+
+*/
+

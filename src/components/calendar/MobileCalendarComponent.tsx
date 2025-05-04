@@ -7,10 +7,11 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
 import allLocales from '@fullcalendar/core/locales/en-gb';
 import { CalendarComponentProps } from '@/src/types/event';
+import { MdToday } from 'react-icons/md';
 import EventTooltip from './EventTooltip';
 import { useCalendarUiStore } from '@/src/store/useCalendarStore';
 import { useRef } from 'react';
-import { FaArrowLeft, FaArrowRight, FaRegCalendarPlus } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaRegCalendarPlus } from 'react-icons/fa';
 
 const MobileCalendarComponent = ({
   allEvents,
@@ -38,25 +39,38 @@ const MobileCalendarComponent = ({
   const handleAddEvent = () => {
     handleDateClick({
       date: new Date(),
-      allDay: false
+      allDay: false,
     });
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="flex items-center justify-between px-2 py-3">
-        <div className="flex items-center gap-1">
-          <button onClick={handlePrev} aria-label="Previous">
+    <div className="flex h-full w-full flex-col pt-2">
+      <div className="flex w-full p-3 items-center justify-between">
+        <div className="flex items-center justify-between">
+          <button className="border border-gray-200 p-1.5 rounded-l-md dark:border-gray-800" onClick={handlePrev} aria-label="Previous">
             <FaArrowLeft className="h-5 w-5" />
           </button>
-          <span className="font-semibold text-lg px-2">{title}</span>
-          <button onClick={handleNext} aria-label="Next">
-            <FaArrowRight className="h-5 w-5" />
+
+          <button 
+            className="border-t border-b border-gray-200 p-1 px-2 dark:border-gray-800" 
+            onClick={() => calendarRef.current?.getApi().today()} 
+            aria-label="Today"
+          >
+            <span className="text-md font-semibold">Today</span>
+          </button>
+          
+          <button className="border border-gray-200 p-1.5 rounded-r-md dark:border-gray-800" onClick={handleNext} aria-label="Next">
+            <FaArrowRight className="h-5 w-5" />  
           </button>
         </div>
+
+        <span className=" text-center text-lg font-semibold">
+          {title}
+        </span>
+
         <button
           onClick={handleAddEvent}
-          className="rounded-full transition"
+          className="flex w-8 justify-end rounded-md border border-gray-200 p-1.5 transition dark:border-gray-800"
           aria-label="Add Event"
         >
           <FaRegCalendarPlus className="h-5 w-5" />
@@ -70,15 +84,16 @@ const MobileCalendarComponent = ({
           customButtons={{
             addEventButton: {
               text: 'Add Event',
-              click: handleAddEvent
-            }
+              click: handleAddEvent,
+            },
           }}
           buttonText={{
-            today: 'Today'
+            today: 'Today',
           }}
           height="100%"
           contentHeight="auto"
           aspectRatio={1.5}
+          longPressDelay={100}
           locale={allLocales}
           timeZone="Asia/Jerusalem"
           firstDay={0}
@@ -88,6 +103,7 @@ const MobileCalendarComponent = ({
           editable={true}
           eventStartEditable={true}
           eventDurationEditable={true}
+          eventResizableFromStart={true}
           droppable={true}
           selectable={true}
           selectMirror={true}
@@ -106,8 +122,10 @@ const MobileCalendarComponent = ({
               <div
                 className="w-full"
                 style={{
-                  backgroundColor: info.event.backgroundColor || info.event.extendedProps?.color,
-                  color: '#ffffff'
+                  backgroundColor:
+                    info.event.backgroundColor ||
+                    info.event.extendedProps?.color,
+                  color: '#ffffff',
                 }}
               >
                 {info.event.title}

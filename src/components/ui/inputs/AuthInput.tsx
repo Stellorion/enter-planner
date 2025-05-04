@@ -11,7 +11,7 @@ const FormInput: React.FC<FormInputProps> = ({
         type={type}
         placeholder={placeholder}
         {...register}
-        className="w-full rounded-sm border border-gray-300 bg-gray-200 p-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full rounded-sm border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
       />
     </div>
   );

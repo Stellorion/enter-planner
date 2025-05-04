@@ -47,16 +47,16 @@ const LoginForm = () => {
       />
       <button
         type="submit"
-        className="w-full rounded-sm bg-blue-500 py-2 text-white transition hover:bg-blue-600"
+        className="w-full rounded-sm bg-blue-500 py-2 transition hover:bg-blue-600"
       >
         Log in
       </button>
       <div className="mb-4 flex w-full items-center">
-        <div className="flex-grow border-t border-gray-700"></div>
-        <span className="px-3 whitespace-nowrap text-gray-700">
+        <div className="flex-grow border-t border-gray-800 dark:border-gray-200"></div>
+        <span className="px-3 whitespace-nowrap text-gray-800">
           Or log in with
         </span>
-        <div className="flex-grow border-t border-gray-700"></div>
+        <div className="flex-grow border-t border-gray-800 dark:border-gray-200"></div>
       </div>
     </form>
   );

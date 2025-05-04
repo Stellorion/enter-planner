@@ -1,15 +1,19 @@
 import Link from 'next/link';
 
-const NavLinks = () => {
+interface NavLinksProps {
+  className?: string;
+}
+
+const NavLinks = ({ className = '' }: NavLinksProps) => {
   return (
     <>
-      <Link href="/admin" className="text-black hover:underline">
+      <Link href="/admin" className={className}>
         Admin
       </Link>
-      <Link href="/calendar" className="text-black hover:underline">
+      <Link href="/calendar" className={className}>
         Calendar
       </Link>
-      <Link href="/tasks" className="text-black hover:underline">
+      <Link href="/tasks" className={className}>
         Tasks
       </Link>
     </>

@@ -1,19 +1,14 @@
 import Link from 'next/link';
+import { FaArrowRight } from "react-icons/fa";
 
 const AuthButtons = () => {
   return (
     <>
       <Link
         href="/login"
-        className="rounded-md px-4 py-2 text-black shadow-sm transition hover:text-gray-500"
+        className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-800 shadow-sm transition hover:bg-gray-200 dark:hover:bg-gray-800"
       >
-        Log in
-      </Link>
-      <Link
-        href="/signup"
-        className="rounded-md bg-black px-4 py-2 text-white shadow-sm transition hover:bg-gray-700"
-      >
-        Sign up
+        Log in <FaArrowRight />
       </Link>
     </>
   );

@@ -40,7 +40,7 @@ const CalendarComponent = ({
       editable={true}
       selectable={true}
       selectMirror={true}
-      dayMaxEvents={true}
+      dayMaxEvents={false} // Changed to false to show all events
       weekends={true}
       events={allEvents as EventSourceInput}
       eventDurationEditable={true}
@@ -58,12 +58,14 @@ const CalendarComponent = ({
           allDay={eventInfo.event.allDay}
         >
           <div 
-            className="w-full h-full cursor-pointer" 
+            className="w-full h-full rounded px-1 cursor-pointer" 
             style={{ 
               backgroundColor: eventInfo.event.backgroundColor || eventInfo.event.extendedProps?.color,
               color: '#ffffff',
               textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
+              fontSize: '0.85rem',
+              lineHeight: '1.7'
             }}
           >
             {eventInfo.event.title}
@@ -76,6 +78,20 @@ const CalendarComponent = ({
       timeZone="Asia/Jerusalem"
       firstDay={0}
       nowIndicator={true}
+      // Google Calendar-like styles
+      buttonText={{
+        today: 'Today',
+        month: 'Month',
+        week: 'Week',
+        day: 'Day'
+      }}
+      dayHeaders={true}
+      views={{
+        dayGridMonth: {
+          dayHeaderFormat: { weekday: 'short' },
+          dayMaxEventRows: true,
+        }
+      }}
     />
   );
 };
