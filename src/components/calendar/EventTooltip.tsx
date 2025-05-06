@@ -52,10 +52,10 @@ const EventTooltip = ({
             ref={refs.setFloating}
             style={floatingStyles}
             {...getFloatingProps()}
-            className="relative z-10 max-w-xs rounded-md bg-gray-900 px-3 py-2 text-sm text-white shadow-lg"
+            className="relative z-10 max-w-xs border rounded-md bg-white border-gray-200 px-3 py-2 text-sm text-white dark:text-gray-100 shadow-lg dark:bg-gray-900 dark:border-gray-800"
           >
-            <div className="text-center font-semibold">{title}</div>
-            <div className="mt-1 text-center text-gray-200">
+            <div className="text-center font-semibold text-gray-900 dark:text-gray-100">{title}</div>
+            <div className="mt-1 text-center text-gray-900 dark:text-gray-100">
               <div>
                 {allDay ? 'Date: ' : 'Start: '}
                 {formatDateTime(start)}
@@ -68,13 +68,13 @@ const EventTooltip = ({
               )}
             </div>
             {notes && (
-              <div className="mt-2 border-t border-gray-700 pt-2 break-words text-gray-200">
+              <div className="mt-2 border-t border-gray-900 dark:border-gray-100 pt-2 break-words text-gray-900 dark:text-gray-100">
                 {notes}
               </div>
             )}
 
             <div
-              className={`absolute h-2 w-2 rotate-45 bg-gray-900 ${placement === 'top' && 'bottom-[-4px]'} ${placement === 'bottom' && 'top-[-4px]'} ${placement === 'left' && 'right-[-4px]'} ${placement === 'right' && 'left-[-4px]'} ${placement.includes('top') && 'left-1/2 -translate-x-1/2'} ${placement.includes('bottom') && 'left-1/2 -translate-x-1/2'} ${placement.includes('left') && 'top-1/2 -translate-y-1/2'} ${placement.includes('right') && 'top-1/2 -translate-y-1/2'}`}
+              className={`absolute h-2 w-2 rotate-45 border-b border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 ${placement === 'top' && 'bottom-[-4px]'} ${placement === 'bottom' && 'top-[-4px]'} ${placement === 'left' && 'right-[-4px]'} ${placement === 'right' && 'left-[-4px]'} ${placement.includes('top') && 'left-1/2 -translate-x-1/2'} ${placement.includes('bottom') && 'left-1/2 -translate-x-1/2'} ${placement.includes('left') && 'top-1/2 -translate-y-1/2'} ${placement.includes('right') && 'top-1/2 -translate-y-1/2'}`}
             />
           </div>
         </FloatingPortal>

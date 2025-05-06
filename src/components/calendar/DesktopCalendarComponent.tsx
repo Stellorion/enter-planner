@@ -36,11 +36,11 @@ const CalendarComponent = ({
         }
       }}
       initialView="dayGridMonth"
-      height="100%"
+      height="150%"
       editable={true}
       selectable={true}
       selectMirror={true}
-      dayMaxEvents={false} // Changed to false to show all events
+      dayMaxEvents={false}
       weekends={true}
       events={allEvents as EventSourceInput}
       eventDurationEditable={true}
@@ -78,7 +78,6 @@ const CalendarComponent = ({
       timeZone="Asia/Jerusalem"
       firstDay={0}
       nowIndicator={true}
-      // Google Calendar-like styles
       buttonText={{
         today: 'Today',
         month: 'Month',

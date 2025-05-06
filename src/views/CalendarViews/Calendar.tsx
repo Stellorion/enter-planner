@@ -71,16 +71,19 @@ export default function Calendar() {
 
     if (eventToUpdate.allDay) {
       eventToUpdate.start = toDateString(eventToUpdate.start);
-      if (eventToUpdate.end) eventToUpdate.end = toDateString(eventToUpdate.end);
+      if (eventToUpdate.end)
+        eventToUpdate.end = toDateString(eventToUpdate.end);
     }
-    
+
     updateEvent(eventToUpdate);
     setShowUpdateModal(false);
     setSelectedEvent(null);
   }
 
   function handleUpdateChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) {
     if (!selectedEvent) return;
     const { name, value, type } = event.target;
@@ -120,7 +123,9 @@ export default function Calendar() {
       end: changeInfo.event.endStr || null,
       allDay: changeInfo.event.allDay,
       notes: changeInfo.event.extendedProps?.notes || '',
-      color: changeInfo.event.backgroundColor || changeInfo.event.extendedProps?.color
+      color:
+        changeInfo.event.backgroundColor ||
+        changeInfo.event.extendedProps?.color,
     };
 
     updateEvent(updatedEvent);
@@ -187,16 +192,14 @@ export default function Calendar() {
     <div className="flex h-screen min-h-0 flex-col pt-16">
       <main className="flex-1 md:overflow-hidden">
         <div className="flex h-full flex-col gap-0 lg:flex-row">
-          <div className="flex-1 lg:rounded-l-sm bg-white lg:p-6 text-gray-800 shadow-lg dark:bg-gray-900 dark:text-gray-100">
-            <div className="h-full overflow-auto">
-              <CalendarComponent
-                allEvents={allEvents}
-                handleDateClick={handleDateClick}
-                handleUpdateModal={handleUpdateModal}
-                handleEventChange={handleEventChange}
-                handleDatesSet={handleDatesSet}
-              />
-            </div>
+          <div className="flex-1 bg-white text-gray-800 shadow-lg lg:rounded-l-sm lg:p-6 dark:bg-gray-900 dark:text-gray-100">
+            <CalendarComponent
+              allEvents={allEvents}
+              handleDateClick={handleDateClick}
+              handleUpdateModal={handleUpdateModal}
+              handleEventChange={handleEventChange}
+              handleDatesSet={handleDatesSet}
+            />
           </div>
           <EventsSidebar
             events={allEvents}
