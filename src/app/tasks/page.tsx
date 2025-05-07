@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { FaRegClock, FaRegSun, FaRegCheckCircle, FaRegCircle } from "react-icons/fa"
-import { toast } from "react-hot-toast"
+import { toast } from "react-toastify"
 import { TaskControls } from "@/src/components/task/TaskControls"
 import { TaskColumn } from "@/src/components/task/TaskColumn"
 import UpdateModal from "@/src/components/task/modal/UpdateTaskModal"
@@ -17,8 +17,9 @@ export default function TaskList() {
   const [newTask, setNewTask] = useState<Task>({
     title: "",
     description: "",
-    status: "planned",
-    progress: 0
+    status: "PLANNED",
+    progress: 0,
+    dueDate: null
   });
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export default function TaskList() {
       const task = await response.json();
       setTasks(prev => [...prev, task]);
       setShowAddModal(false);
-      setNewTask({ title: "", description: "", status: "planned", progress: 0 });
+      setNewTask({ title: "", description: "", status: "PLANNED", progress: 0, dueDate: null });
       toast.success('Task created successfully');
     } catch (error) {
       toast.error('Failed to create task');
