@@ -5,13 +5,13 @@ import NavLinks from './NavLinks';
 import UserMenu from './UserMenu';
 import AuthButtons from './AuthButtons';
 import MobileMenu from './MobileMenu';
-import ThemeToggle from '../ThemeToggle';
+import ThemeToggle from './ThemeToggle';
 
 const Header = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <header className="fixed z-10 flex w-full items-center justify-between bg-white border-b border-gray-200 p-4 font-sans shadow-md dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
+    <header className="fixed z-15 flex w-full items-center justify-between bg-white border-b border-gray-200 p-4 font-sans shadow-md dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
       <MobileMenu />
 
       <Link

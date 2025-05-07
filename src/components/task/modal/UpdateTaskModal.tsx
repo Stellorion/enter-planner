@@ -20,9 +20,13 @@ const UpdateModal: React.FC<UpdateModalProps<Task>> = ({
 
   return (
     <ModalContainer show={showUpdateModal} onClose={setShowUpdateModal}>
-      <Dialog.Panel className="relative transform self-center rounded-md bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+      <Dialog.Panel className="relative transform self-center rounded-md bg-white dark:bg-gray-800 shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
         <div className="px-4 pt-5 pb-4 sm:p-6">
-          <ModalHeader icon={FaRegEdit} title="Update Task" />
+          <ModalHeader 
+            icon={FaRegEdit} 
+            title="Update Task" 
+            description="Make changes to your task here."  
+          />
 
           <TaskForm task={data} handleChange={handleChange} />
 

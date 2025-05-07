@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FaRegClock, FaRegSun, FaRegCheckCircle, FaRegCircle } from "react-icons/fa"
+import { toast } from "react-hot-toast"
 import { TaskControls } from "@/src/components/task/TaskControls"
 import { TaskColumn } from "@/src/components/task/TaskColumn"
 import UpdateModal from "@/src/components/task/modal/UpdateTaskModal"
@@ -19,6 +20,21 @@ export default function TaskList() {
     status: "planned",
     progress: 0
   });
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch('/api/tasks');
+      if (!response.ok) throw new Error('Failed to fetch tasks');
+      const data = await response.json();
+      setTasks(data.tasks);
+    } catch (error) {
+      toast.error('Failed to load tasks');
+    }
+  };
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -40,34 +56,58 @@ export default function TaskList() {
     } : null);
   };
 
-  const handleAddTaskSubmit = (e: React.FormEvent) => {
+  const handleAddTaskSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTasks((prev) => [
-      ...prev,
-      { ...newTask, id: Date.now().toString() }
-    ]);
-    setShowAddModal(false);
-    setNewTask({
-      title: "",
-      description: "",
-      status: "planned",
-      progress: 0
-    });
+    try {
+      const response = await fetch('/api/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTask),
+      });
+      if (!response.ok) throw new Error('Failed to create task');
+      const task = await response.json();
+      setTasks(prev => [...prev, task]);
+      setShowAddModal(false);
+      setNewTask({ title: "", description: "", status: "planned", progress: 0 });
+      toast.success('Task created successfully');
+    } catch (error) {
+      toast.error('Failed to create task');
+    }
   };
 
-  const handleUpdate = (data: Task) => {
-    if (!data) return;
-    
-    setTasks(prev => prev.map(task => 
-      task.id === data.id ? data : task
-    ));
-    handleCloseUpdateModal();
+  const handleUpdate = async (data: Task) => {
+    if (!data?.id) return;
+    try {
+      const response = await fetch(`/api/tasks/${data.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to update task');
+      const updatedTask = await response.json();
+      setTasks(prev => prev.map(task => 
+        task.id === updatedTask.id ? updatedTask : task
+      ));
+      handleCloseUpdateModal();
+      toast.success('Task updated successfully');
+    } catch (error) {
+      toast.error('Failed to update task');
+    }
   };
 
-  const handleDelete = () => {
-    if (!editingTask) return;
-    setTasks(prev => prev.filter(task => task.id !== editingTask.id));
-    handleCloseUpdateModal();
+  const handleDelete = async () => {
+    if (!editingTask?.id) return;
+    try {
+      const response = await fetch(`/api/tasks/${editingTask.id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to delete task');
+      setTasks(prev => prev.filter(task => task.id !== editingTask.id));
+      handleCloseUpdateModal();
+      toast.success('Task deleted successfully');
+    } catch (error) {
+      toast.error('Failed to delete task');
+    }
   };
 
   const handleCloseAddModal = () => setShowAddModal(false);
@@ -75,6 +115,11 @@ export default function TaskList() {
   const handleCloseUpdateModal = () => {
     setShowUpdateModal(false);
     setEditingTask(null);
+  };
+
+  const handleEdit = (task: Task) => {
+    setEditingTask(task);
+    setShowUpdateModal(true);
   };
 
   return (
@@ -86,38 +131,26 @@ export default function TaskList() {
             <TaskColumn
               icon={<FaRegClock className="h-5 w-5 text-blue-600" />}
               title="Planned"
-              tasks={tasks.filter((task) => task.status === "planned")}
-              onEdit={(task) => {
-                setEditingTask(task);
-                setShowUpdateModal(true);
-              }}
+              tasks={tasks.filter((task) => task.status === "PLANNED")}
+              onEdit={handleEdit}
             />
             <TaskColumn
               icon={<FaRegSun className="h-5 w-5 text-yellow-500" />}
               title="In Progress"
-              tasks={tasks.filter((task) => task.status === "in-progress")}
-              onEdit={(task) => {
-                setEditingTask(task);
-                setShowUpdateModal(true);
-              }}
+              tasks={tasks.filter((task) => task.status === "IN_PROGRESS")}
+              onEdit={handleEdit}
             />
             <TaskColumn
               icon={<FaRegCheckCircle className="h-5 w-5 text-green-600" />}
               title="Done"
-              tasks={tasks.filter((task) => task.status === "done")}
-              onEdit={(task) => {
-                setEditingTask(task);
-                setShowUpdateModal(true);
-              }}
+              tasks={tasks.filter((task) => task.status === "DONE")}
+              onEdit={handleEdit}
             />
             <TaskColumn
               icon={<FaRegCircle className="h-5 w-5 text-gray-500" />}
               title="On Hold"
-              tasks={tasks.filter((task) => task.status === "on-hold")}
-              onEdit={(task) => {
-                setEditingTask(task);
-                setShowUpdateModal(true);
-              }}
+              tasks={tasks.filter((task) => task.status === "ON_HOLD")}
+              onEdit={handleEdit}
             />
           </div>
         </div>

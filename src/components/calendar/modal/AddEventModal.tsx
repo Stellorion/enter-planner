@@ -24,7 +24,7 @@ const AddEventModal = ({
           <ModalHeader
             icon={FaRegCalendarPlus}
             title="Add Event"
-            description="Make changes to your calendar event here."
+            description="Add a new event to your calendar."
           />
           <form onSubmit={handleSubmit}>
             <EventForm event={data} handleChange={handleChange} />

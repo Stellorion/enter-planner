@@ -9,6 +9,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
@@ -16,9 +21,12 @@ model User {
   lastName  String
   password  String
   role      UserRole  @default(USER)
-  createAt  DateTime  @default(now())
-  updateAt  DateTime  @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   calendar  Calendar?
+  tasks     Task[]
+
+  @@index([email])
 }
 
 model Event {
@@ -32,7 +40,9 @@ model Event {
   updatedAt  DateTime  @updatedAt
   calendarId Int
   color      String?   @default("#3788d8")
-  calendar   Calendar  @relation(fields: [calendarId], references: [id])
+  calendar   Calendar  @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+
+  @@index([calendarId])
 }
 
 model Calendar {
@@ -41,11 +51,31 @@ model Calendar {
   title     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   events    Event[]
+
+  @@index([userId])
 }
 
-enum UserRole {
-  USER
-  ADMIN
+enum TaskStatus {
+  PLANNED
+  IN_PROGRESS
+  ON_HOLD
+  DONE
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  dueDate     DateTime?
+  status      TaskStatus @default(PLANNED)
+  progress    Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
 }

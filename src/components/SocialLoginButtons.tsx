@@ -1,5 +1,5 @@
 import { FaApple, FaGithub, FaGoogle } from 'react-icons/fa';
-import SocialButton from './ui/SocialButton';
+import SocialButton from './ui/inputs/SocialButton';
 
 const SocialLoginButtons = () => {
   return (
