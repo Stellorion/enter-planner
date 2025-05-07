@@ -8,16 +8,38 @@ import { EventSourceInput } from '@fullcalendar/core/index.js';
 import allLocales from '@fullcalendar/core/locales/en-gb';
 import { CalendarComponentProps } from '@/src/types/event';
 import EventTooltip from './EventTooltip';
+import { useRef, useCallback } from 'react';
 
-const CalendarComponent = ({
+const DesktopCalendarComponent = ({
   allEvents,
   handleDateClick,
   handleUpdateModal,
   handleEventChange,
   handleDatesSet,
 }: CalendarComponentProps) => {
+  const calendarRef = useRef<FullCalendar>(null);
+
+  const handleEventChangeCallback = useCallback((info: any) => {
+    Promise.resolve().then(() => {
+      handleEventChange(info);
+    });
+  }, [handleEventChange]);
+
+  const handleEventClickCallback = useCallback((info: any) => {
+    Promise.resolve().then(() => {
+      handleUpdateModal(info);
+    });
+  }, [handleUpdateModal]);
+
+  const handleDateClickCallback = useCallback((info: any) => {
+    Promise.resolve().then(() => {
+      handleDateClick(info);
+    });
+  }, [handleDateClick]);
+
   return (
     <FullCalendar
+      ref={calendarRef}
       plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
       headerToolbar={{
         left: 'prev,next today',
@@ -28,7 +50,7 @@ const CalendarComponent = ({
         addEventButton: {
           text: 'Add Event',
           click: () => {
-            handleDateClick({ 
+            handleDateClickCallback({ 
               date: new Date(), 
               allDay: false 
             });
@@ -36,7 +58,7 @@ const CalendarComponent = ({
         }
       }}
       initialView="dayGridMonth"
-      height="150%"
+      height="100%"
       editable={true}
       selectable={true}
       selectMirror={true}
@@ -46,9 +68,9 @@ const CalendarComponent = ({
       eventDurationEditable={true}
       eventResizableFromStart={true}
       datesSet={handleDatesSet}
-      dateClick={handleDateClick}
-      eventClick={handleUpdateModal}
-      eventChange={handleEventChange}
+      dateClick={handleDateClickCallback}
+      eventClick={handleEventClickCallback}
+      eventChange={handleEventChangeCallback}
       eventContent={(eventInfo) => (
         <EventTooltip
           title={eventInfo.event.title}
@@ -95,4 +117,4 @@ const CalendarComponent = ({
   );
 };
 
-export default CalendarComponent;
+export default DesktopCalendarComponent;

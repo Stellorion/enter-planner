@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useThemeStore } from '@/src/store/useThemeStore';
 
 const ToastNotification = () => {
+  const { theme } = useThemeStore((state) => state);
+
   return (
     <ToastContainer
       position="bottom-right"
@@ -16,6 +18,7 @@ const ToastNotification = () => {
       pauseOnFocusLoss
       draggable
       pauseOnHover
+      theme={theme === 'dark' ? 'dark' : 'light'}
     />
   );
 };

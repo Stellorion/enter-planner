@@ -16,7 +16,7 @@ const SignupLayout = async () => {
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-grow items-center justify-center">
         <ToastNotification />
-        <div className="flex w-[90vw] flex-col rounded-sm bg-gray-100 p-8 text-white shadow-lg md:w-[70vw] lg:h-[75vh] lg:w-[30vw]">
+        <div className="flex w-[90vw] flex-col rounded-sm bg-white dark:bg-gray-900 p-8 shadow-lg md:w-[70vw] lg:h-[75vh] lg:w-[30vw]">
           <div className="flex w-full flex-col items-center justify-center">
             <SignupHeader />
             <SignupForm />

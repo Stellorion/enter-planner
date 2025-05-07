@@ -1,3 +1,5 @@
+import { IconType } from 'react-icons';
+
 export interface FormInputProps {
   type: string;
   placeholder: string;
@@ -61,4 +63,10 @@ export interface NumberInputProps {
   min?: number;
   max?: number;
   step?: number;
+}
+
+export interface SocialButtonProps {
+  icon: IconType;
+  label: string;
+  onClick?: () => void;
 }

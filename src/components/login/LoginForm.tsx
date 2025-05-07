@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import FormInput from '@/src/components/ui/inputs/AuthInput';
-import { LoginInputs } from '@/src/types/authInputs';
+import { LoginInputs } from '@/src/types/Inputs';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -47,16 +47,16 @@ const LoginForm = () => {
       />
       <button
         type="submit"
-        className="w-full rounded-sm bg-blue-500 py-2 transition hover:bg-blue-600"
+        className="w-full rounded-sm text-gray-200 bg-blue-500/90 py-2 transition hover:bg-blue-500"
       >
         Log in
       </button>
       <div className="mb-4 flex w-full items-center">
-        <div className="flex-grow border-t border-gray-800 dark:border-gray-200"></div>
-        <span className="px-3 whitespace-nowrap text-gray-800">
+        <div className="flex-grow border-t border-gray-600 dark:border-gray-400"></div>
+        <span className="px-3 whitespace-nowrap text-gray-600 dark:text-gray-400">
           Or log in with
         </span>
-        <div className="flex-grow border-t border-gray-800 dark:border-gray-200"></div>
+        <div className="flex-grow border-t border-gray-600 dark:border-gray-400"></div>
       </div>
     </form>
   );

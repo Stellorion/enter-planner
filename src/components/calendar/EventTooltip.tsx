@@ -55,7 +55,7 @@ const EventTooltip = ({
             className="relative z-10 max-w-xs border rounded-md bg-white border-gray-200 px-3 py-2 text-sm text-white dark:text-gray-100 shadow-lg dark:bg-gray-900 dark:border-gray-800"
           >
             <div className="text-center font-semibold text-gray-900 dark:text-gray-100">{title}</div>
-            <div className="mt-1 text-center text-gray-900 dark:text-gray-100">
+            <div className="mt-1 text-center text-gray-700 dark:text-gray-300">
               <div>
                 {allDay ? 'Date: ' : 'Start: '}
                 {formatDateTime(start)}
@@ -68,7 +68,7 @@ const EventTooltip = ({
               )}
             </div>
             {notes && (
-              <div className="mt-2 border-t border-gray-900 dark:border-gray-100 pt-2 break-words text-gray-900 dark:text-gray-100">
+              <div className="mt-2 border-t border-gray-700 dark:border-gray-300 pt-2 break-words text-gray-700 dark:text-gray-300">
                 {notes}
               </div>
             )}

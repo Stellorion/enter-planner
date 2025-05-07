@@ -9,6 +9,7 @@ export interface ModalContainerProps {
 export interface ModalHeaderProps {
   icon: IconType;
   title: string;
+  description?: string;
 }
 
 export interface ModalFooterProps<T = any> {

@@ -9,7 +9,7 @@ const CheckboxInput = ({ checked, onChange }: CheckboxInputProps) => (
       onChange={onChange}
       className="mr-2 h-4 w-4"
     />
-    <span className="text-sm text-gray-700">All Day</span>
+    <span className="text-sm text-gray-700 dark:text-gray-200">All Day</span>
   </label>
 );
 

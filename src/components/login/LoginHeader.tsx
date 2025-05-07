@@ -6,7 +6,7 @@ const LoginHeader = () => {
       <h2 className="mb-4 font-semibold max-lg:text-3xl lg:text-5xl">
         Log in
       </h2>
-      <p className="mb-4 text-gray-700">
+      <p className="mb-4 text-gray-600 dark:text-gray-400">
         Don't have an account?{' '}
         <Link href="/signup" className="text-blue-600 hover:underline">
           Sign up

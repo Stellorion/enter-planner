@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import FormInput from '@/src/components/ui/inputs/AuthInput';
-import { SignupInputs } from '@/src/types/authInputs';
+import { SignupInputs } from '@/src/types/Inputs';
 
 const SignupForm = () => {
   const router = useRouter();
@@ -100,17 +100,17 @@ const SignupForm = () => {
 
       <button
         type="submit"
-        className="w-full rounded-sm bg-blue-500 py-2 text-white transition hover:bg-blue-600"
+        className="w-full rounded-sm bg-blue-500/90 py-2 text-gray-200 transition hover:bg-blue-600"
       >
         Create account
       </button>
 
       <div className="mb-4 flex w-full items-center">
-        <div className="flex-grow border-t border-gray-700"></div>
-        <span className="px-3 whitespace-nowrap text-gray-700">
+        <div className="flex-grow border-t border-gray-600 dark:border-gray-400"></div>
+        <span className="px-3 whitespace-nowrap text-gray-600 dark:text-gray-400">
           Or sign up with
         </span>
-        <div className="flex-grow border-t border-gray-700"></div>
+        <div className="flex-grow border-t border-gray-600 dark:border-gray-400"></div>
       </div>
     </form>
   );
