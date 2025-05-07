@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db/connect';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 
 export async function PUT(
-  req: Request,
-  context: { params: { taskId: string } }
+  request: NextRequest,
+  { params }: { params: { taskId: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -13,8 +13,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { taskId } = context.params;
-    const taskIdNumber = parseInt(taskId);
+    const taskIdNumber = parseInt(params.taskId);
     
     if (isNaN(taskIdNumber)) {
       return NextResponse.json(
@@ -22,6 +21,9 @@ export async function PUT(
         { status: 400 }
       );
     }
+
+    const body = await request.json();
+    const { title, description, status, progress, dueDate } = body;
 
     // Verify task exists and belongs to user
     const existingTask = await db.task.findUnique({
@@ -38,25 +40,6 @@ export async function PUT(
       );
     }
 
-    const body = await req.json();
-    const { title, description, status, progress } = body;
-
-    // Validate status is one of the enum values
-    if (!['PLANNED', 'IN_PROGRESS', 'DONE', 'ON_HOLD'].includes(status.toUpperCase())) {
-      return NextResponse.json(
-        { error: 'Invalid status value' },
-        { status: 400 }
-      );
-    }
-
-    // Validate progress is between 0-100
-    if (progress < 0 || progress > 100) {
-      return NextResponse.json(
-        { error: 'Progress must be between 0 and 100' },
-        { status: 400 }
-      );
-    }
-
     const task = await db.task.update({
       where: { 
         id: taskIdNumber,
@@ -66,7 +49,8 @@ export async function PUT(
         title,
         description,
         status: status.toUpperCase(),
-        progress,
+        progress: typeof progress === 'string' ? parseInt(progress) : progress,
+        dueDate: dueDate ? new Date(dueDate) : null,
       },
     });
 

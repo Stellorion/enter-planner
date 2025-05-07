@@ -1,38 +1,67 @@
-import { Button, Input } from '@headlessui/react';
-import { FaSearch, FaPlus, FaFilter } from 'react-icons/fa';
+import { useState } from 'react';
+import { FaPlus, FaFilter } from 'react-icons/fa';
+import FilterModal from './modal/FilterModal';
+import { Search } from '@/src/components/task/Search';
 
-export function TaskControls({ onAdd }: { onAdd: () => void }) {
+interface TaskControlsProps {
+  onAdd: () => void;
+  filters: any;
+  setFilters: (filters: any) => void;
+  handleApplyFilters: () => void;
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+  statusFilter: string;
+  setStatusFilter: (val: string) => void;
+}
+
+export function TaskControls({
+  onAdd,
+  filters,
+  setFilters,
+  handleApplyFilters,
+  searchQuery,
+  setSearchQuery,
+  statusFilter,
+  setStatusFilter,
+}: TaskControlsProps) {
+  const [showFilterModal, setShowFilterModal] = useState(false);
+
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <div className="flex gap-4 rounded-md border border-gray-300 p-2 text-gray-500">
-        <Button className="rounded-md p-1 pr-2 pl-2 hover:bg-gray-300 hover:text-blue-400">
-          All
-        </Button>
-        <Button>Planned</Button>
-        <Button>In Progress</Button>
-        <Button>Done</Button>
-        <Button>On Hold</Button>
-      </div>
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="relative flex items-center rounded-md border border-gray-300 p-2 text-gray-700 focus-within:ring-2 focus-within:ring-blue-600 focus-within:outline-none">
-          <FaSearch className="absolute top-3 left-3 h-4 w-4 text-gray-400" />
-          <Input
-            type="search"
-            placeholder="Search anything..."
-            className="w-[250px] pl-10 focus:outline-none"
-          />
+    <>
+      <div className="flex w-full flex-col md:flex-row md:items-center md:justify-between">
+        <div className="flex gap-2">
+          <button
+            className="flex items-center gap-2 rounded-md border border-blue-500 px-4 py-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+            onClick={() => setShowFilterModal(true)}
+          >
+            <FaFilter className="h-4 w-4" />
+            Filter
+          </button>
+          <div className="w-full md:w-1/2">
+            <Search
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+            />
+          </div>
+          <button
+            className="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            onClick={onAdd}
+          >
+            <FaPlus className="h-4 w-4" />
+            Add Task
+          </button>
         </div>
-        <button className="flex cursor-pointer items-center gap-2 rounded-md border border-blue-500 p-2 pr-3 pl-3 text-blue-500 transition-colors hover:bg-gray-100 hover:text-gray-600">
-          <FaFilter />
-          Filter
-        </button>
-        <button
-          className="flex cursor-pointer items-center rounded-md bg-blue-500 p-2 pr-4 pl-4 transition-colors hover:bg-blue-600"
-          onClick={onAdd}
-        >
-          <FaPlus className="mr-2 h-3 w-3" /> Add New
-        </button>
       </div>
-    </div>
+
+      <FilterModal
+        showModal={showFilterModal}
+        setShowModal={setShowFilterModal}
+        filters={filters}
+        setFilters={setFilters}
+        handleApplyFilters={handleApplyFilters}
+      />
+    </>
   );
 }

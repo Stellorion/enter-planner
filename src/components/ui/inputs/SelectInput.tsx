@@ -9,7 +9,7 @@ const SelectInput = ({ value, onChange, options }: SelectInputProps) => (
       name="status"
       value={value}
       onChange={onChange}
-      className="mt-1 block w-full bg-gray-800 rounded-md border border-gray-300 dark:border-gray-700 p-1.5 pb-2 text-gray-700 dark:text-gray-200 sm:text-sm"
+      className="mt-1 block w-full bg-white dark:bg-gray-800 rounded-md border border-gray-300 dark:border-gray-700 p-1.5 pb-2 text-gray-700 dark:text-gray-200 sm:text-sm"
     >
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>

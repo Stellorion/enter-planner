@@ -1,5 +1,6 @@
 'use client';
 
+import { FaTimes } from 'react-icons/fa';
 import TextareaInput from '@/src/components/ui/inputs/TextareaInput';
 import TitleInput from '../../ui/inputs/TitleInput';
 import StatusInput from '../../ui/inputs/SelectInput';
@@ -7,47 +8,65 @@ import NumberInput from '../../ui/inputs/NumberInput';
 import { TaskFormProps } from '@/src/types/task';
 import DateTimeInput from '../../ui/inputs/DateTimeInput';
 
-const TaskForm = ({ task, handleChange }: TaskFormProps) => (
-  <div className="space-y-4">
-    <TitleInput value={task.title || ''} onChange={handleChange} />
-    <TextareaInput
-      id="description"
-      label="Description"
-      value={task.description || ''}
-      onChange={handleChange}
-      name="description"
-      placeholder="Task description (optional)"
-    />
-    <div className="grid grid-cols-2 gap-4">
-      <StatusInput
-        value={task.status || 'PLANNED'}
+const TaskForm = ({ task, handleChange }: TaskFormProps) => {
+  const handleClearDate = () => {
+    const event = {
+      target: {
+        name: 'dueDate',
+        value: null,
+      },
+    } as React.ChangeEvent<HTMLInputElement>;
+    handleChange(event);
+  };
+
+  // Format the date for the input if it exists
+  const formatDate = (date: string | null) => {
+    if (!date) return '';
+    return new Date(date).toISOString().slice(0, 16); // Format to YYYY-MM-DDThh:mm
+  };
+
+  return (
+    <div className="space-y-4">
+      <TitleInput value={task.title || ''} onChange={handleChange} />
+      <TextareaInput
+        id="description"
+        label="Description"
+        value={task.description || ''}
         onChange={handleChange}
-        name="status"
-        options={[
-          { value: 'PLANNED', label: 'Planned' },
-          { value: 'IN_PROGRESS', label: 'In Progress' },
-          { value: 'DONE', label: 'Done' },
-          { value: 'ON_HOLD', label: 'On Hold' },
-        ]}
+        name="description"
+        placeholder="Task description (optional)"
       />
-      <NumberInput
-        value={task.progress || 0}
+      <div className="grid grid-cols-2 gap-4">
+        <StatusInput
+          value={task.status || 'PLANNED'}
+          onChange={handleChange}
+          name="status"
+          options={[
+            { value: 'PLANNED', label: 'Planned' },
+            { value: 'IN_PROGRESS', label: 'In Progress' },
+            { value: 'DONE', label: 'Done' },
+            { value: 'ON_HOLD', label: 'On Hold' },
+          ]}
+        />
+        <NumberInput
+          value={task.progress || 0}
+          onChange={handleChange}
+          name="progress"
+          min={0}
+          max={100}
+          step={10}
+          label="Progress"
+        />
+      </div>
+      <DateTimeInput
+        label="Due Date"
+        name="dueDate"
+        value={formatDate(task.dueDate)}
         onChange={handleChange}
-        name="progress"
-        min={0}
-        max={100}
-        step={10}
-        label="Progress"
+        required={false}
       />
     </div>
-    <DateTimeInput
-      label="Due Date"
-      name="dueDate"
-      value={task.dueDate || ''}
-      onChange={handleChange}
-      required={false}
-    />
-  </div>
-);
+  );
+};
 
 export default TaskForm;

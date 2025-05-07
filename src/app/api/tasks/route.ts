@@ -33,15 +33,36 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { title, description, status, progress } = body;
+    const { title, description, status, progress, dueDate } = body;
+
+    // Validate required fields
+    if (!title) {
+      return NextResponse.json(
+        { error: 'Title is required' },
+        { status: 400 }
+      );
+    }
+
+    // Verify the user exists
+    const user = await db.user.findUnique({
+      where: { id: parseInt(session.user.id) }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
 
     const task = await db.task.create({
       data: {
         title,
         description,
-        status,
-        progress,
-        userId: parseInt(session.user.id),
+        status: status || 'PLANNED',
+        progress: progress || 0,
+        dueDate: dueDate ? new Date(dueDate) : null,
+        userId: user.id 
       },
     });
 
