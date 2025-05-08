@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { FaRegClock, FaRegSun, FaRegCheckCircle, FaRegCircle } from "react-icons/fa"
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 import { TaskControls } from "@/src/components/task/TaskControls"
@@ -10,16 +10,6 @@ import AddTaskModal from "@/src/components/task/modal/AddTaskModal"
 import { useTaskStore } from "@/src/store/useTaskStore"
 
 export default function TaskList() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("ALL");
-
-  const [filters, setFilters] = useState({
-    status: 'ALL',
-    dateRange: { start: null, end: null },
-    sortBy: 'createdAt' as const,
-    sortOrder: 'desc' as const
-  });
-
   const {
     tasks,
     editingTask,
@@ -38,6 +28,11 @@ export default function TaskList() {
     setShowAddModal,
     setShowUpdateModal,
     reorderTask,
+    searchQuery,
+    setSearchQuery,
+    statusFilter,
+    filters,
+    setFilters,
   } = useTaskStore();
 
   useEffect(() => {
@@ -124,37 +119,52 @@ export default function TaskList() {
   const filteredTasks = useMemo(() => {
     return tasks.filter(task => {
       const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        task.description?.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesStatus = statusFilter === "ALL" || task.status === statusFilter;
+        task.description?.toLowerCase().includes(searchQuery.toLowerCase() || '');
 
-      // Status filter
-      if (filters.status !== 'ALL' && task.status !== filters.status) {
-        return false;
-      }
+      const matchesStatus = filters.status === "ALL" || task.status === filters.status;
 
-      // Date range filter
       if (filters.dateRange.start && filters.dateRange.end) {
-        const taskDate = new Date(task.dueDate);
-        if (taskDate < filters.dateRange.start || taskDate > filters.dateRange.end) {
+        const taskDueDate = task.dueDate ? new Date(task.dueDate) : null;
+
+        if (!taskDueDate || isNaN(taskDueDate.getTime())) {
+          return false;
+        }
+
+        if (taskDueDate < filters.dateRange.start || taskDueDate > filters.dateRange.end) {
           return false;
         }
       }
 
       return matchesSearch && matchesStatus;
     }).sort((a, b) => {
-      // Sort logic
-      const aValue = a[filters.sortBy];
-      const bValue = b[filters.sortBy];
-      
-      if (!aValue || !bValue) return 0;
-      
-      const comparison = filters.sortOrder === 'asc' 
-        ? aValue > bValue ? 1 : -1
-        : aValue < bValue ? 1 : -1;
-        
-      return comparison;
+      const sortBy = filters.sortBy;
+      const aValue = a[sortBy]; 
+      const bValue = b[sortBy];
+
+      if (aValue === undefined || aValue === null) {
+          return bValue === undefined || bValue === null ? 0 : (filters.sortOrder === 'asc' ? -1 : 1);
+      }
+       if (bValue === undefined || bValue === null) {
+           return filters.sortOrder === 'asc' ? 1 : -1;
+       }
+
+
+      let comparison = 0;
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        comparison = aValue.localeCompare(bValue);
+      } else if (aValue instanceof Date && bValue instanceof Date) {
+        comparison = aValue.getTime() - bValue.getTime();
+      } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+        comparison = aValue - bValue;
+      } else {
+         if (aValue < bValue) comparison = -1;
+         else if (aValue > bValue) comparison = 1;
+      }
+
+      return filters.sortOrder === 'asc' ? comparison : -comparison;
     });
-  }, [tasks, searchQuery, statusFilter, filters]);
+  }, [tasks, searchQuery, filters]);
 
   const plannedTasks = useMemo(() => 
     filteredTasks.filter(task => task.status === "PLANNED"), [filteredTasks]);
@@ -182,8 +192,6 @@ export default function TaskList() {
               handleApplyFilters={handleApplyFilters}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
-              statusFilter={statusFilter}
-              setStatusFilter={setStatusFilter}
             />
           </div>
           <DragDropContext onDragEnd={handleDragEnd}>
@@ -196,6 +204,7 @@ export default function TaskList() {
                     tasks={plannedTasks}
                     onEdit={handleEdit}
                     provided={provided}
+                    colorClass="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300"
                   />
                 )}
               </Droppable>
@@ -207,6 +216,7 @@ export default function TaskList() {
                     tasks={inProgressTasks}
                     onEdit={handleEdit}
                     provided={provided}
+                    colorClass="bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-300"
                   />
                 )}
               </Droppable>
@@ -218,6 +228,7 @@ export default function TaskList() {
                     tasks={doneTasks}
                     onEdit={handleEdit}
                     provided={provided}
+                    colorClass="bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-300"
                   />
                 )}
               </Droppable>
@@ -229,6 +240,7 @@ export default function TaskList() {
                     tasks={onHoldTasks}
                     onEdit={handleEdit}
                     provided={provided}
+                    colorClass="bg-gray-50 dark:bg-gray-900/30 text-gray-600 dark:text-gray-300"
                   />
                 )}
               </Droppable>

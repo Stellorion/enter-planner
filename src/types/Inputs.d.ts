@@ -42,6 +42,7 @@ export interface DateTimeInputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   min?: string;
+  optional?: boolean;
 }
 
 export type CheckboxInputProps = {
@@ -56,17 +57,23 @@ export interface SelectInputProps {
   options: { value: string; label: string }[];
 }
 
-export interface NumberInputProps {
+interface NumberInputProps {
   value: number;
-  name: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  name: string;
   min?: number;
   max?: number;
   step?: number;
+  label?: string;
 }
 
 export interface SocialButtonProps {
   icon: IconType;
   label: string;
   onClick?: () => void;
+}
+
+interface SearchProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
 }

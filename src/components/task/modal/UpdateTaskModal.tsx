@@ -31,7 +31,10 @@ const UpdateModal: React.FC<UpdateModalProps<Task>> = ({
           <TaskForm task={data} handleChange={handleChange} />
 
           <ModalFooter
-            handlePrimary={() => handleUpdate(data)}
+            handlePrimary={async () => {
+              await handleUpdate(data);
+              handleCloseModal();
+            }}            
             handleSecondary={handleDelete}
             handleCloseModal={handleCloseModal}
             primaryButtonText="Update"

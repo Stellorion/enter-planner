@@ -1,14 +1,14 @@
 import { create } from 'zustand';
-import { Task } from '@/src/types/task';
+import { Task, TaskStore, TaskFilters } from '@/src/types/task';
 import { toast } from 'react-toastify';
-import { TaskStore } from '@/src/types/taskStore';
 
 const defaultTask: Task = {
-  title: "",
-  description: "",
-  status: "PLANNED",
+  title: '',
+  description: '',
+  status: 'PLANNED',
   progress: 0,
-  dueDate: null
+  dueDate: null,
+  order: 0,
 };
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -18,12 +18,42 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   showUpdateModal: false,
   newTask: defaultTask,
 
+  searchQuery: '',
+  setSearchQuery: (query) => set({ searchQuery: query }),
+
+  statusFilter: 'ALL',
+  setStatusFilter: (status: 'ALL' | 'PLANNED' | 'IN_PROGRESS' | 'ON_HOLD' | 'DONE') => set({ statusFilter: status }),
+
+  filters: {
+    status: 'ALL',
+    dateRange: { start: null, end: null },
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+  },
+  setFilters: (filters: TaskFilters) => set({ filters }),
+
   fetchTasks: async () => {
     try {
       const response = await fetch('/api/tasks');
       if (!response.ok) throw new Error('Failed to fetch tasks');
       const data = await response.json();
-      set({ tasks: data.tasks });
+      
+      const tasksWithParsedNumbers = data.tasks.map((task: Task) => {
+        const validStatus = ['PLANNED', 'IN_PROGRESS', 'ON_HOLD', 'DONE'].includes(task.status)
+          ? task.status
+          : 'PLANNED';
+  
+        return {
+          ...task,
+          status: validStatus,
+          progress: typeof task.progress === 'string' ? parseInt(task.progress) || 0 : task.progress || 0,
+          order: typeof task.order === 'string' ? parseInt(task.order) || 0 : task.order || 0,
+          dueDate: task.dueDate ? new Date(task.dueDate) : null,
+          createdAt: task.createdAt ? new Date(task.createdAt) : undefined,
+        };
+      });
+      
+      set({ tasks: tasksWithParsedNumbers });
     } catch (error) {
       toast.error('Failed to load tasks');
     }
@@ -34,38 +64,79 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   setShowUpdateModal: (show) => set({ showUpdateModal: show }),
 
   updateNewTask: (name, value) => {
-    set((state) => ({
-      newTask: {
-        ...state.newTask,
-        [name]: value
+    set((state) => {
+      let finalValue = value;
+      if (name === 'progress' && typeof value === 'string') {
+        const parsed = parseInt(value);
+        finalValue = isNaN(parsed) ? (state.newTask as any)[name] || 0 : parsed;
       }
-    }));
+
+      return {
+        newTask: {
+          ...state.newTask,
+          [name]: finalValue,
+        },
+      };
+    });
   },
 
   updateEditingTask: (name, value) => {
-    set((state) => ({
-      editingTask: state.editingTask ? {
-        ...state.editingTask,
-        [name]: value
-      } : null
-    }));
+    set((state) => {
+      let finalValue = value;
+
+      if (name === 'progress' && typeof value === 'string') {
+        const parsed = parseInt(value);
+        finalValue = isNaN(parsed)
+          ? (state.editingTask as any)?.[name] || 0
+          : parsed;
+      }
+
+      return {
+        editingTask: state.editingTask
+          ? {
+              ...state.editingTask,
+              [name]: finalValue,
+            }
+          : null,
+      };
+    });
   },
 
   addTask: async (e) => {
     e.preventDefault();
     try {
-      const { newTask } = get();
+      const { newTask, tasks } = get();
+      const tasksInTargetColumn = tasks.filter(
+        (t) => t.status === newTask.status
+      );
+      const newOrder =
+        tasksInTargetColumn.length > 0
+          ? Math.max(...tasksInTargetColumn.map((t) => t.order)) + 1
+          : 0;
+
+      const taskToSend = {
+        ...newTask,
+        order: newOrder,
+        progress:
+          typeof newTask.progress === 'string'
+            ? parseInt(newTask.progress) || 0
+            : newTask.progress || 0,
+        dueDate: newTask.dueDate
+          ? new Date(newTask.dueDate).toISOString()
+          : null,
+      } as Omit<Task, 'id' | 'createdAt' | 'updatedAt'>;
+
       const response = await fetch('/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTask),
+        body: JSON.stringify(taskToSend),
       });
       if (!response.ok) throw new Error('Failed to create task');
       const task = await response.json();
-      set((state) => ({ 
+      set((state) => ({
         tasks: [...state.tasks, task],
         showAddModal: false,
-        newTask: defaultTask
+        newTask: defaultTask,
       }));
       toast.success('Task created successfully');
     } catch (error) {
@@ -75,21 +146,37 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
   updateTask: async (updatedTask: Task) => {
     try {
-      // Optimistically update the UI
+      const taskToSend = {
+        ...updatedTask,
+        progress:
+          typeof updatedTask.progress === 'string'
+            ? parseInt(updatedTask.progress) || 0
+            : updatedTask.progress || 0,
+        order:
+          typeof updatedTask.order === 'string'
+            ? parseInt(updatedTask.order) || 0
+            : updatedTask.order || 0,
+        dueDate:
+          updatedTask.dueDate instanceof Date
+            ? updatedTask.dueDate.toISOString()
+            : updatedTask.dueDate
+              ? new Date(updatedTask.dueDate).toISOString()
+              : null,
+      };
+
       set((state) => ({
         tasks: state.tasks.map((task) =>
-          task.id === updatedTask.id ? updatedTask : task
+          task.id === updatedTask.id ? { ...task, ...taskToSend } : task
         ),
       }));
 
       const response = await fetch(`/api/tasks/${updatedTask.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedTask),
+        body: JSON.stringify(taskToSend),
       });
 
       if (!response.ok) {
-        // Rollback on error
         await get().fetchTasks();
         throw new Error('Failed to update task');
       }
@@ -102,15 +189,19 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     const { editingTask } = get();
     if (!editingTask?.id) return;
     try {
+      set((state) => ({
+        tasks: state.tasks.filter((task) => task.id !== editingTask.id),
+        showUpdateModal: false,
+        editingTask: null,
+      }));
+
       const response = await fetch(`/api/tasks/${editingTask.id}`, {
         method: 'DELETE',
       });
-      if (!response.ok) throw new Error('Failed to delete task');
-      set((state) => ({
-        tasks: state.tasks.filter(task => task.id !== editingTask.id),
-        showUpdateModal: false,
-        editingTask: null
-      }));
+      if (!response.ok) {
+        await get().fetchTasks();
+        throw new Error('Failed to delete task');
+      }
       toast.success('Task deleted successfully');
     } catch (error) {
       toast.error('Failed to delete task');
@@ -118,23 +209,23 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   },
 
   handleEdit: (task) => {
-    set({ 
+    set({
       editingTask: task,
-      showUpdateModal: true 
+      showUpdateModal: true,
     });
   },
 
   handleCloseAddModal: () => {
-    set({ 
+    set({
       showAddModal: false,
-      newTask: defaultTask 
+      newTask: defaultTask,
     });
   },
 
   handleCloseUpdateModal: () => {
-    set({ 
+    set({
       showUpdateModal: false,
-      editingTask: null 
+      editingTask: null,
     });
   },
 
@@ -147,26 +238,62 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       const task = tasks[taskIndex];
       tasks.splice(taskIndex, 1);
 
-      // Find insertion point
-      const insertIndex = tasks.findIndex((t) => 
-        t.status === newStatus && t.order >= newOrder
-      );
+      const targetColumnTasks = tasks
+        .filter((t) => t.status === newStatus)
+        .sort((a, b) => a.order - b.order);
 
-      // Insert task at new position
-      if (insertIndex === -1) {
-        tasks.push({ ...task, status: newStatus, order: newOrder });
-      } else {
-        tasks.splice(insertIndex, 0, { ...task, status: newStatus, order: newOrder });
+      let insertIndexInColumn = targetColumnTasks.findIndex(
+        (t) => t.order >= newOrder
+      );
+      if (insertIndexInColumn === -1) {
+        insertIndexInColumn = targetColumnTasks.length;
       }
 
-      // Update orders for affected tasks
-      tasks.forEach((t, index) => {
-        if (t.status === newStatus) {
-          t.order = index;
+      const updatedTask = { ...task, status: newStatus, order: newOrder };
+      const newTasks = state.tasks.filter((t) => t.id !== taskId);
+
+      const tasksBeforeInsert = newTasks
+        .filter((t) => t.status === newStatus && t.order < newOrder)
+        .sort((a, b) => a.order - b.order);
+      const tasksAfterInsert = newTasks
+        .filter((t) => t.status === newStatus && t.order >= newOrder)
+        .sort((a, b) => a.order - b.order);
+      const otherTasks = newTasks.filter((t) => t.status !== newStatus);
+
+      const newTargetColumnTasks = [
+        ...tasksBeforeInsert,
+        updatedTask,
+        ...tasksAfterInsert,
+      ];
+
+      const reindexedTargetColumnTasks = newTargetColumnTasks.map(
+        (t, index) => ({
+          ...t,
+          order: index,
+        })
+      );
+
+      const finalTasks = [...otherTasks, ...reindexedTargetColumnTasks];
+
+      finalTasks.sort((a, b) => {
+        if (a.status === b.status) {
+          return a.order - b.order;
         }
+        const statusOrder = ['PLANNED', 'IN_PROGRESS', 'DONE', 'ON_HOLD'];
+        return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
       });
 
-      return { ...state, tasks };
+      return { tasks: finalTasks };
     });
+
+    const draggedTask = get().tasks.find((t) => t.id === taskId);
+    if (draggedTask) {
+      const taskAfterReorderStateUpdate = get().tasks.find(
+        (t) => t.id === taskId
+      );
+      if (taskAfterReorderStateUpdate) {
+        get().updateTask(taskAfterReorderStateUpdate);
+      }
+    }
   },
 }));

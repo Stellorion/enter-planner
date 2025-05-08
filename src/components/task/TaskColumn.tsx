@@ -1,5 +1,4 @@
 import { memo, useMemo } from 'react';
-import { Task } from "@/src/types/task";
 import { TaskCard } from "./TaskCard";
 import { Draggable } from '@hello-pangea/dnd';
 import { TaskColumnProps } from "@/src/types/task";
@@ -9,7 +8,8 @@ export const TaskColumn = memo(function TaskColumn({
   title, 
   tasks, 
   onEdit, 
-  provided 
+  provided,
+  colorClass,
 }: TaskColumnProps) {
   const sortedTasks = useMemo(() => 
     [...tasks].sort((a, b) => a.order - b.order), 
@@ -20,14 +20,14 @@ export const TaskColumn = memo(function TaskColumn({
     <div
       {...provided.droppableProps}
       ref={provided.innerRef}
-      className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm min-h-[200px]"
+      className="max-h-screen bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg min-h-[200px]"
     >
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center bg-gray-100/50 dark:bg-gray-900/30 text-lg p-4 gap-2 border-b border-b-gray-200 dark:border-b-gray-700">
         {icon}
         <h2 className="font-semibold text-gray-900 dark:text-white">{title}</h2>
-        <span className="text-sm text-gray-600 dark:text-gray-400">({tasks.length})</span>
+        <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ml-auto ${colorClass || ''}`}>{tasks.length}</span>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-3 p-3 overflow-x-hidden overflow-y-auto max-h-[calc(100vh-250px)]">
         {sortedTasks.map((task, index) => (
           <Draggable key={task.id} draggableId={task.id!.toString()} index={index}>
             {(provided) => (

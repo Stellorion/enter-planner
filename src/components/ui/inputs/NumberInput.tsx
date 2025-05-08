@@ -1,12 +1,4 @@
-interface NumberInputProps {
-  value: number;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  name: string;
-  min?: number;
-  max?: number;
-  step?: number;
-  label?: string;
-}
+import { NumberInputProps } from "@/src/types/Inputs";
 
 const NumberInput = ({
   value,
@@ -14,17 +6,15 @@ const NumberInput = ({
   name,
   min = 0,
   max = 100,
-  step = 10,
+  step = 1,
   label
 }: NumberInputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     if (isNaN(newValue)) return;
     
-    // Clamp value between min and max
     const clampedValue = Math.min(Math.max(newValue, min), max);
     
-    // Create new event with clamped value
     const newEvent = {
       ...e,
       target: {
@@ -40,7 +30,7 @@ const NumberInput = ({
   return (
     <div>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-left text-sm font-medium text-gray-900 dark:text-gray-100">
           {label}
         </label>
       )}
@@ -52,7 +42,7 @@ const NumberInput = ({
         min={min}
         max={max}
         step={step}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+        className="mt-1 block w-full rounded-md border p-1.5 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
       />
     </div>
   );

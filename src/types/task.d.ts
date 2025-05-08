@@ -4,6 +4,11 @@ export interface TaskStore {
   showAddModal: boolean;
   showUpdateModal: boolean;
   newTask: Task;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  statusFilter: 'ALL' | 'PLANNED' | 'IN_PROGRESS' | 'ON_HOLD' | 'DONE';
+  filters: TaskFilters;
+  setFilters: (filters: TaskFilters) => void;
   fetchTasks: () => Promise<void>;
   setEditingTask: (task: Task | null) => void;
   setShowAddModal: (show: boolean) => void;
@@ -25,7 +30,7 @@ export interface Task {
   description: string;
   status: 'PLANNED' | 'IN_PROGRESS' | 'ON_HOLD' | 'DONE';
   progress: number;
-  dueDate?: string | null;
+  dueDate?: string | null | Date;
   order: number;
   createdAt?: Date;
   updatedAt?: Date;
@@ -34,7 +39,9 @@ export interface Task {
 export interface TaskFormProps {
   task: Task;
   handleChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => void;
 }
 
@@ -44,4 +51,29 @@ export interface TaskColumnProps {
   tasks: Task[];
   onEdit: (task: Task) => void;
   provided: any;
+  colorClass?: string;
+}
+
+interface TaskControlsProps {
+  onAdd: () => void;
+  filters: any;
+  setFilters: (filters: any) => void;
+  handleApplyFilters: () => void;
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+}
+
+export interface TaskFilters {
+  status: 'ALL' | 'PLANNED' | 'IN_PROGRESS' | 'ON_HOLD' | 'DONE';
+  dateRange: {
+    start: Date | null;
+    end: Date | null;
+  };
+  sortBy: 'createdAt' | 'dueDate' | 'title' | 'status' | 'progress';
+  sortOrder: 'asc' | 'desc';
+}
+
+export interface FilterPopoverProps {
+  filters: TaskFilters;
+  setFilters: (filters: TaskFilters) => void;
 }

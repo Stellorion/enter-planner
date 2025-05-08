@@ -8,13 +8,14 @@ const DateTimeInput = ({
   onChange,
   required,
   min,
+  optional,
 }: DateTimeInputProps) => (
   <div>
     <label
       htmlFor={name}
       className="block text-left text-sm font-medium text-gray-900 dark:text-gray-100"
     >
-      {label} {isAllDay ? 'Date' : 'Date/Time'}
+      {label} {isAllDay ? 'Date' : 'Date/Time'} {optional && '(Optional)'}
     </label>
     <input
       type={isAllDay ? 'date' : 'datetime-local'}

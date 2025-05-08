@@ -1,23 +1,20 @@
 export function ProgressIndicator({ progress }: { progress: number }) {
-    let color = "bg-gray-200"
     let textColor = "text-gray-700"
   
     if (progress === 100) {
-      color = "bg-green-100"
-      textColor = "text-green-700"
+      textColor = "text-green-700 dark:text-green-500"
     } else if (progress >= 75) {
-      color = "bg-blue-100"
-      textColor = "text-blue-700"
+      textColor = "text-blue-700 dark:text-blue-500"
     } else if (progress >= 50) {
-      color = "bg-yellow-100"
-      textColor = "text-yellow-700"
+      textColor = "text-yellow-700 dark:text-yellow-500"
     } else if (progress > 0) {
-      color = "bg-orange-100"
-      textColor = "text-orange-700"
+      textColor = "text-orange-700 dark:text-orange-500"
+    } else {
+      textColor = "text-gray-700 dark:text-gray-500"
     }
   
     return (
-      <div className={`px-2 py-0.5 rounded-full text-xs ${color} ${textColor}`}>
+      <div className={`text-xs ${textColor}`}>
         {progress}%
       </div>
     );

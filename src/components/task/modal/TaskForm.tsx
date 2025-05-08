@@ -1,30 +1,14 @@
 'use client';
 
-import { FaTimes } from 'react-icons/fa';
 import TextareaInput from '@/src/components/ui/inputs/TextareaInput';
 import TitleInput from '../../ui/inputs/TitleInput';
 import StatusInput from '../../ui/inputs/SelectInput';
 import NumberInput from '../../ui/inputs/NumberInput';
 import { TaskFormProps } from '@/src/types/task';
 import DateTimeInput from '../../ui/inputs/DateTimeInput';
+import { formatDateString } from '@/utils/formatDateString';
 
 const TaskForm = ({ task, handleChange }: TaskFormProps) => {
-  const handleClearDate = () => {
-    const event = {
-      target: {
-        name: 'dueDate',
-        value: null,
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-    handleChange(event);
-  };
-
-  // Format the date for the input if it exists
-  const formatDate = (date: string | null) => {
-    if (!date) return '';
-    return new Date(date).toISOString().slice(0, 16); // Format to YYYY-MM-DDThh:mm
-  };
-
   return (
     <div className="space-y-4">
       <TitleInput value={task.title || ''} onChange={handleChange} />
@@ -54,16 +38,18 @@ const TaskForm = ({ task, handleChange }: TaskFormProps) => {
           name="progress"
           min={0}
           max={100}
-          step={10}
+          step={1}
           label="Progress"
         />
       </div>
       <DateTimeInput
-        label="Due Date"
+        label="Due"
         name="dueDate"
-        value={formatDate(task.dueDate)}
+        value={task.dueDate ? formatDateString(task.dueDate) : ''}
         onChange={handleChange}
+        isAllDay={false}
         required={false}
+        optional={true}
       />
     </div>
   );
