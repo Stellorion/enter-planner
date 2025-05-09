@@ -7,7 +7,6 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
 import allLocales from '@fullcalendar/core/locales/en-gb';
 import { CalendarComponentProps } from '@/src/types/event';
-import { MdToday } from 'react-icons/md';
 import EventTooltip from './EventTooltip';
 import { useCalendarUiStore } from '@/src/store/useCalendarStore';
 import { useRef } from 'react';
@@ -95,7 +94,7 @@ const MobileCalendarComponent = ({
           aspectRatio={1.5}
           longPressDelay={100}
           locale={allLocales}
-          timeZone="Asia/Jerusalem"
+          timeZone="local"
           firstDay={0}
           datesSet={handleDatesSetInternal}
           events={allEvents as EventSourceInput}

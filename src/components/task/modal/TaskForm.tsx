@@ -6,7 +6,7 @@ import StatusInput from '../../ui/inputs/SelectInput';
 import NumberInput from '../../ui/inputs/NumberInput';
 import { TaskFormProps } from '@/src/types/task';
 import DateTimeInput from '../../ui/inputs/DateTimeInput';
-import { formatDateString } from '@/utils/formatDateString';
+import { formatDateString } from '@/utils/dateUtils';
 
 const TaskForm = ({ task, handleChange }: TaskFormProps) => {
   return (

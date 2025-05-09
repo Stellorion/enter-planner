@@ -2,14 +2,16 @@ import { create } from 'zustand';
 import { toast } from 'react-toastify';
 import { NewEvent } from '@/src/types/event';
 import { CalendarStore, CalendarUiState } from '@/src/types/calendar';
+import { getLocalISOString, truncateToNearestHour } from '@/utils/dateUtils';
+
+const now = truncateToNearestHour(new Date());
+const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
 const initialNewEvent: NewEvent = {
   id: '',
   title: '',
-  start: new Date().toISOString().slice(0, 16),
-  end: new Date(new Date().getTime() + 60 * 60 * 1000)
-    .toISOString()
-    .slice(0, 16),
+  start: getLocalISOString(now),
+  end: getLocalISOString(oneHourLater),
   allDay: false,
   notes: '',
   color: '#3788d8',

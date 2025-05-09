@@ -18,6 +18,10 @@ const UpdateModal: React.FC<UpdateModalProps<Event>> = ({
 }) => {
   if (!data) return null;
 
+  const startDate = new Date(data.start || '');
+  const endDate = new Date(data.end || '');
+  const isEndBeforeStart = endDate < startDate;
+
   return (
     <ModalContainer show={showUpdateModal} onClose={setShowUpdateModal}>
       <Dialog.Panel className="relative transform self-center rounded-md bg-white dark:bg-gray-900 shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
@@ -35,7 +39,7 @@ const UpdateModal: React.FC<UpdateModalProps<Event>> = ({
             handleSecondary={handleDelete}
             handleCloseModal={handleCloseModal}
             primaryButtonText="Update"
-            primaryButtonDisabled={!data.title}
+            primaryButtonDisabled={!data.title || isEndBeforeStart}
           />
         </div>
       </Dialog.Panel>

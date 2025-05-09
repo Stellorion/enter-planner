@@ -19,23 +19,32 @@ const DesktopCalendarComponent = ({
 }: CalendarComponentProps) => {
   const calendarRef = useRef<FullCalendar>(null);
 
-  const handleEventChangeCallback = useCallback((info: any) => {
-    Promise.resolve().then(() => {
-      handleEventChange(info);
-    });
-  }, [handleEventChange]);
+  const handleEventChangeCallback = useCallback(
+    (info: any) => {
+      Promise.resolve().then(() => {
+        handleEventChange(info);
+      });
+    },
+    [handleEventChange]
+  );
 
-  const handleEventClickCallback = useCallback((info: any) => {
-    Promise.resolve().then(() => {
-      handleUpdateModal(info);
-    });
-  }, [handleUpdateModal]);
+  const handleEventClickCallback = useCallback(
+    (info: any) => {
+      Promise.resolve().then(() => {
+        handleUpdateModal(info);
+      });
+    },
+    [handleUpdateModal]
+  );
 
-  const handleDateClickCallback = useCallback((info: any) => {
-    Promise.resolve().then(() => {
-      handleDateClick(info);
-    });
-  }, [handleDateClick]);
+  const handleDateClickCallback = useCallback(
+    (info: any) => {
+      Promise.resolve().then(() => {
+        handleDateClick(info);
+      });
+    },
+    [handleDateClick]
+  );
 
   return (
     <FullCalendar
@@ -44,18 +53,18 @@ const DesktopCalendarComponent = ({
       headerToolbar={{
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay addEventButton'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay addEventButton',
       }}
       customButtons={{
         addEventButton: {
           text: 'Add Event',
           click: () => {
-            handleDateClickCallback({ 
-              date: new Date(), 
-              allDay: false 
+            handleDateClickCallback({
+              date: new Date(),
+              allDay: false,
             });
-          }
-        }
+          },
+        },
       }}
       initialView="dayGridMonth"
       height="100%"
@@ -79,15 +88,18 @@ const DesktopCalendarComponent = ({
           end={eventInfo.event.endStr}
           allDay={eventInfo.event.allDay}
         >
-          <div 
-            className="w-full h-full rounded px-1 cursor-pointer" 
-            style={{ 
-              backgroundColor: eventInfo.event.backgroundColor || eventInfo.event.extendedProps?.color,
+          <div
+            className="h-full w-full cursor-pointer rounded px-1"
+            style={{
+              backgroundColor:
+                eventInfo.event.backgroundColor ||
+                eventInfo.event.extendedProps?.color,
               color: '#ffffff',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               fontSize: '0.85rem',
-              lineHeight: '1.7'
+              lineHeight: '1.7',
+              pointerEvents: 'none',
             }}
           >
             {eventInfo.event.title}
@@ -97,21 +109,21 @@ const DesktopCalendarComponent = ({
       slotEventOverlap={false}
       stickyHeaderDates={true}
       locale={allLocales}
-      timeZone="Asia/Jerusalem"
+      timeZone="local"
       firstDay={0}
       nowIndicator={true}
       buttonText={{
         today: 'Today',
         month: 'Month',
         week: 'Week',
-        day: 'Day'
+        day: 'Day',
       }}
       dayHeaders={true}
       views={{
         dayGridMonth: {
           dayHeaderFormat: { weekday: 'short' },
           dayMaxEventRows: true,
-        }
+        },
       }}
     />
   );

@@ -9,7 +9,7 @@ export default async function CalendarPage() {
     return (
       <div className="flex h-screen items-center justify-center">
         <h1 className="text-2xl font-bold">
-          Please log in to view the calendar
+          Please log in to view this page
         </h1>
       </div>
     );

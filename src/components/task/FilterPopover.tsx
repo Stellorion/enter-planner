@@ -106,7 +106,7 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
       <div className="mt-4 text-center">
         <button
           onClick={resetFilters}
-          className="w-full rounded-md bg-blue-500 dark:bg-blue-600 py-2 text-sm font-medium text-gray-100 hover:bg-blue-600 dark:hover:bg-blue-700"
+          className="w-full rounded-md bg-blue-500 dark:bg-blue-600 py-2 text-sm font-medium text-gray-100 hover:bg-blue-600 dark:hover:bg-blue-700 transition-all duration-300 ease-in-out"
         >
           Reset Filters
         </button>

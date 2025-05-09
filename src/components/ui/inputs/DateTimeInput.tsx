@@ -1,4 +1,5 @@
 import { DateTimeInputProps } from '@/src/types/Inputs';
+import { FaRegCalendarAlt } from 'react-icons/fa'
 
 const DateTimeInput = ({
   label,
@@ -10,7 +11,7 @@ const DateTimeInput = ({
   min,
   optional,
 }: DateTimeInputProps) => (
-  <div>
+  <div className='relative'>
     <label
       htmlFor={name}
       className="block text-left text-sm font-medium text-gray-900 dark:text-gray-100"
@@ -27,6 +28,7 @@ const DateTimeInput = ({
       required={required}
       min={min}
     />
+    <FaRegCalendarAlt className="pointer-events-none absolute right-3 top-8 text-gray-600 dark:text-gray-400 h-4 w-4" />
   </div>
 );
 

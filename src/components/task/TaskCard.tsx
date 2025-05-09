@@ -10,13 +10,13 @@ export function TaskCard({
   onEdit: (task: Task) => void;
 }) {
   return (
-    <div className="group relative rounded-md shadow-sm dark:shadow-gray-700 bg-white dark:bg-gray-800 transition-shadow hover:shadow-lg dark:hover:shadow-gray-700/40 ">
+    <div className="group relative rounded-md shadow-sm dark:shadow-gray-900 bg-white dark:bg-gray-800 transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-gray-900/50">
       <button
-        className="absolute top-4 right-4 transition-opacity"
+        className="absolute top-4 right-4"
         onClick={() => onEdit(task)}
         aria-label="Edit task"
       >
-        <FaPen className="h-4 w-4 text-gray-500 hover:text-blue-600" />
+        <FaPen className="h-4 w-4 text-gray-500 hover:text-blue-600 transition-colors" />
       </button>
       <div className="rounded-md border border-gray-200 shadow-sm p-4 dark:border-gray-700">
         <h3 className="font-medium text-gray-900 dark:text-gray-100">{task.title}</h3>
