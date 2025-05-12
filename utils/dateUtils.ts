@@ -1,9 +1,6 @@
 export function getLocalISOString(date: Date): string {
-  const localISOString = date.toLocaleString('en-US', {
-    timeZone: 'Asia/Jerusalem', // Use the desired time zone here
-    hour12: false,  // Use 24-hour time format
-  });
-  return localISOString.slice(0, 16).replace(',', '');  // Ensure correct format (YYYY-MM-DDTHH:mm)
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 export function formatDateString(date: string | Date | null | undefined): string {
@@ -11,12 +8,11 @@ export function formatDateString(date: string | Date | null | undefined): string
   const d = typeof date === 'string' ? new Date(date) : date;
   if (isNaN(d.getTime())) return '';
 
-  const tzOffsetMs = d.getTimezoneOffset() * 60000;
-  const local = new Date(d.getTime() - tzOffsetMs);
-  
-  return local.toISOString().slice(0, 16);
-}
+  // Format for HTML datetime-local input: 'YYYY-MM-DDTHH:mm'
+  const pad = (n: number) => n.toString().padStart(2, '0');
 
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 export function truncateToNearestHour(date: Date): Date {
   date.setMinutes(0, 0, 0);
