@@ -190,7 +190,7 @@ export default function Calendar() {
       eventToAdd.start = toDateString(eventToAdd.start);
       if (eventToAdd.end) eventToAdd.end = toDateString(eventToAdd.end);
     }
-    addEvent(newEvent);
+    addEvent(eventToAdd);
     setShowModal(false);
     resetNewEvent();
   }
