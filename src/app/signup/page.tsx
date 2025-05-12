@@ -20,7 +20,7 @@ const SignupLayout = async () => {
           <div className="flex w-full flex-col items-center justify-center">
             <SignupHeader />
             <SignupForm />
-            <SocialAuthSection />
+            <SocialAuthSection SocialTitleText="Or sign up with"/>
           </div>
         </div>
       </div>

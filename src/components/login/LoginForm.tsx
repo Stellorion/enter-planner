@@ -51,13 +51,6 @@ const LoginForm = () => {
       >
         Log in
       </button>
-      <div className="mb-4 flex w-full items-center">
-        <div className="flex-grow border-t border-gray-600 dark:border-gray-400"></div>
-        <span className="px-3 whitespace-nowrap text-gray-600 dark:text-gray-400">
-          Or log in with
-        </span>
-        <div className="flex-grow border-t border-gray-600 dark:border-gray-400"></div>
-      </div>
     </form>
   );
 };

@@ -21,7 +21,7 @@ const LoginPage = async () => {
           <div className="flex w-full flex-col items-center justify-center">
             <LoginHeader />
             <LoginForm />
-            <SocialLoginSection />
+            <SocialLoginSection SocialTitleText="Or log in with"/>
           </div>
         </div>
       </div>

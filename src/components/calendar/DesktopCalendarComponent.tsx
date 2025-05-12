@@ -5,7 +5,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
-import allLocales from '@fullcalendar/core/locales/en-gb';
 import { CalendarComponentProps } from '@/src/types/event';
 import EventTooltip from './EventTooltip';
 import { useRef, useCallback } from 'react';
@@ -108,8 +107,8 @@ const DesktopCalendarComponent = ({
       )}
       slotEventOverlap={false}
       stickyHeaderDates={true}
-      locale={allLocales}
-      timeZone="local"
+      locale="en"
+      timeZone="Asia/Jerusalem"
       firstDay={0}
       nowIndicator={true}
       buttonText={{

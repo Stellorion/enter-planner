@@ -5,7 +5,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
-import allLocales from '@fullcalendar/core/locales/en-gb';
 import { CalendarComponentProps } from '@/src/types/event';
 import EventTooltip from './EventTooltip';
 import { useCalendarUiStore } from '@/src/store/useCalendarStore';
@@ -44,28 +43,34 @@ const MobileCalendarComponent = ({
 
   return (
     <div className="flex h-full w-full flex-col pt-2">
-      <div className="flex w-full p-3 items-center justify-between">
+      <div className="flex w-full items-center justify-between p-3">
         <div className="flex items-center justify-between">
-          <button className="border border-gray-200 p-1.5 rounded-l-md dark:border-gray-800" onClick={handlePrev} aria-label="Previous">
+          <button
+            className="rounded-l-md border border-gray-200 p-1.5 dark:border-gray-800"
+            onClick={handlePrev}
+            aria-label="Previous"
+          >
             <FaArrowLeft className="h-5 w-5" />
           </button>
 
-          <button 
-            className="border-t border-b border-gray-200 p-1 px-2 dark:border-gray-800" 
-            onClick={() => calendarRef.current?.getApi().today()} 
+          <button
+            className="border-t border-b border-gray-200 p-1 px-2 dark:border-gray-800"
+            onClick={() => calendarRef.current?.getApi().today()}
             aria-label="Today"
           >
             <span className="text-md font-semibold">Today</span>
           </button>
-          
-          <button className="border border-gray-200 p-1.5 rounded-r-md dark:border-gray-800" onClick={handleNext} aria-label="Next">
-            <FaArrowRight className="h-5 w-5" />  
+
+          <button
+            className="rounded-r-md border border-gray-200 p-1.5 dark:border-gray-800"
+            onClick={handleNext}
+            aria-label="Next"
+          >
+            <FaArrowRight className="h-5 w-5" />
           </button>
         </div>
 
-        <span className=" text-center text-lg font-semibold">
-          {title}
-        </span>
+        <span className="text-center text-lg font-semibold">{title}</span>
 
         <button
           onClick={handleAddEvent}
@@ -93,8 +98,8 @@ const MobileCalendarComponent = ({
           contentHeight="auto"
           aspectRatio={1.5}
           longPressDelay={100}
-          locale={allLocales}
-          timeZone="local"
+          locale="en"
+          timeZone="Asia/Jerusalem"
           firstDay={0}
           datesSet={handleDatesSetInternal}
           events={allEvents as EventSourceInput}

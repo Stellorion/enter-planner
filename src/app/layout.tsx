@@ -21,9 +21,11 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-1 overflow-auto">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 /* General mode variables */
 .fc {
   --fc-page-bg-color: transparent;
-  --fc-button-bg-color: transparent
+  --fc-button-bg-color: transparent;
 }
 
 /* Light mode variables */
@@ -33,142 +33,154 @@
   --fc-neutral-bg-color: #2d2d2d;
   --fc-event-text-color: #ffffff;
 }
-  
-  .fc .fc-button {
-    padding: 8px 16px;
-    font-size: 0.875rem;
-    border-radius: 4px;
-    font-weight: 500;
-  }
-  
-  .fc-button:focus {
-    outline: none;
-    box-shadow: none;
-  }
-  
-  .fc-button:focus:not(:focus-visible) {
-    outline: none;
-    box-shadow: none;
-  }
-  
-  .fc .fc-button-primary:not(:disabled):active,
-  .fc .fc-button-primary:not(:disabled).fc-button-active {
-    background-color: var(--fc-button-active-bg-color);
-    border-color: var(--fc-button-active-border-color);
-    color: var(--fc-button-active-text-color);
-  }
-  
-  .fc .fc-toolbar-title {
-    font-size: 1.375rem;
-    font-weight: 600;
-    color: var(--fc-button-text-color);
-  }
-  
-  .fc .fc-day-header {
-    font-weight: 500;
-    color: #70757a;
-    font-size: 0.75rem;
-    padding: 8px 0;
-  }
-  
-  .fc .fc-day-number {
-    font-size: 0.875rem;
-    color: #3c4043;
-    padding: 8px;
-  }
-  
-  .fc .fc-day-today {
-    color: #1a73e8 !important;
-  }
-  
-  .fc button {
-    background-color: transparent;
-  }
 
-  .fc .fc-event {
-    border: none;
-    border-radius: 4px;
-    margin: 1px 0;
-    
-  }
+.fc .fc-button {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
 
-  .fc .fc-more-popover {
-    border-radius: 8px;
-    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3);
-  }
-  
-  /* Add Event button styling */
-  .fc .fc-addEventButton-button {
-    background-color: #1a73e8 !important;
-    border-color: #1a73e8 !important;
-    color: white !important;
-  }
-  
-  .fc .fc-addEventButton-button:hover {
-    background-color: #1557b0 !important;
-    border-color: #1557b0 !important;
-  }
-  
-  .fc-event.fc-event-selected,
-  .fc-event.fc-event-selected * {
-    pointer-events: auto !important;
-    z-index: 10 !important;
-  }
-  
-  .fc-event .fc-event-main {
-    position: relative;
-    z-index: 20;
-  }
+.fc-button:focus {
+  outline: none;
+  box-shadow: none;
+}
 
-  .fc-popover-body, .fc-popover-header  {
-    background-color: var(--fc-bg-color) !important;
-  }
-  
-  .fc-view-harness {
-    border-radius: 8px;
-  }
-  
-  .fc-day-today, .fc .fc-daygrid-day.fc-day-today, .fc-day-today {
-    background-color: transparent !important;
-    color: var(--fc-event-text-color) !important;
-  }
-  
-  .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
-    background-color: #1a73e8;
-    color: white;
-    border: 1px solid #1a73e8;
-    border-radius: 100%;
-    padding: 4px 8px;
-    display: inline-block;
-    line-height: 1;
-  }
-  
-  /* Remove focus outlines */
-  * {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  /* Remove focus styles for buttons and interactive elements */
-  button:focus,
-  [role="button"]:focus,
-  .fc-button:focus,
-  .fc-event:focus,
-  .fc button:focus {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  
-  /* Remove mobile touch highlight */
-  .fc-event,
-  .fc button,
-  .fc-button {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: manipulation;
-  }
-  
-  /* Remove Firefox focus ring */
-  ::-moz-focus-inner {
-    border: 0;
-  }
+.fc-button:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: var(--fc-button-active-bg-color);
+  border-color: var(--fc-button-active-border-color);
+  color: var(--fc-button-active-text-color);
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--fc-button-text-color);
+}
+
+.fc .fc-day-header {
+  font-weight: 500;
+  color: #70757a;
+  font-size: 0.75rem;
+  padding: 8px 0;
+}
+
+.fc .fc-day-number {
+  font-size: 0.875rem;
+  color: #3c4043;
+  padding: 8px;
+}
+
+.fc .fc-day-today {
+  color: #1a73e8 !important;
+}
+
+.fc button {
+  background-color: transparent;
+}
+
+.fc .fc-event {
+  border: none;
+  border-radius: 4px;
+  margin: 1px 0;
+}
+
+.fc .fc-more-popover {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3);
+}
+
+/* Add Event button styling */
+.fc .fc-addEventButton-button {
+  background-color: #1a73e8 !important;
+  border-color: #1a73e8 !important;
+  color: white !important;
+}
+
+.fc .fc-addEventButton-button:hover {
+  background-color: #1557b0 !important;
+  border-color: #1557b0 !important;
+}
+
+.fc-event.fc-event-selected,
+.fc-event.fc-event-selected * {
+  pointer-events: auto !important;
+  z-index: 10 !important;
+}
+
+.fc-event .fc-event-main {
+  position: relative;
+  z-index: 20;
+}
+
+.fc-event-main div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-popover-body,
+.fc-popover-header {
+  background-color: var(--fc-bg-color) !important;
+}
+
+.fc-view-harness {
+  border-radius: 8px;
+}
+
+.fc-day-today,
+.fc .fc-daygrid-day.fc-day-today,
+.fc-day-today {
+  background-color: transparent !important;
+  color: var(--fc-event-text-color) !important;
+}
+
+.fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  background-color: #1a73e8;
+  color: white;
+  border: 1px solid #1a73e8;
+  border-radius: 50%;
+  padding: 5px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  font-size: 0.875rem;
+}
+
+/* Remove focus outlines */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove focus styles for buttons and interactive elements */
+button:focus,
+[role='button']:focus,
+.fc-button:focus,
+.fc-event:focus,
+.fc button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove mobile touch highlight */
+.fc-event,
+.fc button,
+.fc-button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* Remove Firefox focus ring */
+::-moz-focus-inner {
+  border: 0;
+}
