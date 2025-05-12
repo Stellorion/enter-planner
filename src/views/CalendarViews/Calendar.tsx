@@ -8,6 +8,7 @@ import CalendarComponent from '@/src/components/calendar/CalendarComponent';
 import AddEventModal from '@/src/components/calendar/modal/AddEventModal';
 import UpdateModal from '@/src/components/calendar/modal/UpdateModal';
 import EventsSidebar from '@/src/components/calendar/EventsSidebar';
+import { getLocalISOString } from '@/utils/dateUtils';
 
 export default function Calendar() {
   const {
@@ -128,9 +129,11 @@ export default function Calendar() {
   }
 
   function toDateString(date: string | Date) {
-    return (date instanceof Date ? date : new Date(date))
-      .toISOString()
-      .split('T')[0];
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   function handleEventChange(changeInfo: EventChangeArg) {
@@ -186,10 +189,15 @@ export default function Calendar() {
 
     let eventToAdd = { ...newEvent };
 
-    if (eventToAdd.allDay) {
+    if (!eventToAdd.allDay) {
+      // Do NOT parse with new Date — the input is already in correct local format
+      eventToAdd.start = eventToAdd.start;
+      if (eventToAdd.end) eventToAdd.end = eventToAdd.end;
+    } else {
       eventToAdd.start = toDateString(eventToAdd.start);
       if (eventToAdd.end) eventToAdd.end = toDateString(eventToAdd.end);
     }
+
     addEvent(eventToAdd);
     setShowModal(false);
     resetNewEvent();

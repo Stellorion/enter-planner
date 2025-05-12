@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import DateTimeInput from '../../ui/inputs/DateTimeInput';
 import TextareaInput from '@/src/components/ui/inputs/TextareaInput';
 import TitleInput from '../../ui/inputs/TitleInput';
