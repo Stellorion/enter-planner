@@ -1,9 +1,9 @@
 export function getLocalISOString(date: Date): string {
-  const tzOffsetMs = date.getTimezoneOffset() * 60000;
-  const localISOTime = new Date(date.getTime() - tzOffsetMs)
-    .toISOString()
-    .slice(0, 16);
-  return localISOTime;
+  const localISOString = date.toLocaleString('en-US', {
+    timeZone: 'Asia/Jerusalem', // Use the desired time zone here
+    hour12: false,  // Use 24-hour time format
+  });
+  return localISOString.slice(0, 16).replace(',', '');  // Ensure correct format (YYYY-MM-DDTHH:mm)
 }
 
 export function formatDateString(date: string | Date | null | undefined): string {

@@ -37,56 +37,35 @@ export default function Calendar() {
     fetchEvents();
   }, []);
 
-function handleDateClick(arg: { date: Date; allDay: boolean }) {
-  // Create a new date object from the clicked date to avoid modifying the original date
-  const clickedDate = new Date(arg.date);
+  function handleDateClick(arg: { date: Date; allDay: boolean }) {
+    const clickedDate = new Date(arg.date);
 
-  // Set the clicked date to the beginning of the day (00:00:00) in the local time zone
-  clickedDate.setHours(0, 0, 0, 0);
+    clickedDate.setHours(0, 0, 0, 0);
 
-  // Calculate the end date: 1 day after the clicked date (but set the time to the end of the day)
-  const endDate = new Date(clickedDate);
-  endDate.setDate(clickedDate.getDate() + 1); // Set to 1 day after clicked date
+    const endDate = new Date(clickedDate);
+    endDate.setDate(clickedDate.getDate() + 1);
+    endDate.setHours(0, 0, 0, 0);
 
-  // If the event is all day, set the end date to the end of the next day (23:59:59)
-  if (arg.allDay) {
-    endDate.setHours(23, 59, 59, 999); // Set end date to the very end of the next day (23:59:59.999)
-  } else {
-    // Otherwise, just set it to midnight (start of the next day)
-    endDate.setHours(0, 0, 0, 0); // Standard behavior for non-all-day events
+    const formatDate = (date: Date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const startDateFormatted = formatDate(clickedDate);
+    const endDateFormatted = formatDate(endDate);
+
+    setNewEvent({
+      ...newEvent,
+      start: startDateFormatted,
+      end: endDateFormatted,
+      allDay: arg.allDay,
+      id: new Date().getTime().toString(),
+    });
+
+    setShowModal(true);
   }
-
-  // Format the start and end dates manually to avoid time zone issues
-  const formatDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
-  const startDateFormatted = formatDate(clickedDate);
-  const endDateFormatted = formatDate(endDate);
-
-  // Log for debugging
-  console.log('Clicked Date:', clickedDate);
-  console.log('Start Date:', startDateFormatted);
-  console.log('End Date:', endDateFormatted);
-  console.log('Start Date Local:', clickedDate.toLocaleDateString());
-  console.log('End Date Local:', endDate.toLocaleDateString());
-
-  // Set the new event with the correct start and end dates
-  setNewEvent({
-    ...newEvent,
-    start: startDateFormatted, // Use formatted date (YYYY-MM-DD)
-    end: endDateFormatted, // Use formatted date (YYYY-MM-DD)
-    allDay: arg.allDay,
-    id: new Date().getTime().toString(), // Generate a unique ID
-  });
-
-  // Show the modal to create the event
-  setShowModal(true);
-}
-
 
   function handleUpdateModal(clickInfo: EventClickArg) {
     const event: Event = {
