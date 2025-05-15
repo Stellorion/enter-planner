@@ -55,7 +55,7 @@ const UserMenu = ({ session }: UserMenuProps) => {
             <Menu.Item>
               {({ active }) => (
                 <Link
-                  href="/"
+                  href="/dashboard"
                   className={`flex w-full items-center space-x-2 px-4 py-2 text-sm text-gray-600 dark:text-gray-400 ${
                     active ? 'bg-gray-200 dark:bg-gray-800' : ''
                   }`}
