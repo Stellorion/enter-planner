@@ -7,7 +7,7 @@ import {
   CardTitle,
   CardContent,
 } from '@/src/components/dashboard/Card';
-import { TaskCard } from '@/src/components/dashboard/TaskCard';
+import { TaskCard } from '@/src/components/task/TaskCard';
 import { EventCard } from '@/src/components/dashboard/EventCard';
 import {
   FaPen,
@@ -26,11 +26,18 @@ export default function Dashboard() {
   // Get the user's local time zone
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+  const todayDate = new Date();
+
   // Get the current date in the user's local time zone
   const today = format(
     toZonedTime(new Date(), userTimeZone),
     'eeee, MMMM dd, yyyy'
   );
+
+  const todayRange = {
+    start: todayDate,
+    end: todayDate,
+  };
 
   const sampleTasks = [
     {
@@ -85,90 +92,97 @@ export default function Dashboard() {
       description: 'Discuss upcoming project milestones',
     },
   ];
+
   return (
-    <div>
-      <div className="mb-4 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-        <Card>
-          <CardContent>
-            <h3 className="text-xl font-semibold">Today's Date</h3>
-            <p className="text-lg">{today}</p> {/* Dynamic date */}
-          </CardContent>
-        </Card>
+      <div className="flex min-h-screen flex-col">
+        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardContent>
+              <h3 className="text-xl font-semibold">Today's Date</h3>
+              <p className="text-lg">{today}</p> {/* Dynamic date */}
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent>
-            <h3 className="text-xl font-semibold">Account Status</h3>
-            <p className="text-sm text-gray-400">Account: Active</p>
-            <p className="text-sm">Last Login: 10:30 AM</p>
-            <p className="text-sm">2FA: Enabled</p>
-          </CardContent>
-        </Card>
+          <Card>
+            <CardContent>
+              <h3 className="text-xl font-semibold">Account Status</h3>
+              <p className="text-sm font-semibold text-green-600 dark:text-green-400">
+                Account: Active
+              </p>
+              <p className="text-sm">Last Login: 10:30 AM</p>
+              <p className="text-sm">2FA: Enabled</p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent>
-            <h3 className="text-xl font-semibold">Connected Services</h3>
-            <ul>
-              <li>Google Calendar</li>
-              <li>Google Tasks</li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent>
-            <h3 className="text-xl font-semibold">Notifications</h3>
-            {/* Displaying if notifications are enabled or disabled */}
-            <p
-              className={`text-sm font-semibold ${notificationsEnabled ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
-            >
-              {notificationsEnabled ? 'Alerts: Enabled' : 'Alerts: Disabled'}
-            </p>
-
-            {/* Displaying types of alerts enabled */}
-            {notificationsEnabled && (
-              <ul className="mt-2">
-                {enabledAlerts.length > 0 ? (
-                  enabledAlerts.map((alert) => (
-                    <li key={alert} className="text-sm text-gray-300">
-                      - {alert}
-                    </li>
-                  ))
-                ) : (
-                  <li className="text-sm text-gray-500">No alerts enabled.</li>
-                )}
+          <Card>
+            <CardContent>
+              <h3 className="text-xl font-semibold">Connected Services</h3>
+              <ul>
+                <li>Google Calendar</li>
+                <li>Google Tasks</li>
               </ul>
-            )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent>
+              <h3 className="text-xl font-semibold">Notifications</h3>
+              {/* Displaying if notifications are enabled or disabled */}
+              <p
+                className={`text-sm font-semibold ${notificationsEnabled ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+              >
+                {notificationsEnabled ? 'Alerts: Enabled' : 'Alerts: Disabled'}
+              </p>
+
+              {/* Displaying types of alerts enabled */}
+              {notificationsEnabled && (
+                <ul className="mt-2">
+                  {enabledAlerts.length > 0 ? (
+                    enabledAlerts.map((alert) => (
+                      <li key={alert} className="text-sm text-gray-300">
+                        - {alert}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-sm text-gray-500">
+                      No alerts enabled.
+                    </li>
+                  )}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+        <Card className="flex flex-grow flex-col">
+          <CardHeader className="flex items-center justify-between">
+            <CardTitle>
+              {view === 'calendar' ? "Today's Events" : "Today's Tasks"}
+            </CardTitle>
+            <button
+              onClick={() =>
+                setView(view === 'calendar' ? 'tasks' : 'calendar')
+              }
+              className="rounded-full p-2 text-gray-900 hover:bg-gray-200 dark:text-gray-100 dark:hover:bg-gray-800"
+            >
+              <FaExchangeAlt className="h-5 w-5" />
+            </button>
+          </CardHeader>
+          <CardContent className="max-h-screen flex-grow overflow-y-auto pr-2">
+            <div className="space-y-3">
+              {view === 'calendar'
+                ? sampleEvents.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))
+                : sampleTasks.map((task) => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      onEdit={(task) => alert('Edit task: ' + task.title)}
+                    />
+                  ))}
+            </div>
           </CardContent>
         </Card>
       </div>
-      <Card>
-        <CardHeader className="flex items-center justify-between">
-          <CardTitle>
-            {view === 'calendar' ? "Today's Events" : "Today's Tasks"}
-          </CardTitle>
-          <button
-            onClick={() => setView(view === 'calendar' ? 'tasks' : 'calendar')}
-            className="rounded-full p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200"
-          >
-            <FaExchangeAlt className="h-5 w-5" />
-          </button>
-        </CardHeader>
-        <CardContent>
-          <div className="max-h-64 space-y-3 overflow-y-auto pr-2">
-            {view === 'calendar'
-              ? sampleEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
-                ))
-              : sampleTasks.map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    onEdit={(task) => alert('Edit task: ' + task.title)}
-                  />
-                ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
   );
 }
