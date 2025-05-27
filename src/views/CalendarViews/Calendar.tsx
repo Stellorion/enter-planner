@@ -8,7 +8,7 @@ import CalendarComponent from '@/src/components/calendar/CalendarComponent';
 import AddEventModal from '@/src/components/calendar/modal/AddEventModal';
 import UpdateModal from '@/src/components/calendar/modal/UpdateModal';
 import EventsSidebar from '@/src/components/calendar/EventsSidebar';
-import { getLocalISOString } from '@/utils/dateUtils';
+import { localToUTC, getLocalISOString, toDateString } from '@/utils/dateUtils';
 
 export default function Calendar() {
   const {
@@ -88,10 +88,12 @@ export default function Calendar() {
   function handleUpdate(updatedEvent: Event) {
     const eventToUpdate = { ...updatedEvent };
 
-    if (eventToUpdate.allDay) {
+    if (!eventToUpdate.allDay) {
+      eventToUpdate.start = localToUTC(eventToUpdate.start);
+      if (eventToUpdate.end) eventToUpdate.end = localToUTC(eventToUpdate.end);
+    } else {
       eventToUpdate.start = toDateString(eventToUpdate.start);
-      if (eventToUpdate.end)
-        eventToUpdate.end = toDateString(eventToUpdate.end);
+      if (eventToUpdate.end) eventToUpdate.end = toDateString(eventToUpdate.end);
     }
 
     updateEvent(eventToUpdate);
@@ -126,14 +128,6 @@ export default function Calendar() {
     setShowUpdateModal(false);
     setSelectedEvent(null);
     resetNewEvent();
-  }
-
-  function toDateString(date: string | Date) {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   }
 
   function handleEventChange(changeInfo: EventChangeArg) {
@@ -190,9 +184,9 @@ export default function Calendar() {
     let eventToAdd = { ...newEvent };
 
     if (!eventToAdd.allDay) {
-      // Do NOT parse with new Date — the input is already in correct local format
-      eventToAdd.start = eventToAdd.start;
-      if (eventToAdd.end) eventToAdd.end = eventToAdd.end;
+      // Convert local input to UTC ISO string before saving
+      eventToAdd.start = localToUTC(eventToAdd.start);
+      if (eventToAdd.end) eventToAdd.end = localToUTC(eventToAdd.end);
     } else {
       eventToAdd.start = toDateString(eventToAdd.start);
       if (eventToAdd.end) eventToAdd.end = toDateString(eventToAdd.end);

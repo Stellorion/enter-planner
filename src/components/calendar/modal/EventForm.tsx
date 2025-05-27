@@ -4,13 +4,9 @@ import TitleInput from '../../ui/inputs/TitleInput';
 import ColorInput from '../../ui/inputs/ColorInput';
 import { EventFormProps } from '@/src/types/event';
 import CheckboxInput from '../../ui/inputs/CheckboxInput';
-import { formatDateString } from '@/utils/dateUtils';
+import { toLocalInputValue } from '@/utils/dateUtils';
 
 const EventForm = ({ event, handleChange }: EventFormProps) => {
-  const startDate = new Date(event.start || '');
-  const endDate = new Date(event.end || '');
-  const isEndBeforeStart = endDate < startDate;
-
   return (
     <div className="space-y-4">
       <TitleInput value={event.title || ''} onChange={handleChange} />
@@ -19,7 +15,7 @@ const EventForm = ({ event, handleChange }: EventFormProps) => {
         <DateTimeInput
           label="Start"
           name="start"
-          value={event.start ? formatDateString(event.start) : ''}
+          value={toLocalInputValue(event.start)}
           isAllDay={Boolean(event.allDay)}
           onChange={handleChange}
           required
@@ -28,15 +24,15 @@ const EventForm = ({ event, handleChange }: EventFormProps) => {
         <DateTimeInput
           label="End"
           name="end"
-          value={event.end ? formatDateString(event.end) : ''}
+          value={toLocalInputValue(event.end)}
           isAllDay={Boolean(event.allDay)}
           onChange={handleChange}
-          min={event.start ? formatDateString(event.start) : ''}
+          min={toLocalInputValue(event.start)}
           required
         />
       </div>
 
-      {isEndBeforeStart && (
+      {new Date(event.end || '') < new Date(event.start || '') && (
         <p className="text-red-500 text-sm">
           End time must be after start time.
         </p>

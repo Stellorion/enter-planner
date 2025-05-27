@@ -1,6 +1,7 @@
 import { EventsSidebarProps } from '@/src/types/event';
 import { format, startOfMonth, endOfMonth, isBefore, isAfter } from 'date-fns';
 import { FaRegCalendar, FaRegClock } from 'react-icons/fa';
+import { formatLocalDisplay } from '@/utils/dateUtils';
 
 export default function EventsSidebar({
   events,
@@ -33,7 +34,7 @@ export default function EventsSidebar({
   );
 
   return (
-    <div className="flex h-full w-full flex-col lg:rounded-r-sm border-l border-gray-200 bg-white shadow-lg lg:w-80 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
+    <div className="flex h-full w-full flex-col border-l border-gray-200 bg-white shadow-lg lg:w-80 lg:rounded-r-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
       <div className="hidden shrink-0 border-b border-gray-200 p-4 lg:block dark:border-gray-800">
         <h2 className="text-2xl text-gray-900 dark:text-gray-100">
           {viewType === 'dayGridMonth'
@@ -45,7 +46,7 @@ export default function EventsSidebar({
         {sortedEvents.map((event) => (
           <div
             key={event.id}
-            className="relative cursor-pointer rounded-r-md border-b border-gray-200 p-4 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800 dark:border-gray-800"
+            className="relative cursor-pointer rounded-r-md border-b border-gray-200 p-4 transition-colors hover:bg-gray-200 dark:border-gray-800 dark:hover:bg-gray-800"
             onClick={() => onEventClick(event)}
           >
             <div
@@ -72,11 +73,11 @@ export default function EventsSidebar({
                   <span>All day</span>
                 ) : (
                   <>
-                    {format(new Date(event.start), 'HH:mm')}
+                    {formatLocalDisplay(event.start).split(', ')[1]}
                     {event.end && (
                       <>
                         <span>-</span>
-                        {format(new Date(event.end), 'HH:mm')}
+                        {formatLocalDisplay(event.end).split(', ')[1]}
                       </>
                     )}
                   </>
