@@ -23,12 +23,12 @@ const EventTooltip = ({
   const formatDateTime = (dateStr: string) => {
     const date = new Date(dateStr);
     if (allDay) {
-      return date.toLocaleDateString(); // Uses user's locale and timezone
+      return date.toLocaleDateString();
     }
     return date.toLocaleString(undefined, {
       dateStyle: 'medium',
       timeStyle: 'short',
-    }); // Uses user's locale and timezone
+    });
   };
 
   const { refs, floatingStyles, context, placement } = useFloating({

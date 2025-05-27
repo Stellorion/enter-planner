@@ -73,11 +73,19 @@ export default function EventsSidebar({
                   <span>All day</span>
                 ) : (
                   <>
-                    {formatLocalDisplay(event.start).split(', ')[1]}
+                    {new Date(event.start).toLocaleTimeString(undefined, {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit',
+                    })}
                     {event.end && (
                       <>
                         <span>-</span>
-                        {formatLocalDisplay(event.end).split(', ')[1]}
+                        {new Date(event.end).toLocaleTimeString(undefined, {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                        })}
                       </>
                     )}
                   </>
