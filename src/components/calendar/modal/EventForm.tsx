@@ -24,7 +24,7 @@ const EventForm = ({ event, handleChange }: EventFormProps) => {
         <DateTimeInput
           label="End"
           name="end"
-          value={toLocalInputValue(event.end)}
+          value={toLocalInputValue(event.end || "")}
           isAllDay={Boolean(event.allDay)}
           onChange={handleChange}
           min={toLocalInputValue(event.start)}

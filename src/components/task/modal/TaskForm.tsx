@@ -6,7 +6,8 @@ import StatusInput from '../../ui/inputs/SelectInput';
 import NumberInput from '../../ui/inputs/NumberInput';
 import { TaskFormProps } from '@/src/types/task';
 import DateTimeInput from '../../ui/inputs/DateTimeInput';
-import { formatDateString } from '@/utils/dateUtils';
+import CheckboxInput from '../../ui/inputs/CheckboxInput';
+import { toLocalInputValue } from '@/utils/dateUtils';
 
 const TaskForm = ({ task, handleChange }: TaskFormProps) => {
   return (
@@ -45,12 +46,17 @@ const TaskForm = ({ task, handleChange }: TaskFormProps) => {
       <DateTimeInput
         label="Due"
         name="dueDate"
-        value={task.dueDate ? formatDateString(task.dueDate) : ''}
+        value={task.dueDate ? toLocalInputValue(task.dueDate) : ''}
         onChange={handleChange}
         isAllDay={false}
         required={false}
         optional={true}
       />
+      {/* <CheckboxInput
+        name="allDay"
+        checked={!!task.allDay}
+        onChange={handleChange}
+      /> */}
     </div>
   );
 };
