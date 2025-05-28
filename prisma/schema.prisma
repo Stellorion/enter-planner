@@ -69,6 +69,7 @@ model Task {
   title       String
   description String?
   dueDate     DateTime?
+  allDay      Boolean    @default(false)
   status      TaskStatus @default(PLANNED)
   progress    Int        @default(0)
   order       Int        @default(0)

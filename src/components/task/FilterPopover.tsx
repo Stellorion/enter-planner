@@ -17,11 +17,12 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
       sortOrder: 'asc',
     });
   };
-  
+
   return (
     <div className="space-y-4">
       <SelectInput
         name="status"
+        label="Category"
         value={filters.status}
         onChange={(e) =>
           setFilters({
@@ -33,8 +34,8 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
           { value: 'ALL', label: 'All' },
           { value: 'PLANNED', label: 'Planned' },
           { value: 'IN_PROGRESS', label: 'In Progress' },
-          { value: 'ON_HOLD', label: 'On Hold' },
           { value: 'DONE', label: 'Done' },
+          { value: 'ON_HOLD', label: 'On Hold' },
         ]}
       />
 
@@ -72,6 +73,7 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
 
       <SelectInput
         name="sortBy"
+        label="Status"
         value={filters.sortBy}
         onChange={(e) =>
           setFilters({
@@ -90,6 +92,7 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
 
       <SelectInput
         name="sortOrder"
+        label="Order"
         value={filters.sortOrder}
         onChange={(e) =>
           setFilters({
@@ -106,7 +109,7 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
       <div className="mt-4 text-center">
         <button
           onClick={resetFilters}
-          className="w-full rounded-md bg-blue-500 dark:bg-blue-600 py-2 text-sm font-medium text-gray-100 hover:bg-blue-600 dark:hover:bg-blue-700 transition-all duration-300 ease-in-out"
+          className="w-full rounded-md bg-blue-500 py-2 text-sm font-medium text-gray-100 transition-all duration-300 ease-in-out hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
         >
           Reset Filters
         </button>

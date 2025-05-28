@@ -53,6 +53,7 @@ export type CheckboxInputProps = {
 export interface SelectInputProps {
   value: string;
   name: string;
+  label: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: { value: string; label: string }[];
 }

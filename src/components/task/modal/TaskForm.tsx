@@ -1,5 +1,3 @@
-'use client';
-
 import TextareaInput from '@/src/components/ui/inputs/TextareaInput';
 import TitleInput from '../../ui/inputs/TitleInput';
 import StatusInput from '../../ui/inputs/SelectInput';
@@ -23,9 +21,10 @@ const TaskForm = ({ task, handleChange }: TaskFormProps) => {
       />
       <div className="grid grid-cols-2 gap-4">
         <StatusInput
+          name="status"
+          label="Status"
           value={task.status || 'PLANNED'}
           onChange={handleChange}
-          name="status"
           options={[
             { value: 'PLANNED', label: 'Planned' },
             { value: 'IN_PROGRESS', label: 'In Progress' },
@@ -43,20 +42,34 @@ const TaskForm = ({ task, handleChange }: TaskFormProps) => {
           label="Progress"
         />
       </div>
-      <DateTimeInput
-        label="Due"
-        name="dueDate"
-        value={task.dueDate ? toLocalInputValue(task.dueDate) : ''}
-        onChange={handleChange}
-        isAllDay={false}
-        required={false}
-        optional={true}
-      />
-      {/* <CheckboxInput
-        name="allDay"
-        checked={!!task.allDay}
-        onChange={handleChange}
-      /> */}
+      <div className="grid grid-cols-8 items-end gap-3">
+        <span className="col-span-7 w-full">
+          <DateTimeInput
+            label="Due"
+            name="dueDate"
+            value={
+              task.dueDate
+                ? toLocalInputValue(
+                    typeof task.dueDate === 'string'
+                      ? task.dueDate
+                      : task.dueDate.toISOString()
+                  )
+                : ''
+            }
+            onChange={handleChange}
+            isAllDay={Boolean(task.allDay)}
+            required={false}
+            optional={true}
+          />
+        </span>
+        <span className="col-span-1 mb-1 flex justify-center">
+          <CheckboxInput
+            name="allDay"
+            checked={Boolean(task.allDay)}
+            onChange={handleChange}
+          />
+        </span>
+      </div>
     </div>
   );
 };

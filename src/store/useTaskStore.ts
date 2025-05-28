@@ -22,13 +22,15 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   setSearchQuery: (query) => set({ searchQuery: query }),
 
   statusFilter: 'ALL',
-  setStatusFilter: (status: 'ALL' | 'PLANNED' | 'IN_PROGRESS' | 'ON_HOLD' | 'DONE') => set({ statusFilter: status }),
+  setStatusFilter: (
+    status: 'ALL' | 'PLANNED' | 'IN_PROGRESS' | 'ON_HOLD' | 'DONE'
+  ) => set({ statusFilter: status }),
 
   filters: {
     status: 'ALL',
     dateRange: { start: null, end: null },
     sortBy: 'createdAt',
-    sortOrder: 'desc',
+    sortOrder: 'asc',
   },
   setFilters: (filters: TaskFilters) => set({ filters }),
 
@@ -37,22 +39,33 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       const response = await fetch('/api/tasks');
       if (!response.ok) throw new Error('Failed to fetch tasks');
       const data = await response.json();
-      
+
       const tasksWithParsedNumbers = data.tasks.map((task: Task) => {
-        const validStatus = ['PLANNED', 'IN_PROGRESS', 'ON_HOLD', 'DONE'].includes(task.status)
+        const validStatus = [
+          'PLANNED',
+          'IN_PROGRESS',
+          'ON_HOLD',
+          'DONE',
+        ].includes(task.status)
           ? task.status
           : 'PLANNED';
-  
+
         return {
           ...task,
           status: validStatus,
-          progress: typeof task.progress === 'string' ? parseInt(task.progress) || 0 : task.progress || 0,
-          order: typeof task.order === 'string' ? parseInt(task.order) || 0 : task.order || 0,
+          progress:
+            typeof task.progress === 'string'
+              ? parseInt(task.progress) || 0
+              : task.progress || 0,
+          order:
+            typeof task.order === 'string'
+              ? parseInt(task.order) || 0
+              : task.order || 0,
           dueDate: task.dueDate ? new Date(task.dueDate) : null,
           createdAt: task.createdAt ? new Date(task.createdAt) : undefined,
         };
       });
-      
+
       set({ tasks: tasksWithParsedNumbers });
     } catch (error) {
       toast.error('Failed to load tasks');
@@ -249,7 +262,16 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         insertIndexInColumn = targetColumnTasks.length;
       }
 
-      const updatedTask = { ...task, status: newStatus, order: newOrder };
+      const allowedStatuses = [
+        'PLANNED',
+        'IN_PROGRESS',
+        'ON_HOLD',
+        'DONE',
+      ] as const;
+      const safeStatus = allowedStatuses.includes(newStatus as any)
+        ? (newStatus as Task['status'])
+        : 'PLANNED';
+      const updatedTask = { ...task, status: safeStatus, order: newOrder };
       const newTasks = state.tasks.filter((t) => t.id !== taskId);
 
       const tasksBeforeInsert = newTasks

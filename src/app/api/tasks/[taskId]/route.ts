@@ -9,7 +9,6 @@ export async function PUT(
   { params }: { params: { taskId: string } }
 ) {
   try {
-    // Make sure we use the correct params format
     const { taskId } = await params;
     
     const session = await getServerSession(authOptions);
@@ -26,7 +25,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { title, description, status, progress, dueDate, order } =
+    const { title, description, status, progress, dueDate, allDay, order } =
       body as Partial<Task>;
 
     let parsedProgress: number | undefined;

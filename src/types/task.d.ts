@@ -31,6 +31,7 @@ export interface Task {
   status: 'PLANNED' | 'IN_PROGRESS' | 'ON_HOLD' | 'DONE';
   progress: number;
   dueDate?: string | null | Date;
+  allDay?: boolean;
   order: number;
   createdAt?: Date;
   updatedAt?: Date;

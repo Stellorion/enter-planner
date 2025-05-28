@@ -1,13 +1,18 @@
-"use client"
+'use client';
 
-import { useEffect, useMemo } from "react"
-import { FaRegClock, FaRegSun, FaRegCheckCircle, FaRegPauseCircle } from "react-icons/fa"
-import { DragDropContext, Droppable } from '@hello-pangea/dnd'
-import { TaskControls } from "@/src/components/task/TaskControls"
-import { TaskColumn } from "@/src/components/task/TaskColumn"
-import UpdateModal from "@/src/components/task/modal/UpdateTaskModal"
-import AddTaskModal from "@/src/components/task/modal/AddTaskModal"
-import { useTaskStore } from "@/src/store/useTaskStore"
+import { useEffect, useMemo } from 'react';
+import {
+  FaRegClock,
+  FaRegSun,
+  FaRegCheckCircle,
+  FaRegPauseCircle,
+} from 'react-icons/fa';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { TaskControls } from '@/src/components/task/TaskControls';
+import { TaskColumn } from '@/src/components/task/TaskColumn';
+import UpdateModal from '@/src/components/task/modal/UpdateTaskModal';
+import AddTaskModal from '@/src/components/task/modal/AddTaskModal';
+import { useTaskStore } from '@/src/store/useTaskStore';
 
 export default function TaskList() {
   const {
@@ -40,17 +45,33 @@ export default function TaskList() {
   }, [fetchTasks]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value, type } = event.target;
-    updateNewTask(name, type === 'number' ? Number(value) : value);
+    if (type === 'checkbox' && 'checked' in event.target) {
+      updateNewTask(name, (event.target as HTMLInputElement).checked);
+    } else if (type === 'number') {
+      updateNewTask(name, Number(value));
+    } else {
+      updateNewTask(name, value);
+    }
   };
 
   const handleUpdateChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value, type } = event.target;
-    updateEditingTask(name, type === 'number' ? Number(value) : value);
+    if (type === 'checkbox' && 'checked' in event.target) {
+      updateEditingTask(name, (event.target as HTMLInputElement).checked);
+    } else if (type === 'number') {
+      updateEditingTask(name, Number(value));
+    } else {
+      updateEditingTask(name, value);
+    }
   };
 
   const handleDragEnd = (result: any) => {
@@ -66,36 +87,38 @@ export default function TaskList() {
     }
 
     const taskId = parseInt(draggableId);
-    const task = tasks.find(t => t.id === taskId);
+    const task = tasks.find((t) => t.id === taskId);
     if (!task) return;
 
     const sourceColumnTasks = tasks
-      .filter(t => t.status === source.droppableId)
+      .filter((t) => t.status === source.droppableId)
       .sort((a, b) => a.order - b.order);
 
-    const destColumnTasks = destination.droppableId !== source.droppableId
-      ? tasks
-        .filter(t => t.status === destination.droppableId)
-        .sort((a, b) => a.order - b.order)
-      : sourceColumnTasks;
+    const destColumnTasks =
+      destination.droppableId !== source.droppableId
+        ? tasks
+            .filter((t) => t.status === destination.droppableId)
+            .sort((a, b) => a.order - b.order)
+        : sourceColumnTasks;
 
     sourceColumnTasks.splice(source.index, 1);
 
-    const newColumnTasks = destination.droppableId !== source.droppableId
-      ? destColumnTasks
-      : sourceColumnTasks;
+    const newColumnTasks =
+      destination.droppableId !== source.droppableId
+        ? destColumnTasks
+        : sourceColumnTasks;
 
     newColumnTasks.splice(destination.index, 0, task);
 
     const updatedTasks = newColumnTasks.map((t, index) => ({
       ...t,
       order: index,
-      status: destination.droppableId
+      status: destination.droppableId,
     }));
 
     reorderTask(taskId, destination.droppableId, destination.index);
 
-    updatedTasks.forEach(t => {
+    updatedTasks.forEach((t) => {
       if (t.id !== task.id) {
         updateTask(t);
       }
@@ -104,68 +127,87 @@ export default function TaskList() {
     updateTask({
       ...task,
       status: destination.droppableId,
-      order: destination.index
+      order: destination.index,
     });
   };
 
   const filteredTasks = useMemo(() => {
-    return tasks.filter(task => {
-      const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        task.description?.toLowerCase().includes(searchQuery.toLowerCase() || '');
+    return tasks
+      .filter((task) => {
+        const matchesSearch =
+          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          task.description
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase() || '');
 
-      const matchesStatus = filters.status === "ALL" || task.status === filters.status;
+        const matchesStatus =
+          filters.status === 'ALL' || task.status === filters.status;
 
-      if (filters.dateRange.start && filters.dateRange.end) {
         const taskDueDate = task.dueDate ? new Date(task.dueDate) : null;
-
-        if (!taskDueDate || isNaN(taskDueDate.getTime())) {
+        if (
+          filters.dateRange.start &&
+          (!taskDueDate || taskDueDate < filters.dateRange.start)
+        ) {
+          return false;
+        }
+        if (
+          filters.dateRange.end &&
+          (!taskDueDate || taskDueDate > filters.dateRange.end)
+        ) {
           return false;
         }
 
-        if (taskDueDate < filters.dateRange.start || taskDueDate > filters.dateRange.end) {
-          return false;
+        return matchesSearch && matchesStatus;
+      })
+      .sort((a, b) => {
+        const sortBy = filters.sortBy;
+        const aValue = a[sortBy];
+        const bValue = b[sortBy];
+
+        if (aValue === undefined || aValue === null) {
+          return bValue === undefined || bValue === null
+            ? 0
+            : filters.sortOrder === 'asc'
+              ? -1
+              : 1;
         }
-      }
+        if (bValue === undefined || bValue === null) {
+          return filters.sortOrder === 'asc' ? 1 : -1;
+        }
 
-      return matchesSearch && matchesStatus;
-    }).sort((a, b) => {
-      const sortBy = filters.sortBy;
-      const aValue = a[sortBy]; 
-      const bValue = b[sortBy];
+        let comparison = 0;
 
-      if (aValue === undefined || aValue === null) {
-          return bValue === undefined || bValue === null ? 0 : (filters.sortOrder === 'asc' ? -1 : 1);
-      }
-       if (bValue === undefined || bValue === null) {
-           return filters.sortOrder === 'asc' ? 1 : -1;
-       }
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          comparison = aValue.localeCompare(bValue);
+        } else if (aValue instanceof Date && bValue instanceof Date) {
+          comparison = aValue.getTime() - bValue.getTime();
+        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+          comparison = aValue - bValue;
+        } else {
+          if (aValue < bValue) comparison = -1;
+          else if (aValue > bValue) comparison = 1;
+        }
 
-
-      let comparison = 0;
-
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        comparison = aValue.localeCompare(bValue);
-      } else if (aValue instanceof Date && bValue instanceof Date) {
-        comparison = aValue.getTime() - bValue.getTime();
-      } else if (typeof aValue === 'number' && typeof bValue === 'number') {
-        comparison = aValue - bValue;
-      } else {
-         if (aValue < bValue) comparison = -1;
-         else if (aValue > bValue) comparison = 1;
-      }
-
-      return filters.sortOrder === 'asc' ? comparison : -comparison;
-    });
+        return filters.sortOrder === 'asc' ? comparison : -comparison;
+      });
   }, [tasks, searchQuery, filters]);
 
-  const plannedTasks = useMemo(() => 
-    filteredTasks.filter(task => task.status === "PLANNED"), [filteredTasks]);
-  const inProgressTasks = useMemo(() => 
-    filteredTasks.filter(task => task.status === "IN_PROGRESS"), [filteredTasks]);
-  const doneTasks = useMemo(() => 
-    filteredTasks.filter(task => task.status === "DONE"), [filteredTasks]);
-  const onHoldTasks = useMemo(() => 
-    filteredTasks.filter(task => task.status === "ON_HOLD"), [filteredTasks]);
+  const plannedTasks = useMemo(
+    () => filteredTasks.filter((task) => task.status === 'PLANNED'),
+    [filteredTasks]
+  );
+  const inProgressTasks = useMemo(
+    () => filteredTasks.filter((task) => task.status === 'IN_PROGRESS'),
+    [filteredTasks]
+  );
+  const doneTasks = useMemo(
+    () => filteredTasks.filter((task) => task.status === 'DONE'),
+    [filteredTasks]
+  );
+  const onHoldTasks = useMemo(
+    () => filteredTasks.filter((task) => task.status === 'ON_HOLD'),
+    [filteredTasks]
+  );
 
   const handleApplyFilters = () => {
     // The filters are already applied through the useMemo above
@@ -173,11 +215,11 @@ export default function TaskList() {
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 pt-20 dark:bg-gray-900">
       <div className="container mx-auto p-4">
         <div className="flex flex-col gap-6">
           <div className="flex gap-4">
-            <TaskControls 
+            <TaskControls
               onAdd={() => setShowAddModal(true)}
               filters={filters}
               setFilters={setFilters}
@@ -187,7 +229,7 @@ export default function TaskList() {
             />
           </div>
           <DragDropContext onDragEnd={handleDragEnd}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
               <Droppable droppableId="PLANNED">
                 {(provided) => (
                   <TaskColumn
@@ -215,7 +257,9 @@ export default function TaskList() {
               <Droppable droppableId="DONE">
                 {(provided) => (
                   <TaskColumn
-                    icon={<FaRegCheckCircle className="h-5 w-5 text-green-600" />}
+                    icon={
+                      <FaRegCheckCircle className="h-5 w-5 text-green-600" />
+                    }
                     title="Done"
                     tasks={doneTasks}
                     onEdit={handleEdit}
@@ -227,7 +271,9 @@ export default function TaskList() {
               <Droppable droppableId="ON_HOLD">
                 {(provided) => (
                   <TaskColumn
-                    icon={<FaRegPauseCircle className="h-5 w-5 text-gray-600 dark:text-gray-400" />}
+                    icon={
+                      <FaRegPauseCircle className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                    }
                     title="On Hold"
                     tasks={onHoldTasks}
                     onEdit={handleEdit}

@@ -1,9 +1,9 @@
 import { SelectInputProps } from '@/src/types/Inputs';
 
-const SelectInput = ({ value, onChange, options }: SelectInputProps) => (
+const SelectInput = ({ value, onChange, options, label }: SelectInputProps) => (
   <div>
     <label className="mb-1 block text-sm text-left font-medium text-gray-900 dark:text-gray-100">
-      Status
+      {label}
     </label>
     <select
       name="status"

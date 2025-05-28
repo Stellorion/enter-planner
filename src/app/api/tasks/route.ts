@@ -33,9 +33,8 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { title, description, status, progress, dueDate } = body;
+    const { title, description, status, progress, dueDate, allDay } = body;
 
-    // Validate required fields
     if (!title) {
       return NextResponse.json(
         { error: 'Title is required' },
@@ -62,6 +61,7 @@ export async function POST(req: Request) {
         status: status || 'PLANNED',
         progress: progress || 0,
         dueDate: dueDate ? new Date(dueDate) : null,
+        allDay: false,
         userId: user.id 
       },
     });

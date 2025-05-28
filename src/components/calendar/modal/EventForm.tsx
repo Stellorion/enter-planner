@@ -41,10 +41,14 @@ const EventForm = ({ event, handleChange }: EventFormProps) => {
       <div className="flex items-center justify-evenly">
         <CheckboxInput
           name="allDay"
+          label='All Day'
           checked={Boolean(event.allDay)}
           onChange={handleChange}
         />
-        <ColorInput value={event.color || '#3788d8'} onChange={handleChange} />
+        <ColorInput 
+          value={event.color || '#3788d8'} 
+          onChange={handleChange} 
+        />
       </div>
 
       <TextareaInput
