@@ -45,10 +45,14 @@ export interface DateTimeInputProps {
   optional?: boolean;
 }
 
-export type CheckboxInputProps = {
+export interface CheckboxInputProps {
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+  name?: string;
+  label?: string | React.ReactNode;
+  toggleStyle?: boolean;
+  className?: string;
+}
 
 export interface SelectInputProps {
   value: string;

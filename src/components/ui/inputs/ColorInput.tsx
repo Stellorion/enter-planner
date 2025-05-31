@@ -41,7 +41,7 @@ const ColorInput = ({
 
   return (
     <Menu as="div" className="relative flex items-center gap-2 text-left">
-      <span className='text-gray-800 dark:text-gray-200 text-md'>Color: </span>
+      <span className='text-gray-800 dark:text-gray-200 text-sm'>Color: </span>
       <Menu.Button className="flex items-center gap-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 py-1">
         <FaCircle className="h-6 w-6" style={{ color: value }} />
         <FaArrowDown className="h-4 w-4 text-gray-500" />

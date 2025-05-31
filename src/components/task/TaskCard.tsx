@@ -19,8 +19,8 @@ export function TaskCard({
         <FaPen className="h-4 w-4 text-gray-500 hover:text-blue-600 transition-colors" />
       </button>
       <div className="rounded-md border border-gray-200 shadow-sm p-4 dark:border-gray-700">
-        <h3 className="font-medium text-gray-900 dark:text-gray-100">{task.title}</h3>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <h3 className="font-medium text-gray-900 dark:text-gray-100 overflow-hidden text-ellipsis pr-4">{task.title}</h3>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 overflow-hidden text-ellipsis">
           {task.description}
         </p>
         <div className="mt-4 flex items-center justify-between">

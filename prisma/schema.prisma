@@ -9,11 +9,6 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
-
 model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
@@ -57,27 +52,32 @@ model Calendar {
   @@index([userId])
 }
 
-enum TaskStatus {
-  PLANNED
-  IN_PROGRESS
-  ON_HOLD
-  DONE
-}
-
 model Task {
   id          Int        @id @default(autoincrement())
   title       String
   description String?
   dueDate     DateTime?
-  allDay      Boolean    @default(false)
   status      TaskStatus @default(PLANNED)
   progress    Int        @default(0)
-  order       Int        @default(0)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   userId      Int
+  order       Int        @default(0)
+  allDay      Boolean    @default(false)
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([status])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum TaskStatus {
+  PLANNED
+  IN_PROGRESS
+  ON_HOLD
+  DONE
 }

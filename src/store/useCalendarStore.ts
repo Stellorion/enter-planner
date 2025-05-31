@@ -10,7 +10,7 @@ const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 const initialNewEvent: NewEvent = {
   id: '',
   title: '',
-  start: getLocalISOString(now), // ensure this uses local format
+  start: getLocalISOString(now),
   end: getLocalISOString(oneHourLater),
   allDay: false,
   notes: '',

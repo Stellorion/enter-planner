@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckboxInputProps } from "@/src/types/Inputs";
+import { CheckboxInputProps } from '@/src/types/Inputs';
 
 const CheckboxInput = ({
   checked,
@@ -8,36 +8,38 @@ const CheckboxInput = ({
   name = 'allDay',
   label,
   toggleStyle = true,
-}: CheckboxInputProps & { name?: string; label?: string; toggleStyle?: boolean }) => (
-  <label className="relative text-gray-900 flex items-center space-x-3 cursor-pointer">
+  className = '',
+}: CheckboxInputProps) => (
+  <label
+    className={`relative flex cursor-pointer items-center space-x-3 text-gray-900 dark:text-gray-100 ${className}`}
+  >
     {toggleStyle ? (
       <>
+        {label && <span className="text-sm select-none">{label}:</span>}
         <div className="relative">
           <input
             type="checkbox"
             name={name}
             checked={checked}
             onChange={onChange}
-            className="sr-only peer"
+            className="peer sr-only"
           />
-          <div className="w-11 h-6 rounded-full bg-gray-300 dark:bg-gray-700 peer-checked:bg-blue-500 transition-all duration-300 ease-in-out" />
+          <div className="h-6 w-11 rounded-full bg-gray-300 transition-all duration-300 ease-in-out peer-checked:bg-blue-500 dark:bg-gray-700" />
           <div
-            className={`absolute top-1 left-1 h-4 w-4 bg-white rounded-full shadow-md transition-all duration-300 ease-in-out 
-              peer-checked:translate-x-5`}
+            className={`absolute top-1 left-1 h-4 w-4 rounded-full bg-white shadow-md transition-all duration-300 ease-in-out peer-checked:translate-x-5`}
           />
         </div>
-        <span className="select-none">{label}</span>
       </>
     ) : (
       <>
+        {label && <span className="text-sm select-none">{label}:</span>}
         <input
           type="checkbox"
           name={name}
           checked={checked}
           onChange={onChange}
-          className="mr-2 h-5 w-5"
+          className="mr-2 h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
         />
-        <span className="select-none">{label}</span>
       </>
     )}
   </label>
