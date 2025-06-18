@@ -9,6 +9,7 @@ import AddEventModal from '@/src/containers/Calendar/components/modal/AddEventMo
 import UpdateModal from '@/src/containers/Calendar/components/modal/UpdateModal';
 import EventsSidebar from '@/src/containers/Calendar/components/EventsSidebar';
 import { formatAsDayString, formatEventDates } from './Calendar.utils';
+import { localToUTC, toDateString } from '@/utils/dateUtils'
 
 export default function Calendar() {
   const {
