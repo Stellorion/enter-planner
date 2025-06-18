@@ -9,7 +9,7 @@ import AddEventModal from '@/src/containers/Calendar/components/modal/AddEventMo
 import UpdateModal from '@/src/containers/Calendar/components/modal/UpdateModal';
 import EventsSidebar from '@/src/containers/Calendar/components/EventsSidebar';
 import { formatAsDayString, formatEventDates } from './Calendar.utils';
-import { localToUTC, toDateString } from '@/utils/dateUtils'
+import { localToUTC, toDateString } from '@/utils/dateUtils';
 
 export default function Calendar() {
   const {
@@ -79,7 +79,16 @@ export default function Calendar() {
   }
 
   function handleUpdate(updatedEvent: Event) {
-    const eventToUpdate = formatEventDates(updatedEvent);
+    const eventToUpdate = { ...updatedEvent };
+
+    if (!eventToUpdate.allDay) {
+      eventToUpdate.start = localToUTC(eventToUpdate.start);
+      if (eventToUpdate.end) eventToUpdate.end = localToUTC(eventToUpdate.end);
+    } else {
+      eventToUpdate.start = toDateString(eventToUpdate.start);
+      if (eventToUpdate.end) eventToUpdate.end = toDateString(eventToUpdate.end);
+    }
+
     updateEvent(eventToUpdate);
     setShowUpdateModal(false);
     setSelectedEvent(null);
