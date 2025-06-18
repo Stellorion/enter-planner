@@ -1,3 +1,5 @@
+'use client'
+
 import { EventsSidebarProps } from '@/src/types/event';
 import { format, startOfMonth, endOfMonth, isBefore, isAfter } from 'date-fns';
 import { FaRegCalendar, FaRegClock } from 'react-icons/fa';
