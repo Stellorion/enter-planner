@@ -1,4 +1,4 @@
-import { ProfileForm } from "@/src/components/dashboard/ProfileForm";
+import { ProfileForm } from "@/src/containers/Dashboard/components/ProfileForm";
 
 const Title = 'Profile';
 const Description = 'Manage your profile information.';

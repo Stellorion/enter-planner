@@ -4,10 +4,10 @@ import { Dialog } from '@headlessui/react';
 import { FaRegCalendarPlus } from 'react-icons/fa';
 import { AddModalProps } from '@/src/types/modal';
 import { Event } from '@/src/types/event';
-import ModalContainer from '../../ui/modal/ModalContainer';
+import ModalContainer from '../../../../components/ui/modal/ModalContainer';
 import ModalHeader from '@/src/components/ui/modal/ModalHeader';
 import EventForm from './EventForm';
-import ModalFooter from '../../ui/modal/ModalFooter';
+import ModalFooter from '../../../../components/ui/modal/ModalFooter';
 
 const AddEventModal = ({
   showModal,

@@ -1,10 +1,10 @@
 import TextareaInput from '@/src/components/ui/inputs/TextareaInput';
-import TitleInput from '../../ui/inputs/TitleInput';
-import StatusInput from '../../ui/inputs/SelectInput';
-import NumberInput from '../../ui/inputs/NumberInput';
+import TitleInput from '../../../../components/ui/inputs/TitleInput';
+import StatusInput from '../../../../components/ui/inputs/SelectInput';
+import NumberInput from '../../../../components/ui/inputs/NumberInput';
 import { TaskFormProps } from '@/src/types/task';
-import DateTimeInput from '../../ui/inputs/DateTimeInput';
-import CheckboxInput from '../../ui/inputs/CheckboxInput';
+import DateTimeInput from '../../../../components/ui/inputs/DateTimeInput';
+import CheckboxInput from '../../../../components/ui/inputs/CheckboxInput';
 import { toLocalInputValue } from '@/utils/dateUtils';
 
 const TaskForm = ({ task, handleChange }: TaskFormProps) => {

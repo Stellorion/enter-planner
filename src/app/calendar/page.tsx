@@ -1,5 +1,5 @@
 import { authOptions } from '@/auth';
-import Calendar from '@/src/views/CalendarViews/Calendar';
+import Calendar from '@/src/containers/Calendar/CalendarView';
 import { getServerSession } from 'next-auth';
 import ToastNotification from '@/src/components/ui/ToastNotification';
 

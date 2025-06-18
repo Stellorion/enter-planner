@@ -8,11 +8,12 @@ import {
   FaRegPauseCircle,
 } from 'react-icons/fa';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
-import { TaskControls } from '@/src/components/task/TaskControls';
-import { TaskColumn } from '@/src/components/task/TaskColumn';
-import UpdateModal from '@/src/components/task/modal/UpdateTaskModal';
-import AddTaskModal from '@/src/components/task/modal/AddTaskModal';
-import { useTaskStore } from '@/src/store/useTaskStore';
+import { TaskControls } from './components/TaskControls';
+import { TaskColumn } from './components/TaskColumn';
+import UpdateModal from '@/src/containers/Tasks/components/modal/UpdateTaskModal';
+import AddTaskModal from '@/src/containers/Tasks/components/modal/AddTaskModal';
+import { useTaskStore } from '@/src/containers/Tasks/store/useTaskStore';
+import { Task } from '@/src/types/task';
 
 export default function TaskList() {
   const {
@@ -44,6 +45,7 @@ export default function TaskList() {
     fetchTasks();
   }, [fetchTasks]);
 
+  //Split it to 3 functions (progress, checked, value)
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -59,6 +61,7 @@ export default function TaskList() {
     }
   };
 
+  //Split it to 3 functions (progress, checked, value)
   const handleUpdateChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -74,6 +77,7 @@ export default function TaskList() {
     }
   };
 
+  //Split it to utils
   const handleDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
 
@@ -132,64 +136,92 @@ export default function TaskList() {
   };
 
   const filteredTasks = useMemo(() => {
-    return tasks
-      .filter((task) => {
-        const matchesSearch =
-          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          task.description
-            ?.toLowerCase()
-            .includes(searchQuery.toLowerCase() || '');
+    const tasksToFilter = tasks;
+    console.log('Tasks entering filter/sort:', JSON.stringify(tasksToFilter.slice(0, 5), null, 2)); // Log first 5 tasks
 
-        const matchesStatus =
-          filters.status === 'ALL' || task.status === filters.status;
+    const filtered = tasksToFilter.filter((task) => {
+      const matchesSearch =
+        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        task.description
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase() || '');
 
-        const taskDueDate = task.dueDate ? new Date(task.dueDate) : null;
-        if (
-          filters.dateRange.start &&
-          (!taskDueDate || taskDueDate < filters.dateRange.start)
-        ) {
-          return false;
-        }
-        if (
-          filters.dateRange.end &&
-          (!taskDueDate || taskDueDate > filters.dateRange.end)
-        ) {
-          return false;
-        }
+      const matchesStatus =
+        filters.status === 'ALL' || task.status === filters.status;
 
-        return matchesSearch && matchesStatus;
-      })
-      .sort((a, b) => {
-        const sortBy = filters.sortBy;
-        const aValue = a[sortBy];
-        const bValue = b[sortBy];
+      const taskDueDate = task.dueDate ? new Date(task.dueDate) : null;
+      if (
+        filters.dateRange.start &&
+        (!taskDueDate || taskDueDate < filters.dateRange.start)
+      ) {
+        return false;
+      }
+      if (
+        filters.dateRange.end &&
+        (!taskDueDate || taskDueDate > filters.dateRange.end)
+      ) {
+        return false;
+      }
 
-        if (aValue === undefined || aValue === null) {
-          return bValue === undefined || bValue === null
-            ? 0
-            : filters.sortOrder === 'asc'
-              ? -1
-              : 1;
-        }
-        if (bValue === undefined || bValue === null) {
-          return filters.sortOrder === 'asc' ? 1 : -1;
-        }
+      return matchesSearch && matchesStatus;
+    });
 
-        let comparison = 0;
+    console.log('Tasks after filtering, before sorting (first 5):', JSON.stringify(filtered.slice(0, 5), null, 2));
+    console.log('Current sort criteria:', JSON.stringify(filters, null, 2));
 
-        if (typeof aValue === 'string' && typeof bValue === 'string') {
+    return filtered.sort((a: Task, b: Task) => {
+      const { sortBy, sortOrder } = filters;
+      let comparison = 0;
+
+      // Helper to safely get time from date values
+      const getTimeSafe = (dateVal: string | Date | null | undefined): number | null => {
+        if (dateVal == null || dateVal === '') return null; // Treat empty or null as no date
+        const d = new Date(dateVal);
+        return isNaN(d.getTime()) ? null : d.getTime(); // Null for invalid dates
+      };
+
+      // Value accessors
+      // Using 'as any' for simplicity here, but in a real scenario, type-guarding or specific accessors per key are safer
+      let aValue: any = a[sortBy as keyof Task];
+      let bValue: any = b[sortBy as keyof Task];
+
+      // 1. Handle sorting by 'status' (custom order)
+      if (sortBy === 'status') {
+        const statusOrder: Array<Task['status']> = ['PLANNED', 'IN_PROGRESS', 'ON_HOLD', 'DONE'];
+        comparison = statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+      }
+      // 2. Handle sorting by 'createdAt' or 'dueDate'
+      else if (sortBy === 'createdAt' || sortBy === 'dueDate') {
+        const timeA = getTimeSafe(aValue);
+        const timeB = getTimeSafe(bValue);
+
+        if (timeA === null && timeB === null) comparison = 0;
+        else if (timeA === null) comparison = -1; // Nulls/invalid dates come first
+        else if (timeB === null) comparison = 1;
+        else comparison = timeA - timeB;
+      }
+      // 3. Handle other types (string, number)
+      else {
+        // General null/undefined handling: nulls/undefined come first
+        if (aValue == null && bValue == null) comparison = 0;
+        else if (aValue == null) comparison = -1;
+        else if (bValue == null) comparison = 1;
+        // Actual value comparison for non-nulls
+        else if (typeof aValue === 'string' && typeof bValue === 'string') {
           comparison = aValue.localeCompare(bValue);
-        } else if (aValue instanceof Date && bValue instanceof Date) {
-          comparison = aValue.getTime() - bValue.getTime();
         } else if (typeof aValue === 'number' && typeof bValue === 'number') {
           comparison = aValue - bValue;
-        } else {
-          if (aValue < bValue) comparison = -1;
-          else if (aValue > bValue) comparison = 1;
         }
+        // Add more specific type handlers if needed, e.g., boolean
+      }
 
-        return filters.sortOrder === 'asc' ? comparison : -comparison;
-      });
+      if (comparison === 0) {
+        // Secondary sort by 'order' if primary keys are equal
+        comparison = (a.order || 0) - (b.order || 0);
+      }
+
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
   }, [tasks, searchQuery, filters]);
 
   const plannedTasks = useMemo(
@@ -214,6 +246,7 @@ export default function TaskList() {
     // This is just for any additional logic you might need
   };
 
+  //Change the Columns to a single column (Don't repeat yourself)
   return (
     <div className="min-h-screen bg-gray-50 pt-20 dark:bg-gray-900">
       <div className="container mx-auto p-4">

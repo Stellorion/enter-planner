@@ -34,8 +34,10 @@
   --fc-event-text-color: #ffffff;
 }
 
-.fc-daygrid-day {
-  height: 150px !important;
+@media screen and (min-width: 1280px) {
+  .fc-daygrid-day {
+    height: 150px !important;
+  }
 }
 
 .fc .fc-button {
@@ -114,7 +116,6 @@
 
 .fc-event.fc-event-selected,
 .fc-event.fc-event-selected * {
-  pointer-events: auto !important;
   z-index: 10 !important;
 }
 

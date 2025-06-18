@@ -1,9 +1,9 @@
 import { Dialog } from '@headlessui/react';
 import { FaRegEdit } from 'react-icons/fa';
-import ModalContainer from '../../ui/modal/ModalContainer';
-import ModalHeader from '../../ui/modal/ModalHeader';
+import ModalContainer from '../../../../components/ui/modal/ModalContainer';
+import ModalHeader from '../../../../components/ui/modal/ModalHeader';
 import TaskForm from './TaskForm';
-import ModalFooter from '../../ui/modal/ModalFooter';
+import ModalFooter from '../../../../components/ui/modal/ModalFooter';
 import { UpdateModalProps } from '@/src/types/modal';
 import { Task } from '@/src/types/task';
 

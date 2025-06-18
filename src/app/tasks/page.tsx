@@ -1,5 +1,5 @@
 import { authOptions } from '@/auth';
-import TaskList from '@/src/views/TasksViews/Tasks';
+import TaskList from '@/src/containers/Tasks/TasksView';
 import { getServerSession } from 'next-auth';
 import ToastNotification from '@/src/components/ui/ToastNotification';
 

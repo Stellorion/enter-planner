@@ -3,10 +3,6 @@ export function getLocalISOString(date: Date): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
-export function formatDateString(dateString: string) {
-  return dateString.length > 10 ? dateString.slice(0, 16) : dateString;
-}
-
 // Converts a UTC ISO string to a local datetime-local string (YYYY-MM-DDTHH:mm)
 export function toLocalInputValue(value: string) {
   if (!value) return '';
@@ -18,30 +14,4 @@ export function toLocalInputValue(value: string) {
   const hour = String(date.getHours()).padStart(2, '0');
   const minute = String(date.getMinutes()).padStart(2, '0');
   return `${year}-${month}-${day}T${hour}:${minute}`;
-}
-
-// Converts a local datetime-local string (from input) to UTC ISO string
-export function localToUTC(local: string) {
-  if (!local) return '';
-  const date = new Date(local);
-  return date.toISOString();
-}
-
-// For displaying a date string in the user's local time (for tooltips, etc)
-export function formatLocalDisplay(dateString: string) {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toLocaleString();
-}
-
-// For all-day events (date only)
-export function toDateString(date: string | Date) {
-  const d = new Date(date);
-  return d.toISOString().split('T')[0];
-}
-
-// Truncate to nearest hour
-export function truncateToNearestHour(date: Date): Date {
-  date.setMinutes(0, 0, 0);
-  return date;
 }

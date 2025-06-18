@@ -3,12 +3,12 @@
 import { useEffect } from 'react';
 import { EventClickArg, EventChangeArg } from '@fullcalendar/core';
 import { Event } from '@/src/types/event';
-import { useCalendarStore } from '@/src/store/useCalendarStore';
-import CalendarComponent from '@/src/components/calendar/CalendarComponent';
-import AddEventModal from '@/src/components/calendar/modal/AddEventModal';
-import UpdateModal from '@/src/components/calendar/modal/UpdateModal';
-import EventsSidebar from '@/src/components/calendar/EventsSidebar';
-import { localToUTC, getLocalISOString, toDateString } from '@/utils/dateUtils';
+import { useCalendarStore } from '@/src/containers/Calendar/store/useCalendarStore';
+import CalendarComponent from '@/src/containers/Calendar/components/CalendarComponent';
+import AddEventModal from '@/src/containers/Calendar/components/modal/AddEventModal';
+import UpdateModal from '@/src/containers/Calendar/components/modal/UpdateModal';
+import EventsSidebar from '@/src/containers/Calendar/components/EventsSidebar';
+import { formatAsDayString, formatEventDates } from './Calendar.utils';
 
 export default function Calendar() {
   const {
@@ -40,22 +40,14 @@ export default function Calendar() {
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
     const clickedDate = new Date(arg.date);
-
     clickedDate.setHours(0, 0, 0, 0);
 
     const endDate = new Date(clickedDate);
     endDate.setDate(clickedDate.getDate() + 1);
     endDate.setHours(0, 0, 0, 0);
 
-    const formatDate = (date: Date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
-
-    const startDateFormatted = formatDate(clickedDate);
-    const endDateFormatted = formatDate(endDate);
+    const startDateFormatted = formatAsDayString(clickedDate);
+    const endDateFormatted = formatAsDayString(endDate);
 
     setNewEvent({
       ...newEvent,
@@ -86,16 +78,7 @@ export default function Calendar() {
   }
 
   function handleUpdate(updatedEvent: Event) {
-    const eventToUpdate = { ...updatedEvent };
-
-    if (!eventToUpdate.allDay) {
-      eventToUpdate.start = localToUTC(eventToUpdate.start);
-      if (eventToUpdate.end) eventToUpdate.end = localToUTC(eventToUpdate.end);
-    } else {
-      eventToUpdate.start = toDateString(eventToUpdate.start);
-      if (eventToUpdate.end) eventToUpdate.end = toDateString(eventToUpdate.end);
-    }
-
+    const eventToUpdate = formatEventDates(updatedEvent);
     updateEvent(eventToUpdate);
     setShowUpdateModal(false);
     setSelectedEvent(null);
@@ -181,16 +164,7 @@ export default function Calendar() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    let eventToAdd = { ...newEvent };
-
-    if (!eventToAdd.allDay) {
-      // Convert local input to UTC ISO string before saving
-      eventToAdd.start = localToUTC(eventToAdd.start);
-      if (eventToAdd.end) eventToAdd.end = localToUTC(eventToAdd.end);
-    } else {
-      eventToAdd.start = toDateString(eventToAdd.start);
-      if (eventToAdd.end) eventToAdd.end = toDateString(eventToAdd.end);
-    }
+    const eventToAdd = formatEventDates(newEvent);
 
     addEvent(eventToAdd);
     setShowModal(false);

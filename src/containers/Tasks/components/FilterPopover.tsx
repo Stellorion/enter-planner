@@ -17,7 +17,8 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
       sortOrder: 'asc',
     });
   };
-
+  console.log({filters});
+  
   return (
     <div className="space-y-4">
       <SelectInput
@@ -73,7 +74,7 @@ const FilterPopover = ({ filters, setFilters }: FilterPopoverProps) => {
 
       <SelectInput
         name="sortBy"
-        label="Status"
+        label="Sort By"
         value={filters.sortBy}
         onChange={(e) =>
           setFilters({

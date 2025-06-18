@@ -6,9 +6,9 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-} from '@/src/components/dashboard/Card';
-import { TaskCard } from '@/src/components/task/TaskCard';
-import { EventCard } from '@/src/components/dashboard/EventCard';
+} from '@/src/containers/Dashboard/components/Card';
+import { TaskCard } from '@/src/containers/Tasks/components/TaskCard';
+import { EventCard } from '@/src/containers/Dashboard/components/EventCard';
 import {
   FaPen,
   FaRegCalendar,

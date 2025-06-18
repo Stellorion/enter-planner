@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 import ToastNotification from '@/src/components/ui/ToastNotification';
-import LoginHeader from '@/src/components/login/LoginHeader';
-import LoginForm from '@/src/components/login/LoginForm';
+import LoginHeader from '@/src/containers/Login/components/LoginHeader';
+import LoginForm from '@/src/containers/Login/components/LoginForm';
 import SocialLoginSection from '@/src/components/SocialLoginButtons';
 
 const LoginPage = async () => {

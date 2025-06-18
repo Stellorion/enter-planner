@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import Sidebar from '@/src/components/dashboard/Sidebar';
+import Sidebar from '@/src/containers/Dashboard/components/Sidebar';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (

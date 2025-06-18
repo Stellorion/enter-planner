@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
-import SignupHeader from '@/src/components/signup/SignupHeader';
-import SignupForm from '@/src/components/signup/SignupForm';
+import SignupHeader from '@/src/containers/Signup/components/SignupHeader';
+import SignupForm from '@/src/containers/Signup/components/SignupForm';
 import SocialAuthSection from '@/src/components/SocialLoginButtons';
 import ToastNotification from '@/src/components/ui/ToastNotification';
 

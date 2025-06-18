@@ -1,7 +1,6 @@
-
-import FeatureSection from '../components/landing/FeatureSection';
-import HeroSection from '../components/landing/HeroSection';
-import OnboardSection from '../components/landing/OnboardSection';
+import FeatureSection from '../containers/Landing/FeatureSection';
+import HeroSection from '../containers/Landing/HeroSection';
+import OnboardSection from '../containers/Landing/OnboardSection';
 
 const LandingPage = () => {
   return (

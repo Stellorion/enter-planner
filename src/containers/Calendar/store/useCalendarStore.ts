@@ -2,9 +2,10 @@ import { create } from 'zustand';
 import { toast } from 'react-toastify';
 import { NewEvent } from '@/src/types/event';
 import { CalendarStore, CalendarUiState } from '@/src/types/calendar';
-import { getLocalISOString, truncateToNearestHour } from '@/utils/dateUtils';
+import { getLocalISOString } from '@/utils/dateUtils';
+import { startOfHour } from 'date-fns';
 
-const now = truncateToNearestHour(new Date());
+const now = startOfHour(new Date());
 const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
 const initialNewEvent: NewEvent = {

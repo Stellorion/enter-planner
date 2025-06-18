@@ -7,7 +7,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
 import { CalendarComponentProps } from '@/src/types/event';
 import EventTooltip from './EventTooltip';
-import { useCalendarUiStore } from '@/src/store/useCalendarStore';
+import { useCalendarUiStore } from '@/src/containers/Calendar/store/useCalendarStore';
 import { useRef } from 'react';
 import { FaArrowLeft, FaArrowRight, FaRegCalendarPlus } from 'react-icons/fa';
 

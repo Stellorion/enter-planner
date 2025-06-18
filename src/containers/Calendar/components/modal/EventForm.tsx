@@ -1,9 +1,9 @@
-import DateTimeInput from '../../ui/inputs/DateTimeInput';
+import DateTimeInput from '../../../../components/ui/inputs/DateTimeInput';
 import TextareaInput from '@/src/components/ui/inputs/TextareaInput';
-import TitleInput from '../../ui/inputs/TitleInput';
-import ColorInput from '../../ui/inputs/ColorInput';
+import TitleInput from '../../../../components/ui/inputs/TitleInput';
+import ColorInput from '../../../../components/ui/inputs/ColorInput';
 import { EventFormProps } from '@/src/types/event';
-import CheckboxInput from '../../ui/inputs/CheckboxInput';
+import CheckboxInput from '../../../../components/ui/inputs/CheckboxInput';
 import { toLocalInputValue } from '@/utils/dateUtils';
 
 const EventForm = ({ event, handleChange }: EventFormProps) => {
