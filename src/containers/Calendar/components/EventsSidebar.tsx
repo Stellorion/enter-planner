@@ -1,5 +1,3 @@
-'use client'
-
 import { EventsSidebarProps } from '@/src/types/event';
 import { format, startOfMonth, endOfMonth, isBefore, isAfter } from 'date-fns';
 import { FaRegCalendar, FaRegClock } from 'react-icons/fa';
@@ -77,7 +75,6 @@ export default function EventsSidebar({
                     {new Date(event.start).toLocaleTimeString(undefined, {
                       hour: '2-digit',
                       minute: '2-digit',
-                      timeZoneName: 'short',
                     })}
                     {event.end && (
                       <>
@@ -85,7 +82,6 @@ export default function EventsSidebar({
                         {new Date(event.end).toLocaleTimeString(undefined, {
                           hour: '2-digit',
                           minute: '2-digit',
-                          timeZoneName: 'short',
                         })}
                       </>
                     )}

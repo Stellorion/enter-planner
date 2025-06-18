@@ -1,3 +1,5 @@
+'use client'
+
 import DateTimeInput from '../../../../components/ui/inputs/DateTimeInput';
 import TextareaInput from '@/src/components/ui/inputs/TextareaInput';
 import TitleInput from '../../../../components/ui/inputs/TitleInput';
