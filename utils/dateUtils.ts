@@ -15,3 +15,15 @@ export function toLocalInputValue(value: string) {
   const minute = String(date.getMinutes()).padStart(2, '0');
   return `${year}-${month}-${day}T${hour}:${minute}`;
 }
+
+export function localToUTC(local: string) {
+  if (!local) return '';
+  const date = new Date(local);
+  return date.toISOString();
+}
+
+// For all-day events (date only)
+export function toDateString(date: string | Date) {
+  const d = new Date(date);
+  return d.toISOString().split('T')[0];
+}

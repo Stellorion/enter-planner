@@ -164,7 +164,16 @@ export default function Calendar() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const eventToAdd = formatEventDates(newEvent);
+    let eventToAdd = { ...newEvent };
+
+    if (!eventToAdd.allDay) {
+      // Convert local input to UTC ISO string before saving
+      eventToAdd.start = localToUTC(eventToAdd.start);
+      if (eventToAdd.end) eventToAdd.end = localToUTC(eventToAdd.end);
+    } else {
+      eventToAdd.start = toDateString(eventToAdd.start);
+      if (eventToAdd.end) eventToAdd.end = toDateString(eventToAdd.end);
+    }
 
     addEvent(eventToAdd);
     setShowModal(false);
