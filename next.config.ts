@@ -1,17 +1,16 @@
 import type { NextConfig } from 'next';
-const path = require('path');
+import path from 'path';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  turbopack: {},
   webpack: (config) => {
-    config.resolve.alias['@'] = path.join(__dirname, 'src');
+    config.resolve = config.resolve || {};
+    config.resolve.alias = { ...(config.resolve.alias || {}), '@': path.join(__dirname, 'src') };
     return config;
   },
   typescript: {
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 };
 
